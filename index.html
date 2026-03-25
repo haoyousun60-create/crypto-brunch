@@ -129,17 +129,7 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 
     <div class="ns">
         <div class="ns-head"><span class="ns-icon">🪙</span><span class="ns-title">加密快讯</span><div class="lv"><i></i>LIVE</div></div>
-        <ul class="nl" id="nl-crypto"><li class="ne">⏳ 加载中...</li></ul>
-    </div>
-
-    <div class="ns">
-        <div class="ns-head"><span class="ns-icon">💹</span><span class="ns-title">新浪财经 7×24</span><div class="lv"><i></i>LIVE</div></div>
-        <ul class="nl" id="nl-sina"><li class="ne">⏳ 加载中...</li></ul>
-    </div>
-
-    <div class="ns">
-        <div class="ns-head"><span class="ns-icon">📰</span><span class="ns-title">人民网财经</span></div>
-        <ul class="nl" id="nl-people"><li class="ne">⏳ 加载中...</li></ul>
+        <ul class="nl" id="nl"><li class="ne">⏳ 加载中...</li></ul>
     </div>
 </div></div>
 
@@ -153,7 +143,7 @@ header .w{display:flex;justify-content:space-between;align-items:center}
         <div class="pt" data-r="vol">📊 全部币种</div>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span id="pcnt" style="font-size:.72em;color:var(--g)"></span></div>
-    <div class="phead"><span>名称 / 24H成交额</span><span>最新价</span><span>24H涨幅</span></div>
+    <div class="phead"><span>名称 / 24H 成交额</span><span>最新价</span><span>24H 涨幅</span></div>
     <div class="pl" id="pl"></div>
 </div></div>
 
@@ -192,10 +182,6 @@ async function loadNews(){
 }
 function renderN(items){
     const now=Date.now();
-    const crypto=items.filter(x=>x.source==='Odaily');
-    const sina=items.filter(x=>x.source==='新浪7x24');
-    const people=items.filter(x=>x.source==='人民网财经');
-
     function renderList(list){
         return list.map(x=>{
             let ts='';
@@ -209,10 +195,7 @@ function renderN(items){
             return`<li class="ni"><div class="ni-t">${ts}</div><div class="ni-h">${t}</div>${d&&d!==t?'<div class="ni-d">'+d+'</div>':''}${tags.length?'<div class="ni-tags">'+tags.map(g=>'<span>'+g+'</span>').join('')+'</div>':''}</li>`;
         }).join('')||'<li class="ne">暂无快讯</li>';
     }
-
-    document.getElementById('nl-crypto').innerHTML=renderList(crypto);
-    document.getElementById('nl-sina').innerHTML=renderList(sina);
-    document.getElementById('nl-people').innerHTML=renderList(people);
+    document.getElementById('nl').innerHTML=renderList(items);
 }
 
 // ==================== PRICES ====================
@@ -242,71 +225,78 @@ async function loadP(){
         }).join('');
         document.getElementById('tkr').innerHTML=th+th;
 
-        renderPrices();
+        renderR();
+        document.getElementById('pcnt').textContent=allPriceData.length+' 个币种';
     }catch(e){console.error(e)}
 }
 
-function fmtVol(v){
-    if(v>=1e9)return'¥'+(v/1e8).toFixed(2)+'亿';
-    if(v>=1e7)return'¥'+(v/1e4).toFixed(0)+'万';
-    if(v>=1e4)return'¥'+(v/1e4).toFixed(1)+'万';
-    return'¥'+v.toFixed(0);
-}
+function renderR(){
+    const tab=currentRank;
+    let data=[...allPriceData];
+    if(tab==='up')data.sort((a,b)=>b.chg-a.chg);
+    else if(tab==='down')data.sort((a,b)=>a.chg-b.chg);
+    else if(tab==='hot')data.sort((a,b)=>b.vol-a.vol);
+    else data.sort((a,b)=>b.vol-a.vol);
 
-function fmtCny(p){
-    return'¥'+(p*7.2).toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2});
-}
-
-function renderPrices(){
-    let items=[...allPriceData];
-    switch(currentRank){
-        case 'up': items.sort((a,b)=>b.chg-a.chg); break;
-        case 'down': items.sort((a,b)=>a.chg-b.chg); break;
-        case 'hot': items.sort((a,b)=>b.vol-a.vol); break;
-        case 'vol': items.sort((a,b)=>b.vol-a.vol); break;
-    }
-    // 涨幅/跌幅榜显示 top 100，其他显示全部（最多200）
-    const limit=(currentRank==='up'||currentRank==='down')?100:200;
-    items=items.slice(0,limit);
-    document.getElementById('pl').innerHTML=items.map((c,idx)=>{
+    const isUp=data.map(x=>x.chg>=0);
+    const html=data.map((c,i)=>{
         const u=c.chg>=0;
-        const ps=c.price>=1?c.price.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}):c.price.toFixed(8);
-        return`<div class="pr"><div class="l"><span class="rk">${idx+1}</span><div><div class="nm">${c.sym}<span class="sy">/USDT</span></div><div class="vol">${fmtVol(c.vol)}</div></div></div><div class="r"><div class="prc">${ps}</div><div class="cny">${fmtCny(c.price)}</div></div><div class="r"><span class="chg ${u?'u':'d'}">${u?'+':''}${c.chg.toFixed(2)}%</span></div></div>`;
+        const ps=c.price>=1?c.price.toLocaleString('en',{maximumFractionDigits:2}):c.price.toFixed(6);
+        const cny=(c.price*7.25).toFixed(2);
+        const chgClass=u?'u':'d';
+        const chgSign=u?'+':'';
+        const tag=c.vol>1e9?'<span class="tag">热门</span>':'';
+        const vol=c.vol>1e9?(c.vol/1e9).toFixed(2)+'B':c.vol>1e6?(c.vol/1e6).toFixed(2)+'M':(c.vol/1e3).toFixed(2)+'K';
+        return`<div class="pr"><div class="l"><span class="rk">#${i+1}</span><span class="nm">${c.sym}</span><span class="sy">USDT</span>${tag}<div class="vol">24H 成交额 $${vol}</div></div><div class="r"><div class="prc">$${ps}</div><div class="cny">¥${cny}</div><span class="chg ${chgClass}">${chgSign}${c.chg.toFixed(2)}%</span></div></div>`;
     }).join('');
-    document.getElementById('pcnt').textContent=allPriceData.length+'个币种';
+    document.getElementById('pl').innerHTML=html;
 }
 
 document.getElementById('ptabs').onclick=e=>{
-    const t=e.target.closest('[data-r]');
+    const t=e.target.closest('.pt');
     if(!t)return;
+    document.querySelectorAll('.pt').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
     currentRank=t.dataset.r;
-    document.querySelectorAll('.pt').forEach(x=>x.classList.toggle('on',x.dataset.r===currentRank));
-    renderPrices();
+    renderR();
 };
 
 // ==================== EXCHANGES ====================
-const EX=[
-{nm:'币安 Binance',ic:'₿',cl:'#F0B90B',url:'https://accounts.bmwweb.academy/register?ref=GFPDGUGI',cd:'GFPDGUGI',tp:1,ds:'全球#1 流动性最强',fe:'0.1%',dc:'20%减免',rk:'#1',cn:'500+',ft:['日交易量$200亿+','C2C支付宝/微信','SAFU基金保障','Launchpad打新','Alpha积分空投']},
-{nm:'欧易 OKX',ic:'⬡',cl:'#333',url:'https://www.firgrouxywebb.com/join/789789',cd:'789789',tp:1,ds:'合约最强 Web3钱包',fe:'0.1%',dc:'手续费减免',rk:'#2-3',cn:'350+',ft:['衍生品全球领先','OKX Web3钱包','交易机器人/跟单','P2P多种支付']},
-{nm:'Gate.io',ic:'G',cl:'#2354E6',url:'https://www.gateport.business/share/XCCOBGVJ',cd:'XCCOBGVJ',ds:'1700+币种 新币最快',fe:'0.2%',dc:'手续费减免',rk:'#5-8',cn:'1700+',ft:['全网最多币种','新币上线最快','Startup打新','量化工具']},
-{nm:'火币 HTX',ic:'H',cl:'#1C63F2',url:'https://www.htx.com.gt/invite/zh-cn/1h?invite_code=vafqb223',cd:'vafqb223',ds:'老牌稳定 2013创立',fe:'0.2%',dc:'手续费减免',rk:'#5-10',cn:'600+',ft:['2013年创立','中文社区深厚','Primelist首发','全球合规']},
-{nm:'Bitget',ic:'B',cl:'#00D4AA',url:'https://partner.hdmune.cn/bg/7n43xlxz',cd:'7n43xlxz',ds:'跟单交易全球#1',fe:'0.1%',dc:'手续费减免',rk:'#4-6',cn:'800+',ft:['跟单系统#1','合约体验丝滑','增长最快','BGB生态']},
-{nm:'BitMart',ic:'M',cl:'#00B897',url:'https://www.bm-link.com/zh-CN/invite/baofu2026',cd:'baofu2026',ds:'Meme币首发 小币天堂',fe:'0.25%',dc:'手续费减免',rk:'#10-15',cn:'1000+',ft:['小币种上线快','Meme币首发多','界面简洁','多种理财']},
-{nm:'WEEX',ic:'W',cl:'#6366F1',url:'https://weabaxx.site/zh-CN/register?vipCode=baofu2026',cd:'baofu2026',ds:'费率最低0.05%',fe:'0.05%',dc:'手续费减免',rk:'新锐',cn:'300+',ft:['费率行业最低','新人福利丰厚','合约深度好','跟单+量化']}
+const EXS=[
+    {nm:'币安 Binance',ico:'🟡',mt:'全球最大 · 手续费最低',link:'https://accounts.bmwweb.academy/register?ref=GFPDGUGI',cd:'GFPDGUGI',ft:['现货/合约/理财','新手首选']},
+    {nm:'欧易 OKX',ico:'⚫',mt:'中文友好 · 理财丰富',link:'https://www.firgrouxywebb.com/join/789789',cd:'789789',ft:['现货/合约/Defi','Web3 钱包']},
+    {nm:'Gate',ico:'🟢',mt:'山寨币多 · 活动多',link:'https://www.gateport.business/share/XCCOBGVJ',cd:'XCCOBGVJ',ft:['1700+ 币种','量化工具']},
+    {nm:'火币 HTX',ico:'🔵',mt:'老牌交易所',link:'https://www.htx.com.gt/invite/zh-cn/1h?invite_code=vafqb223',cd:'vafqb223',ft:['现货/合约','HT 生态']},
+    {nm:'Bitget',ico:'🔷',mt:'跟单交易 · 安全合规',link:'https://partner.hdmune.cn/bg/7n43xlxz',cd:'7n43xlxz',ft:['一键跟单','安全基金']},
+    {nm:'BitMart',ico:'🟣',mt:'小币种多',link:'https://www.bm-link.com/zh-CN/invite/baofu2026',cd:'baofu2026',ft:['1000+ 币种','高收益理财']},
+    {nm:'WEEX',ico:'🔶',mt:'新交易所 · 福利多',link:'https://weabaxx.site/zh-CN/register?vipCode=baofu2026',cd:'baofu2026',ft:['合约交易','新户福利']}
 ];
 
-document.getElementById('el').innerHTML=EX.map(x=>`
-<div class="ec${x.tp?' tp':''}" onclick="this.classList.toggle('op')">
-<div class="top"><div class="inf"><div class="ico" style="background:${x.cl}15;color:${x.cl}">${x.ic}</div><div><div class="nm">${x.nm}</div><div class="mt">${x.rk} · ${x.cn}币种 · ${x.fe} · ${x.ds}</div></div></div>
-<a href="${x.url}" target="_blank" class="btn" style="background:${x.cl};color:${x.cl==='#FFFFFF'||x.cl==='#F0B90B'?'#000':'#fff'}" onclick="event.stopPropagation()">注册</a></div>
-<div class="det"><ul class="ft">${x.ft.map(f=>'<li>'+f+'</li>').join('')}</ul>
-<div class="cd">邀请码 <b>${x.cd}</b> · ${x.dc}</div></div>
-</div>`).join('');
+function renderEX(){
+    document.getElementById('el').innerHTML=EXS.map((e,i)=>`
+        <div class="ec tp" onclick="this.classList.toggle('op')">
+            <div class="top">
+                <div class="inf">
+                    <div class="ico">${e.ico}</div>
+                    <div><div class="nm">${e.nm}</div><div class="mt">${e.mt}</div></div>
+                </div>
+                <button class="btn" style="background:var(--gd);color:#000" onclick="event.stopPropagation();navigator.clipboard.writeText('${e.cd}');alert('已复制：${e.cd}')">复制邀请码</button>
+            </div>
+            <div class="det">
+                <ul class="ft">${e.ft.map(f=>'<li>'+f+'</li>').join('')}</ul>
+                <div class="cd">邀请码：<b>${e.cd}</b></div>
+                <a href="${e.link}" target="_blank" style="display:block;margin-top:8px;padding:6px;background:var(--gd);border-radius:6px;text-align:center;font-weight:700;color:#000">立即注册 →</a>
+            </div>
+        </div>
+    `).join('');
+}
 
 // INIT
-loadP();loadNews();
-setInterval(loadP,10000);
+renderEX();
+loadNews();
+loadP();
 setInterval(loadNews,60000);
+setInterval(loadP,10000);
 </script>
 </body>
 </html>

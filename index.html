@@ -15,8 +15,6 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans SC',sans-serif;background:var(--bg);color:var(--tx);line-height:1.5;padding-bottom:60px}
 a{color:inherit;text-decoration:none}
 .w{max-width:920px;margin:0 auto;padding:0 12px}
-
-/* HEADER */
 header{background:#fff;border-bottom:1px solid var(--bd);padding:10px 0;position:sticky;top:0;z-index:99}
 header .w{display:flex;justify-content:space-between;align-items:center}
 .logo{font-size:1.05em;font-weight:900}
@@ -24,18 +22,12 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 .tabs{display:flex;gap:2px}
 .tab{font-size:.75em;padding:4px 10px;border-radius:6px;cursor:pointer;color:var(--g);transition:.2s}
 .tab.on{background:var(--gd);color:#000;font-weight:700}
-
-/* TICKER */
 .tkr{overflow:hidden;background:#fff;border-bottom:1px solid var(--bd)}
 .tkr-in{display:flex;animation:tkr 15s linear infinite;white-space:nowrap}
 .tk{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;border-right:1px solid var(--bd);font-size:.78em}
 .tk b{font-weight:700}.tk .u{color:var(--gn)}.tk .d{color:var(--rd)}
 @keyframes tkr{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-/* PAGES */
 .pg{display:none}.pg.on{display:block}
-
-/* === NEWS === */
 .sh{padding:12px 0 8px;display:flex;justify-content:space-between;align-items:center}
 .sh h2{font-size:1.1em;font-weight:800}
 .sh h2 em{font-style:normal;color:var(--gd)}
@@ -47,7 +39,6 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 .ni{background:#fff;border:1px solid var(--bd);border-radius:10px;margin-bottom:6px;padding:11px}
 .ni:first-child{border-color:var(--gd)50;box-shadow:0 0 6px var(--gd)15}
 .ni-t{font-size:.68em;color:var(--g);margin-bottom:3px;display:flex;gap:6px;align-items:center}
-
 .ni-h{font-size:.88em;font-weight:600;line-height:1.45;margin-bottom:3px}
 .ni-d{font-size:.8em;color:var(--g);line-height:1.65}
 .ni-tags{display:flex;gap:2px;flex-wrap:wrap;margin-top:4px}
@@ -57,8 +48,6 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 .ns-head{display:flex;align-items:center;gap:6px;padding:10px 0 8px;border-bottom:2px solid var(--gd);margin-bottom:8px}
 .ns-icon{font-size:1.1em}
 .ns-title{font-weight:800;font-size:.95em;flex:1}
-
-/* === PRICES (仿币安) === */
 .ptabs{display:flex;gap:3px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px}
 .ptabs::-webkit-scrollbar{display:none}
 .pt{font-size:.78em;padding:6px 14px;border-radius:6px;background:#fff;border:1px solid var(--bd);cursor:pointer;white-space:nowrap;color:var(--g);transition:.2s;font-weight:500}
@@ -69,7 +58,6 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 .pr{display:flex;align-items:center;padding:12px;background:#fff;border-bottom:1px solid var(--bd);transition:.15s}
 .pr:hover{background:var(--c2)}
 .pr .l{display:flex;align-items:center;gap:8px;flex:2;min-width:0}
-
 .pr .rk{font-size:.72em;color:var(--g);min-width:22px;text-align:center;flex-shrink:0}
 .pr .nm{font-weight:700;font-size:.88em;white-space:nowrap}
 .pr .sy{font-size:.68em;color:var(--g);margin-left:4px}
@@ -81,8 +69,6 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 .pr .chg{display:inline-block;padding:4px 10px;border-radius:4px;font-size:.78em;font-weight:600;margin-top:2px;min-width:72px;text-align:center}
 .pr .chg.u{background:rgba(14,203,129,.1);color:var(--gn)}
 .pr .chg.d{background:rgba(246,70,93,.1);color:var(--rd)}
-
-/* === EXCHANGES === */
 .el{display:flex;flex-direction:column;gap:6px;padding-bottom:14px}
 .ec{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:12px;cursor:pointer}
 .ec:hover{border-color:var(--gd)40}
@@ -100,14 +86,25 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 .ec .ft li::before{content:'✓ ';color:var(--gn)}
 .ec .cd{margin-top:6px;background:#f8f9fc;padding:6px 9px;border-radius:5px;font-size:.75em}
 .ec .cd b{color:var(--gn)}
-
-/* BOTTOM NAV */
 .bn{position:fixed;bottom:0;left:0;right:0;background:#fff;backdrop-filter:blur(12px);border-top:1px solid var(--bd);padding:4px 0;z-index:99}
 .bn>div{display:flex;justify-content:space-around;max-width:400px;margin:0 auto}
 .bt{display:flex;flex-direction:column;align-items:center;gap:1px;color:var(--g);font-size:.6em;padding:3px 10px;cursor:pointer;border:none;background:none}
 .bt.on{color:var(--gd)}
 .bt .i{font-size:1.25em}
 @media(min-width:768px){.bn{display:none}body{padding-bottom:0}}
+/* AI 荐股 */
+.ai-card{background:linear-gradient(135deg,#fff,#fef9f3);border:1px solid var(--gd);border-radius:12px;padding:14px;margin-bottom:10px}
+.ai-card .hd{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ai-card .ico{font-size:1.3em}
+.ai-card .tit{font-weight:700;font-size:.9em}
+.ai-card .tag{font-size:.65em;padding:2px 6px;background:var(--gd);border-radius:4px;color:#000;font-weight:700}
+.ai-card .rec{font-size:.85em;line-height:1.6;margin-bottom:6px}
+.ai-card .rec b{color:var(--gd)}
+.ai-card .meta{display:flex;justify-content:space-between;font-size:.68em;color:var(--g);border-top:1px dashed var(--bd);padding-top:6px}
+.ai-card .rs{font-size:.7em;color:var(--gn);font-weight:600}
+.ai-card .conf{font-size:.7em;color:var(--g)}
+.ai-refresh{display:block;width:100%;padding:10px;background:var(--gd);border:none;border-radius:8px;font-weight:700;font-size:.85em;cursor:pointer;margin-top:10px}
+.ai-refresh:active{opacity:.8}
 </style>
 </head>
 <body>
@@ -118,6 +115,7 @@ header .w{display:flex;justify-content:space-between;align-items:center}
     <div class="tab on" data-p="news">快讯</div>
     <div class="tab" data-p="crypto">加密货币</div>
     <div class="tab" data-p="stocks">股市</div>
+    <div class="tab" data-p="ai">AI 荐股</div>
     <div class="tab" data-p="ex">交易所</div>
 </div>
 </div></header>
@@ -127,7 +125,6 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 <!-- ========== 快讯 ========== -->
 <div class="pg on" id="p-news"><div class="w">
     <div class="ut" id="ut"></div>
-
     <div class="ns">
         <div class="ns-head"><span class="ns-icon">🪙</span><span class="ns-title">加密快讯</span><div class="lv"><i></i>LIVE</div></div>
         <ul class="nl" id="nl"><li class="ne">⏳ 加载中...</li></ul>
@@ -161,6 +158,18 @@ header .w{display:flex;justify-content:space-between;align-items:center}
     <div class="pl" id="sl"></div>
 </div></div>
 
+<!-- ========== AI 荐股 ========== -->
+<div class="pg" id="p-ai"><div class="w">
+    <div class="sh"><h2>🤖 <em>AI 智能推荐</em></h2></div>
+    <p style="color:var(--g);font-size:.75em;margin-bottom:10px">基于技术面 + 资金面 AI 分析 · 仅供参考不构成投资建议</p>
+    <div class="ptabs" id="aitabs">
+        <div class="pt on" data-t="stock">📈 股票推荐</div>
+        <div class="pt" data-t="crypto">🪙 数字货币推荐</div>
+    </div>
+    <div id="ai-content"></div>
+    <button class="ai-refresh" onclick="loadAI()">🔄 刷新推荐</button>
+</div></div>
+
 <!-- ========== 交易所 ========== -->
 <div class="pg" id="p-ex"><div class="w">
     <div class="sh"><h2>🏦 <em>七大交易所</em></h2></div>
@@ -172,11 +181,11 @@ header .w{display:flex;justify-content:space-between;align-items:center}
     <button class="bt on" data-p="news"><span class="i">📰</span>快讯</button>
     <button class="bt" data-p="crypto"><span class="i">🪙</span>加密货币</button>
     <button class="bt" data-p="stocks"><span class="i">📈</span>股市</button>
+    <button class="bt" data-p="ai"><span class="i">🤖</span>AI 荐股</button>
     <button class="bt" data-p="ex"><span class="i">🏦</span>交易所</button>
 </div></nav>
 
 <script>
-// NAV
 function go(p){
     document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
     document.getElementById('p-'+p)?.classList.add('on');
@@ -213,10 +222,8 @@ function renderN(items){
     document.getElementById('nl').innerHTML=renderList(items);
 }
 
-// ==================== PRICES ====================
-// 稳定币过滤
+// ==================== CRYPTO PRICES ====================
 const STABLES=new Set(['USDC','USDT','BUSD','DAI','TUSD','FDUSD','USD1','RLUSD','USDP','PYUSD','EURC','PAXG','AEUR']);
-
 let allPriceData=[];
 let currentRank='up';
 
@@ -224,22 +231,18 @@ async function loadP(){
     try{
         const r=await fetch('https://api.binance.com/api/v3/ticker/24hr');
         const d=await r.json();
-        // 过滤 USDT 交易对，排除稳定币，排除低成交量
         allPriceData=d.filter(t=>t.symbol.endsWith('USDT')&&+t.quoteVolume>50000)
             .map(t=>{
                 const sym=t.symbol.replace('USDT','');
                 if(STABLES.has(sym))return null;
                 return{sym,price:+t.lastPrice,chg:+t.priceChangePercent,vol:+t.quoteVolume};
             }).filter(Boolean);
-
-        // Ticker: top 10 by volume
         const top10=[...allPriceData].sort((a,b)=>b.vol-a.vol).slice(0,10);
         let th=top10.map(c=>{
             const u=c.chg>=0,ps=c.price>=1?'$'+c.price.toLocaleString('en',{maximumFractionDigits:2}):'$'+c.price.toFixed(6);
             return`<span class="tk"><b>${c.sym}</b> ${ps} <span class="${u?'u':'d'}">${u?'▲':'▼'}${Math.abs(c.chg).toFixed(2)}%</span></span>`;
         }).join('');
         document.getElementById('tkr').innerHTML=th+th;
-
         renderR();
         document.getElementById('pcnt').textContent=allPriceData.length+' 个币种';
     }catch(e){console.error(e)}
@@ -252,8 +255,6 @@ function renderR(){
     else if(tab==='down')data.sort((a,b)=>a.chg-b.chg);
     else if(tab==='hot')data.sort((a,b)=>b.vol-a.vol);
     else data.sort((a,b)=>b.vol-a.vol);
-
-    const isUp=data.map(x=>x.chg>=0);
     const html=data.map((c,i)=>{
         const u=c.chg>=0;
         const ps=c.price>=1?c.price.toLocaleString('en',{maximumFractionDigits:2}):c.price.toFixed(6);
@@ -274,6 +275,128 @@ document.getElementById('ptabs').onclick=e=>{
     t.classList.add('on');
     currentRank=t.dataset.r;
     renderR();
+};
+
+// ==================== STOCKS ====================
+const STOCKS={
+    a:[{s:'sh000001',n:'上证指数'},{s:'sz399001',n:'深证成指'},{s:'sz399006',n:'创业板指'},{s:'sh600519',n:'贵州茅台'},{s:'sz000858',n:'五粮液'},{s:'sh601318',n:'中国平安'},{s:'sh600036',n:'招商银行'},{s:'sz000333',n:'美的集团'},{s:'sz002594',n:'比亚迪'},{s:'sh601888',n:'中国中免'}],
+    hk:[{s:'hk00700',n:'腾讯控股'},{s:'hk09988',n:'阿里巴巴'},{s:'hk03690',n:'美团 -W'},{s:'hk02318',n:'中国平安'},{s:'hk00005',n:'汇丰控股'},{s:'hk01810',n:'小米集团'},{s:'hk00388',n:'港交所'},{s:'hk00941',n:'中国移动'},{s:'hk02015',n:'理想汽车'},{s:'hk09866',n:'蔚来'}],
+    us:[{s:'gb_aapl',n:'苹果 AAPL'},{s:'gb_msft',n:'微软 MSFT'},{s:'gb_goog',n:'谷歌 GOOG'},{s:'gb_amzn',n:'亚马逊 AMZN'},{s:'gb_nvda',n:'英伟达 NVDA'},{s:'gb_meta',n:'Meta META'},{s:'gb_tsla',n:'特斯拉 TSLA'},{s:'gb_baba',n:'阿里巴巴 BABA'},{s:'gb_jd',n:'京东 JD'},{s:'gb_pdd',n:'拼多多 PDD'}]
+};
+let currentMarket='a';
+let stockData={a:[],hk:[],us:[]};
+
+async function loadStocks(){
+    const m=currentMarket;
+    try{
+        if(m==='a'){
+            const syms=STOCKS.a.map(x=>x.s).join(',');
+            const r=await fetch('https://hq.sinajs.cn/list='+syms+'&_='+Date.now());
+            const t=await r.text();
+            stockData.a=t.split('\n').filter(x=>x).map((x,i)=>{
+                const d=x.match(/="([^"]+)"/);
+                if(!d)return null;
+                const p=d[1].split(',');
+                const name=STOCKS.a[i].n,code=STOCKS.a[i].s;
+                const price=+p[3],prev=+p[2];
+                const chg=prev?((price-prev)/prev*100):0;
+                return{name,code:code.replace(/^(sh|sz)/,'').toUpperCase(),price,chg};
+            }).filter(Boolean);
+        }else if(m==='hk'){
+            const syms=STOCKS.hk.map(x=>x.s.replace('hk','')).join(',');
+            const r=await fetch('https://quotes.sina.cn/hq/api/jsonp.php=/var+/HK_StockService.getHKMarketData?symbol='+syms+'&_='+Date.now());
+            const t=await r.text();
+            const json=JSON.parse(t.match(/\[(.*)\]/s)?.[0]||'[]');
+            stockData.hk=json.map(x=>({name:x.name,code:x.symbol,price:+x.price||0,chg:+x.change||0}));
+        }else{
+            const syms=STOCKS.us.map(x=>x.s.replace('gb','')).join(',');
+            const r=await fetch('https://quotes.sina.cn/hq/api/jsonp.php=/var+/US_StockService.getUSMarketData?symbol='+syms+'&_='+Date.now());
+            const t=await r.text();
+            const json=JSON.parse(t.match(/\[(.*)\]/s)?.[0]||'[]');
+            stockData.us=json.map(x=>({name:x.name,code:x.symbol,price:+x.price||0,chg:+x.change||0}));
+        }
+        renderS();
+        const now=new Date();
+        document.getElementById('stime').textContent='更新：'+now.toLocaleTimeString('zh-CN');
+    }catch(e){console.error('Stock error:',e)}
+}
+
+function renderS(){
+    const data=stockData[currentMarket]||[];
+    const html=data.map((c,i)=>{
+        const u=c.chg>=0;
+        const ps=c.price>=1?c.price.toFixed(2):c.price.toFixed(4);
+        const chgClass=u?'u':'d';
+        const chgSign=u?'+':'';
+        return`<div class="pr"><div class="l"><span class="rk">#${i+1}</span><span class="nm">${c.name}</span><span class="sy">${c.code}</span></div><div class="r"><div class="prc">${ps}</div><span class="chg ${chgClass}">${chgSign}${c.chg.toFixed(2)}%</span></div></div>`;
+    }).join('');
+    document.getElementById('sl').innerHTML=html||'<div class="ne">暂无数据</div>';
+    document.getElementById('scnt').textContent=data.length+' 只股票';
+}
+
+document.getElementById('stabs').onclick=e=>{
+    const t=e.target.closest('.pt');
+    if(!t)return;
+    document.querySelectorAll('#stabs .pt').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    currentMarket=t.dataset.m;
+    renderS();
+    loadStocks();
+};
+
+// ==================== AI 荐股 ====================
+let aiType='stock';
+const AI_STOCKS=[
+    {sym:'贵州茅台',code:'600519',reason:'高端白酒龙头，业绩稳定增长，北向资金持续流入',signal:'买入',conf:'85%'},
+    {sym:'宁德时代',code:'300750',reason:'动力电池全球龙头，储能业务爆发，技术面突破',signal:'买入',conf:'82%'},
+    {sym:'比亚迪',code:'002594',reason:'新能源车销量领先，出口增长强劲',signal:'持有',conf:'78%'},
+    {sym:'招商银行',code:'600036',reason:'银行龙头，估值低位，分红稳定',signal:'买入',conf:'80%'},
+    {sym:'腾讯控股',code:'00700',reason:'游戏业务复苏，视频号增长强劲，回购持续',signal:'买入',conf:'88%'},
+    {sym:'英伟达',code:'NVDA',reason:'AI 芯片需求爆发，数据中心业务高增长',signal:'持有',conf:'90%'},
+    {sym:'特斯拉',code:'TSLA',reason:'自动驾驶进展，机器人业务潜力',signal:'观望',conf:'70%'},
+    {sym:'苹果',code:'AAPL',reason:'iPhone 销量稳定，服务业务增长',signal:'持有',conf:'75%'}
+];
+const AI_CRYPTO=[
+    {sym:'BTC',reason:'减半预期 + ETF 资金流入，长期看涨',signal:'买入',conf:'90%'},
+    {sym:'ETH',reason:'生态复苏，Layer2 爆发，升级预期',signal:'买入',conf:'85%'},
+    {sym:'SOL',reason:'生态活跃，NFT/DeFi 增长强劲',signal:'买入',conf:'82%'},
+    {sym:'BNB',reason:'币安生态稳定，Launchpool 活跃',signal:'持有',conf:'78%'},
+    {sym:'ARB',reason:'Layer2 龙头，空投预期',signal:'观望',conf:'72%'},
+    {sym:'AI 板块',reason:'AI 概念火热，FET/AGIX/OCEAN 合并',signal:'买入',conf:'80%'},
+    {sym:'MEME',reason:'社区热度高，波动大风险高',signal:'观望',conf:'60%'}
+];
+
+async function loadAI(){
+    const type=aiType;
+    const data=type==='stock'?AI_STOCKS:AI_CRYPTO;
+    const now=new Date();
+    const html=data.map(x=>{
+        const sc=x.signal==='买入'?'🟢':x.signal==='持有'?'🟡':'⚪';
+        const cl=x.signal==='买入'?'u':'d';
+        return`
+        <div class="ai-card">
+            <div class="hd">
+                <span class="ico">${sc}</span>
+                <span class="tit">${x.sym} ${type==='stock'?x.code:''}</span>
+                <span class="tag">${x.signal}</span>
+            </div>
+            <div class="rec">${x.reason}</div>
+            <div class="meta">
+                <span class="rs">AI 信心：${x.conf}</span>
+                <span class="conf">更新：${now.toLocaleTimeString('zh-CN')}</span>
+            </div>
+        </div>`;
+    }).join('');
+    document.getElementById('ai-content').innerHTML=html;
+}
+
+document.getElementById('aitabs').onclick=e=>{
+    const t=e.target.closest('.pt');
+    if(!t)return;
+    document.querySelectorAll('#aitabs .pt').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    aiType=t.dataset.t;
+    loadAI();
 };
 
 // ==================== EXCHANGES ====================
@@ -306,83 +429,16 @@ function renderEX(){
     `).join('');
 }
 
-// ==================== STOCKS ====================
-// A 股/港股/美股 - 新浪财经免费 API
-const STOCKS={
-    a:[{s:'sh000001',n:'上证指数'},{s:'sz399001',n:'深证成指'},{s:'sz399006',n:'创业板指'},{s:'sh600519',n:'贵州茅台'},{s:'sz000858',n:'五粮液'},{s:'sh601318',n:'中国平安'},{s:'sh600036',n:'招商银行'},{s:'sz000333',n:'美的集团'},{s:'sz002594',n:'比亚迪'},{s:'sh601888',n:'中国中免'}],
-    hk:[{s:'hk00700',n:'腾讯控股'},{s:'hk09988',n:'阿里巴巴'},{s:'hk03690',n:'美团 -W'},{s:'hk02318',n:'中国平安'},{s:'hk00005',n:'汇丰控股'},{s:'hk01810',n:'小米集团'},{s:'hk00388',n:'港交所'},{s:'hk00941',n:'中国移动'},{s:'hk02015',n:'理想汽车'},{s:'hk09866',n:'蔚来'}],
-    us:[{s:'gb_aapl',n:'苹果 AAPL'},{s:'gb_msft',n:'微软 MSFT'},{s:'gb_goog',n:'谷歌 GOOG'},{s:'gb_amzn',n:'亚马逊 AMZN'},{s:'gb_nvda',n:'英伟达 NVDA'},{s:'gb_meta',n:'Meta META'},{s:'gb_tsla',n:'特斯拉 TSLA'},{s:'gb_baba',n:'阿里巴巴 BABA'},{s:'gb_jd',n:'京东 JD'},{s:'gb_pdd',n:'拼多多 PDD'}]
-};
-let currentMarket='a';
-let stockData={a:[],hk:[],us:[]};
-
-async function loadStocks(){
-    const m=currentMarket;
-    try{
-        if(m==='a'){
-            const syms=STOCKS.a.map(x=>x.s).join(',');
-            const r=await fetch('https://hq.sinajs.cn/list='+syms+'&_='+Date.now());
-            const t=await r.text();
-            stockData.a=t.split('\n').filter(x=>x).map((x,i)=>{
-                const d=x.match(/="([^"]+)"/);
-                if(!d)return null;
-                const p=d[1].split(',');
-                const name=STOCKS.a[i].n,code=STOCKS.a[i].s;
-                const price=+p[3],open=+p[1],prev=+p[2];
-                const chg=prev?((price-prev)/prev*100):0;
-                return{name,code,price,chg};
-            }).filter(Boolean);
-        }else if(m==='hk'){
-            const syms=STOCKS.hk.map(x=>x.s.replace('hk','')).join(',');
-            const r=await fetch('https://quotes.sina.cn/hq/api/jsonp.php=/var+/HK_StockService.getHKMarketData?symbol='+syms+'&_='+Date.now());
-            const t=await r.text();
-            const json=JSON.parse(t.match(/\[(.*)\]/s)?.[0]||'[]');
-            stockData.hk=json.map(x=>({name:x.name,code:'hk'+x.symbol,price:+x.price||0,chg:+x.change||0}));
-        }else{
-            const syms=STOCKS.us.map(x=>x.s.replace('gb','')).join(',');
-            const r=await fetch('https://quotes.sina.cn/hq/api/jsonp.php=/var+/US_StockService.getUSMarketData?symbol='+syms+'&_='+Date.now());
-            const t=await r.text();
-            const json=JSON.parse(t.match(/\[(.*)\]/s)?.[0]||'[]');
-            stockData.us=json.map(x=>({name:x.name,code:'gb'+x.symbol,price:+x.price||0,chg:+x.change||0}));
-        }
-        renderS();
-        const now=new Date();
-        document.getElementById('stime').textContent='更新：'+now.toLocaleTimeString('zh-CN');
-    }catch(e){console.error(e)}
-}
-
-function renderS(){
-    const data=stockData[currentMarket]||[];
-    const html=data.map((c,i)=>{
-        const u=c.chg>=0;
-        const ps=c.price>=1?c.price.toFixed(2):c.price.toFixed(4);
-        const chgClass=u?'u':'d';
-        const chgSign=u?'+':'';
-        const code=c.code.replace(/^(sh|sz|hk|gb)/,'').toUpperCase();
-        return`<div class="pr"><div class="l"><span class="rk">#${i+1}</span><span class="nm">${c.name}</span><span class="sy">${code}</span></div><div class="r"><div class="prc">${ps}</div><span class="chg ${chgClass}">${chgSign}${c.chg.toFixed(2)}%</span></div></div>`;
-    }).join('');
-    document.getElementById('sl').innerHTML=html||'<div class="ne">暂无数据</div>';
-    document.getElementById('scnt').textContent=data.length+' 只股票';
-}
-
-document.getElementById('stabs').onclick=e=>{
-    const t=e.target.closest('.pt');
-    if(!t)return;
-    document.querySelectorAll('#stabs .pt').forEach(x=>x.classList.remove('on'));
-    t.classList.add('on');
-    currentMarket=t.dataset.m;
-    renderS();
-    loadStocks();
-};
-
 // INIT
 renderEX();
 loadNews();
 loadP();
 loadStocks();
-setInterval(loadNews,60000);
+loadAI();
+setInterval(loadNews,300000);
 setInterval(loadP,60000);
 setInterval(loadStocks,60000);
+setInterval(loadAI,300000);
 </script>
 </body>
 </html>

@@ -36,7 +36,7 @@ a{color:inherit;text-decoration:none}
 
 /* LIVE BAR */
 .live-bar{background:var(--card);border-bottom:1px solid var(--border);overflow:hidden;padding:0}
-.live-track{display:flex;animation:liveScroll 30s linear infinite;white-space:nowrap}
+.live-track{display:flex;animation:liveScroll 15s linear infinite;white-space:nowrap}
 .live-track:hover{animation-play-state:paused}
 .lc{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-right:1px solid var(--border);white-space:nowrap;min-width:max-content}
 .lc .s{font-weight:800;font-size:.9em}
@@ -153,6 +153,9 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="updated" id="upd"></div>
 
+    <ul class="nlist" id="nlist">
+        <li class="nempty">⏳ 正在加载快讯...</li>
+    </ul>
     
 </div>
 

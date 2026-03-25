@@ -1,4 +1,4 @@
-const CACHE_NAME = 'msfc-v3';
+const CACHE_NAME = 'msfc-v4';
 const STATIC_ASSETS = [
   '/crypto-brunch/',
   '/crypto-brunch/index.html',

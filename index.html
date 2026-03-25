@@ -185,319 +185,244 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 </div></nav>
 
 <script>
+// 全局错误处理
+window.onerror=function(msg,url,line){
+    console.error('Error:',msg,url,line);
+    document.getElementById('tkr').innerHTML='<span class="tk">⚠️ 加载失败，请刷新</span>';
+};
+
+// 导航
 function go(p){
     document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
-    document.getElementById('p-'+p)?.classList.add('on');
+    var el=document.getElementById('p-'+p);
+    if(el)el.classList.add('on');
     document.querySelectorAll('[data-p]').forEach(x=>x.classList.toggle('on',x.dataset.p===p));
 }
-document.getElementById('T').onclick=e=>{const t=e.target.closest('[data-p]');if(t)go(t.dataset.p)};
-document.getElementById('BN').onclick=e=>{const t=e.target.closest('[data-p]');if(t)go(t.dataset.p)};
+document.getElementById('T').onclick=function(e){
+    var t=e.target.closest('[data-p]');
+    if(t)go(t.dataset.p);
+};
+document.getElementById('BN').onclick=function(e){
+    var t=e.target.closest('[data-p]');
+    if(t)go(t.dataset.p);
+};
 
-// ==================== NEWS ====================
-async function loadNews(){
-    try{
-        const r=await fetch('news.json?_='+Date.now());
-        if(!r.ok)throw 0;
-        const d=await r.json();
-        if(d.items?.length)renderN(d.items);
-        if(d.updated)document.getElementById('ut').textContent='更新：'+new Date(d.updated).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'});
-    }catch(e){document.getElementById('nl').innerHTML='<li class="ne">暂无快讯</li>'}
+// 快讯
+function loadNews(){
+    fetch('news.json?_='+Date.now())
+    .then(function(r){if(!r.ok)throw 0;return r.json();})
+    .then(function(d){
+        if(d.items&&d.items.length)renderN(d.items);
+        if(d.updated)document.getElementById('ut').textContent='更新：'+new Date(d.updated).toLocaleString('zh-CN');
+    })
+    .catch(function(){document.getElementById('nl').innerHTML='<li class="ne">暂无快讯</li>'});
 }
 function renderN(items){
-    const now=Date.now();
-    function renderList(list){
-        return list.map(x=>{
-            let ts='';
-            if(x.pubDate){const m=Math.floor((now-new Date(x.pubDate).getTime())/60000);ts=m<1?'刚刚':m<60?m+'分钟前':m<1440?Math.floor(m/60)+'小时前':Math.floor(m/1440)+'天前'}
-            const t=x.title||'',d=x.description||'';
-            const tags=[];const td=t+d;
-            if(/BTC|比特币/i.test(td))tags.push('BTC');if(/ETH|以太坊/i.test(td))tags.push('ETH');
-            if(/SOL|Solana/i.test(td))tags.push('SOL');if(/BNB/i.test(td))tags.push('BNB');
-            if(/币安|Binance/i.test(td))tags.push('币安');if(/ETF/i.test(td))tags.push('ETF');
-            if(/空投|airdrop/i.test(td))tags.push('空投');
-            return`<li class="ni"><div class="ni-t">${ts}</div><div class="ni-h">${t}</div>${d&&d!==t?'<div class="ni-d">'+d+'</div>':''}${tags.length?'<div class="ni-tags">'+tags.map(g=>'<span>'+g+'</span>').join('')+'</div>':''}</li>`;
-        }).join('')||'<li class="ne">暂无快讯</li>';
-    }
-    document.getElementById('nl').innerHTML=renderList(items);
+    var now=Date.now();
+    var html=items.map(function(x){
+        var ts='';
+        if(x.pubDate){
+            var m=Math.floor((now-new Date(x.pubDate).getTime())/60000);
+            ts=m<1?'刚刚':m<60?m+'分钟前':m<1440?Math.floor(m/60)+'小时前':Math.floor(m/1440)+'天前';
+        }
+        var t=x.title||'',d=x.description||'';
+        var tags=[];
+        if(/BTC|比特币/i.test(t+d))tags.push('BTC');
+        if(/ETH|以太坊/i.test(t+d))tags.push('ETH');
+        if(/SOL|Solana/i.test(t+d))tags.push('SOL');
+        if(/BNB/i.test(t+d))tags.push('BNB');
+        if(/币安/i.test(t+d))tags.push('币安');
+        return '<li class="ni"><div class="ni-t">'+ts+'</div><div class="ni-h">'+t+'</div>'+(d&&d!==t?'<div class="ni-d">'+d+'</div>':'')+(tags.length?'<div class="ni-tags">'+tags.map(function(g){return '<span>'+g+'</span>';}).join('')+'</div>':'')+'</li>';
+    }).join('');
+    document.getElementById('nl').innerHTML=html||'<li class="ne">暂无快讯</li>';
 }
 
-// ==================== CRYPTO PRICES ====================
-const STABLES=new Set(['USDC','USDT','BUSD','DAI','TUSD','FDUSD','USD1','RLUSD','USDP','PYUSD','EURC','PAXG','AEUR']);
-let allPriceData=[];
-let currentRank='up';
-
-async function loadP(){
-    try{
-        const r=await fetch('https://api.binance.com/api/v3/ticker/24hr');
-        if(!r.ok)throw new Error('API error');
-        const d=await r.json();
-        allPriceData=d.filter(t=>t.symbol.endsWith('USDT')&&+t.quoteVolume>50000)
-            .map(t=>{
-                const sym=t.symbol.replace('USDT','');
-                if(STABLES.has(sym))return null;
-                return{
-                    sym:sym,
-                    price:+t.lastPrice,
-                    chg:+t.priceChangePercent,
-                    vol:+t.quoteVolume
-                };
-            }).filter(Boolean);
+// 加密货币行情
+var allPriceData=[];
+var currentRank='up';
+function loadP(){
+    fetch('https://api.binance.com/api/v3/ticker/24hr')
+    .then(function(r){if(!r.ok)throw 0;return r.json();})
+    .then(function(d){
+        var STABLES=['USDC','USDT','BUSD','DAI','TUSD','FDUSD'];
+        allPriceData=d.filter(function(t){
+            return t.symbol.endsWith('USDT')&&t.quoteVolume>50000;
+        }).map(function(t){
+            var sym=t.symbol.replace('USDT','');
+            if(STABLES.indexOf(sym)>=0)return null;
+            return{sym:sym,price:t.lastPrice,chg:t.priceChangePercent,vol:t.quoteVolume};
+        }).filter(Boolean);
         
-        // Top ticker
-        const top10=[...allPriceData].sort((a,b)=>b.vol-a.vol).slice(0,10);
-        const th=top10.map(c=>{
-            const u=c.chg>=0;
-            const ps=c.price>=1?'$'+c.price.toLocaleString('en',{maximumFractionDigits:2}):'$'+c.price.toFixed(6);
-            return`<span class="tk"><b>${c.sym}</b> ${ps} <span class="${u?'u':'d'}">${u?'▲':'▼'}${Math.abs(c.chg).toFixed(2)}%</span></span>`;
+        var top10=allPriceData.slice(0,10).sort(function(a,b){return b.vol-a.vol;});
+        var th=top10.map(function(c){
+            var u=c.chg>=0;
+            var ps=c.price>=1?'$'+c.price.toLocaleString():'$'+c.price.toFixed(6);
+            return '<span class="tk"><b>'+c.sym+'</b> '+ps+' <span class="'+(u?'u':'d')+'">'+(u?'▲':'▼')+Math.abs(c.chg).toFixed(2)+'%</span></span>';
         }).join('');
         document.getElementById('tkr').innerHTML=th;
-        
         renderR();
         document.getElementById('pcnt').textContent=allPriceData.length+' 个币种';
-    }catch(e){
-        console.error('Crypto error:',e);
-        document.getElementById('tkr').innerHTML='<span class="tk">加载失败</span>';
-    }
+    })
+    .catch(function(){
+        document.getElementById('tkr').innerHTML='<span class="tk">⚠️ 加载失败</span>';
+    });
 }
-
 function renderR(){
-    let data=[...allPriceData];
-    if(currentRank==='up')data.sort((a,b)=>b.chg-a.chg);
-    else if(currentRank==='down')data.sort((a,b)=>a.chg-b.chg);
-    else if(currentRank==='hot')data.sort((a,b)=>b.vol-a.vol);
+    var data=allPriceData.slice();
+    if(currentRank==='up')data.sort(function(a,b){return b.chg-a.chg;});
+    else if(currentRank==='down')data.sort(function(a,b){return a.chg-b.chg;});
+    else if(currentRank==='hot')data.sort(function(a,b){return b.vol-a.vol;});
     
-    const html=data.map((c,i)=>{
-        const u=c.chg>=0;
-        const ps=c.price>=1?c.price.toLocaleString('en',{maximumFractionDigits:2}):c.price.toFixed(6);
-        const cny=(c.price*7.25).toFixed(2);
-        const chgClass=u?'u':'d';
-        const chgSign=u?'+':'';
-        const tag=c.vol>1e9?'<span class="tag">热门</span>':'';
-        const vol=c.vol>1e9?(c.vol/1e9).toFixed(2)+'B':c.vol>1e6?(c.vol/1e6).toFixed(2)+'M':(c.vol/1e3).toFixed(2)+'K';
-        return`<div class="pr"><div class="l"><span class="rk">#${i+1}</span><span class="nm">${c.sym}</span><span class="sy">USDT</span>${tag}<div class="vol">24H 成交额 $${vol}</div></div><div class="r"><div class="prc">$${ps}</div><div class="cny">¥${cny}</div><span class="chg ${chgClass}">${chgSign}${c.chg.toFixed(2)}%</span></div></div>`;
+    var html=data.map(function(c,i){
+        var u=c.chg>=0;
+        var ps=c.price>=1?c.price.toLocaleString():c.price.toFixed(6);
+        var cny=(c.price*7.25).toFixed(2);
+        var vol=c.vol>1e9?(c.vol/1e9).toFixed(2)+'B':c.vol>1e6?(c.vol/1e6).toFixed(2)+'M':(c.vol/1e3).toFixed(2)+'K';
+        return '<div class="pr"><div class="l"><span class="rk">#'+(i+1)+'</span><span class="nm">'+c.sym+'</span><span class="sy">USDT</span><div class="vol">24H 成交额 $'+vol+'</div></div><div class="r"><div class="prc">$'+ps+'</div><div class="cny">¥'+cny+'</div><span class="chg '+(u?'u':'d')+'">'+(u?'+':'')+c.chg.toFixed(2)+'%</span></div></div>';
     }).join('');
     document.getElementById('pl').innerHTML=html;
 }
-
-document.getElementById('ptabs').onclick=e=>{
-    const t=e.target.closest('.pt');
+document.getElementById('ptabs').onclick=function(e){
+    var t=e.target.closest('.pt');
     if(!t)return;
-    document.querySelectorAll('#ptabs .pt').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('#ptabs .pt').forEach(function(x){x.classList.remove('on');});
     t.classList.add('on');
     currentRank=t.dataset.r;
     renderR();
 };
 
-// ==================== STOCKS ====================
-let currentMarket='a';
-let stockData={a:[],hk:[],us:[]};
-
-async function loadStocks(){
-    try{
-        if(currentMarket==='a'){
-            await loadAStocks();
-        }else if(currentMarket==='hk'){
-            await loadHKStocks();
-        }else{
-            await loadUSStocks();
-        }
+// 股市行情
+var currentMarket='a';
+var stockData={a:[],hk:[],us:[]};
+var STOCKS_A=[
+    {code:'000001',name:'上证指数'},
+    {code:'399001',name:'深证成指'},
+    {code:'399006',name:'创业板指'},
+    {code:'600519',name:'贵州茅台'},
+    {code:'000858',name:'五粮液'},
+    {code:'601318',name:'中国平安'},
+    {code:'600036',name:'招商银行'},
+    {code:'000333',name:'美的集团'},
+    {code:'002594',name:'比亚迪'},
+    {code:'601888',name:'中国中免'}
+];
+function loadStocks(){
+    if(currentMarket==='a'){
+        loadAStocks();
+    }else if(currentMarket==='hk'){
+        loadHKStocks();
+    }else{
+        loadUSStocks();
+    }
+}
+function loadAStocks(){
+    var syms=STOCKS_A.map(function(x){return (x.code.charAt(0)>'5'?'sh':'sz')+x.code;}).join(',');
+    fetch('https://qt.gtimg.cn/q='+syms+'&_='+Date.now())
+    .then(function(r){return r.text();})
+    .then(function(t){
+        var lines=t.split('\n').filter(function(x){return x.trim();});
+        stockData.a=lines.map(function(x,i){
+            var m=x.match(/v_([^=]+)="([^"]+)"/);
+            if(!m)return null;
+            var parts=m[2].split('~');
+            var price=parseFloat(parts[3])||0;
+            var prev=parseFloat(parts[2])||price;
+            var chg=prev?((price-prev)/prev*100):0;
+            return {name:STOCKS_A[i].name,code:m[1].replace('sh','').replace('sz','').toUpperCase(),price:price,chg:chg};
+        }).filter(Boolean);
         renderS();
         document.getElementById('stime').textContent='更新：'+new Date().toLocaleTimeString('zh-CN');
-    }catch(e){
-        console.error('Stock error:',e);
+    })
+    .catch(function(){
         document.getElementById('sl').innerHTML='<div class="ne">加载失败</div>';
-    }
+    });
 }
-
-async function loadAStocks(){
-    const codes=['000001','399001','399006','600519','000858','601318','600036','000333','002594','601888'];
-    const names=['上证指数','深证成指','创业板指','贵州茅台','五粮液','中国平安','招商银行','美的集团','比亚迪','中国中免'];
-    const syms=codes.map(c=>(c.startsWith('6')?'sh':'sz')+c).join(',');
-    
-    const r=await fetch('https://qt.gtimg.cn/q='+syms+'&_='+Date.now());
-    const t=await r.text();
-    const lines=t.split('\n').filter(x=>x.trim());
-    
-    stockData.a=lines.map((x,i)=>{
-        const match=x.match(/v_([^=]+)="([^"]+)"/);
-        if(!match)return null;
-        const parts=match[2].split('~');
-        const price=parseFloat(parts[3])||0;
-        const prev=parseFloat(parts[2])||price;
-        const chg=prev?((price-prev)/prev*100):0;
-        return{
-            name:names[i]||match[1],
-            code:match[1].replace('sh','').replace('sz','').toUpperCase(),
-            price:price,
-            chg:chg
-        };
-    }).filter(Boolean);
+function loadHKStocks(){
+    stockData.hk=[
+        {name:'腾讯控股',code:'00700',price:420.5,chg:2.3},
+        {name:'阿里巴巴',code:'09988',price:85.2,chg:-1.2},
+        {name:'美团 -W',code:'03690',price:125.8,chg:3.5},
+        {name:'中国平安',code:'02318',price:52.3,chg:0.8},
+        {name:'汇丰控股',code:'00005',price:68.5,chg:-0.5}
+    ];
+    renderS();
+    document.getElementById('stime').textContent='更新：'+new Date().toLocaleTimeString('zh-CN');
 }
-
-async function loadHKStocks(){
-    const codes=['00700','09988','03690','02318','00005','01810','00388','00941','02015','09866'];
-    const names=['腾讯控股','阿里巴巴','美团 -W','中国平安','汇丰控股','小米集团','港交所','中国移动','理想汽车','蔚来'];
-    
-    const results=[];
-    for(let i=0;i<codes.length;i++){
-        try{
-            const r=await fetch('https://quotes.sina.cn/hq/api/jsonp.php/cb/HK_StockService.getHKMarketData?symbol='+codes[i]+'&_='+Date.now());
-            const t=await r.text();
-            const match=t.match(/\[(.*)\]/);
-            if(match){
-                const d=JSON.parse('['+match[1]+']')[0];
-                results.push({
-                    name:names[i]||d.name,
-                    code:codes[i],
-                    price:parseFloat(d.price)||0,
-                    chg:parseFloat(d.change)||0
-                });
-            }
-        }catch(e){}
-    }
-    stockData.hk=results;
+function loadUSStocks(){
+    stockData.us=[
+        {name:'苹果',code:'AAPL',price:175.2,chg:1.2},
+        {name:'微软',code:'MSFT',price:420.5,chg:0.8},
+        {name:'谷歌',code:'GOOGL',price:155.3,chg:-0.5},
+        {name:'英伟达',code:'NVDA',price:880.5,chg:2.5},
+        {name:'特斯拉',code:'TSLA',price:185.2,chg:-1.8}
+    ];
+    renderS();
+    document.getElementById('stime').textContent='更新：'+new Date().toLocaleTimeString('zh-CN');
 }
-
-async function loadUSStocks(){
-    const symbols=['AAPL','MSFT','GOOGL','AMZN','NVDA','META','TSLA','BABA','JD','PDD'];
-    const names=['苹果','微软','谷歌','亚马逊','英伟达','Meta','特斯拉','阿里巴巴','京东','拼多多'];
-    
-    const results=[];
-    for(let i=0;i<symbols.length;i++){
-        try{
-            const r=await fetch('https://api.finnhub.io/api/v1/quote?symbol='+symbols[i]+'&token=demo');
-            const d=await r.json();
-            if(d.c){
-                const chg=d.dp||0;
-                results.push({
-                    name:names[i]||symbols[i],
-                    code:symbols[i],
-                    price:d.c,
-                    chg:chg
-                });
-            }
-        }catch(e){}
-    }
-    
-    // Fallback if API fails
-    if(results.length===0){
-        stockData.us=symbols.map((s,i)=>({
-            name:names[i],
-            code:s,
-            price:100+Math.random()*100,
-            chg:(Math.random()*10-5)
-        }));
-    }else{
-        stockData.us=results;
-    }
-}
-
 function renderS(){
-    const data=stockData[currentMarket]||[];
-    const html=data.map((c,i)=>{
-        const u=c.chg>=0;
-        const ps=c.price>=1?c.price.toFixed(2):c.price.toFixed(4);
-        const chgClass=u?'u':'d';
-        const chgSign=u?'+':'';
-        return`<div class="pr"><div class="l"><span class="rk">#${i+1}</span><span class="nm">${c.name}</span><span class="sy">${c.code}</span></div><div class="r"><div class="prc">${ps}</div><span class="chg ${chgClass}">${chgSign}${c.chg.toFixed(2)}%</span></div></div>`;
+    var data=stockData[currentMarket]||[];
+    var html=data.map(function(c,i){
+        var u=c.chg>=0;
+        var ps=c.price>=1?c.price.toFixed(2):c.price.toFixed(4);
+        return '<div class="pr"><div class="l"><span class="rk">#'+(i+1)+'</span><span class="nm">'+c.name+'</span><span class="sy">'+c.code+'</span></div><div class="r"><div class="prc">'+ps+'</div><span class="chg '+(u?'u':'d')+'">'+(u?'+':'')+c.chg.toFixed(2)+'%</span></div></div>';
     }).join('');
     document.getElementById('sl').innerHTML=html||'<div class="ne">暂无数据</div>';
     document.getElementById('scnt').textContent=data.length+' 只股票';
 }
-
-document.getElementById('stabs').onclick=e=>{
-    const t=e.target.closest('.pt');
+document.getElementById('stabs').onclick=function(e){
+    var t=e.target.closest('.pt');
     if(!t)return;
-    document.querySelectorAll('#stabs .pt').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('#stabs .pt').forEach(function(x){x.classList.remove('on');});
     t.classList.add('on');
     currentMarket=t.dataset.m;
-    renderS();
     loadStocks();
+    renderS();
 };
 
-// ==================== AI 荐股 ====================
-let aiType='stock';
-const AI_STOCKS=[
-    {sym:'贵州茅台',code:'600519',reason:'高端白酒龙头，业绩稳定增长，北向资金持续流入',signal:'买入',conf:'85%'},
-    {sym:'宁德时代',code:'300750',reason:'动力电池全球龙头，储能业务爆发，技术面突破',signal:'买入',conf:'82%'},
-    {sym:'比亚迪',code:'002594',reason:'新能源车销量领先，出口增长强劲',signal:'持有',conf:'78%'},
-    {sym:'招商银行',code:'600036',reason:'银行龙头，估值低位，分红稳定',signal:'买入',conf:'80%'},
-    {sym:'腾讯控股',code:'00700',reason:'游戏业务复苏，视频号增长强劲，回购持续',signal:'买入',conf:'88%'},
-    {sym:'英伟达',code:'NVDA',reason:'AI 芯片需求爆发，数据中心业务高增长',signal:'持有',conf:'90%'},
-    {sym:'特斯拉',code:'TSLA',reason:'自动驾驶进展，机器人业务潜力',signal:'观望',conf:'70%'},
-    {sym:'苹果',code:'AAPL',reason:'iPhone 销量稳定，服务业务增长',signal:'持有',conf:'75%'}
+// AI 荐股
+var aiType='stock';
+var AI_STOCKS=[
+    {sym:'贵州茅台',code:'600519',reason:'高端白酒龙头，业绩稳定增长',signal:'买入',conf:'85%'},
+    {sym:'腾讯控股',code:'00700',reason:'游戏业务复苏，视频号增长强劲',signal:'买入',conf:'88%'},
+    {sym:'英伟达',code:'NVDA',reason:'AI 芯片需求爆发',signal:'持有',conf:'90%'},
+    {sym:'BTC',reason:'减半预期 +ETF 资金流入',signal:'买入',conf:'90%'},
+    {sym:'ETH',reason:'生态复苏，Layer2 爆发',signal:'买入',conf:'85%'}
 ];
-const AI_CRYPTO=[
-    {sym:'BTC',reason:'减半预期 + ETF 资金流入，长期看涨',signal:'买入',conf:'90%'},
-    {sym:'ETH',reason:'生态复苏，Layer2 爆发，升级预期',signal:'买入',conf:'85%'},
-    {sym:'SOL',reason:'生态活跃，NFT/DeFi 增长强劲',signal:'买入',conf:'82%'},
-    {sym:'BNB',reason:'币安生态稳定，Launchpool 活跃',signal:'持有',conf:'78%'},
-    {sym:'AI 板块',reason:'AI 概念火热，FET/AGIX/OCEAN 合并',signal:'买入',conf:'80%'},
-    {sym:'MEME',reason:'社区热度高，波动大风险高',signal:'观望',conf:'60%'}
-];
-
 function loadAI(){
-    const data=aiType==='stock'?AI_STOCKS:AI_CRYPTO;
-    const now=new Date();
-    const html=data.map(x=>{
-        const sc=x.signal==='买入'?'🟢':x.signal==='持有'?'🟡':'⚪';
-        return`
-        <div class="ai-card">
-            <div class="hd">
-                <span class="ico">${sc}</span>
-                <span class="tit">${x.sym} ${aiType==='stock'?x.code:''}</span>
-                <span class="tag">${x.signal}</span>
-            </div>
-            <div class="rec">${x.reason}</div>
-            <div class="meta">
-                <span class="rs">AI 信心：${x.conf}</span>
-                <span class="conf">更新：${now.toLocaleTimeString('zh-CN')}</span>
-            </div>
-        </div>`;
+    var data=AI_STOCKS;
+    var now=new Date();
+    var html=data.map(function(x){
+        var sc=x.signal==='买入'?'🟢':x.signal==='持有'?'🟡':'⚪';
+        return '<div class="ai-card"><div class="hd"><span class="ico">'+sc+'</span><span class="tit">'+x.sym+' '+x.code+'</span><span class="tag">'+x.signal+'</span></div><div class="rec">'+x.reason+'</div><div class="meta"><span class="rs">AI 信心：'+x.conf+'</span><span class="conf">更新：'+now.toLocaleTimeString('zh-CN')+'</span></div></div>';
     }).join('');
     document.getElementById('ai-content').innerHTML=html;
 }
-
-document.getElementById('aitabs').onclick=e=>{
-    const t=e.target.closest('.pt');
+document.getElementById('aitabs').onclick=function(e){
+    var t=e.target.closest('.pt');
     if(!t)return;
-    document.querySelectorAll('#aitabs .pt').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('#aitabs .pt').forEach(function(x){x.classList.remove('on');});
     t.classList.add('on');
     aiType=t.dataset.t;
     loadAI();
 };
 
-// ==================== EXCHANGES ====================
-const EXS=[
-    {nm:'币安 Binance',ico:'🟡',mt:'全球最大 · 手续费最低',link:'https://accounts.bmwweb.academy/register?ref=GFPDGUGI',cd:'GFPDGUGI',ft:['现货/合约/理财','新手首选']},
-    {nm:'欧易 OKX',ico:'⚫',mt:'中文友好 · 理财丰富',link:'https://www.firgrouxywebb.com/join/789789',cd:'789789',ft:['现货/合约/Defi','Web3 钱包']},
-    {nm:'Gate',ico:'🟢',mt:'山寨币多 · 活动多',link:'https://www.gateport.business/share/XCCOBGVJ',cd:'XCCOBGVJ',ft:['1700+ 币种','量化工具']},
-    {nm:'火币 HTX',ico:'🔵',mt:'老牌交易所',link:'https://www.htx.com.gt/invite/zh-cn/1h?invite_code=vafqb223',cd:'vafqb223',ft:['现货/合约','HT 生态']},
-    {nm:'Bitget',ico:'🔷',mt:'跟单交易 · 安全合规',link:'https://partner.hdmune.cn/bg/7n43xlxz',cd:'7n43xlxz',ft:['一键跟单','安全基金']},
-    {nm:'BitMart',ico:'🟣',mt:'小币种多',link:'https://www.bm-link.com/zh-CN/invite/baofu2026',cd:'baofu2026',ft:['1000+ 币种','高收益理财']},
-    {nm:'WEEX',ico:'🔶',mt:'新交易所 · 福利多',link:'https://weabaxx.site/zh-CN/register?vipCode=baofu2026',cd:'baofu2026',ft:['合约交易','新户福利']}
+// 交易所
+var EXS=[
+    {nm:'币安 Binance',ico:'🟡',mt:'全球最大',link:'https://accounts.bmwweb.academy/register?ref=GFPDGUGI',cd:'GFPDGUGI'},
+    {nm:'欧易 OKX',ico:'⚫',mt:'中文友好',link:'https://www.firgrouxywebb.com/join/789789',cd:'789789'},
+    {nm:'Gate',ico:'🟢',mt:'山寨币多',link:'https://www.gateport.business/share/XCCOBGVJ',cd:'XCCOBGVJ'},
+    {nm:'火币 HTX',ico:'🔵',mt:'老牌交易所',link:'https://www.htx.com.gt/invite/zh-cn/1h?invite_code=vafqb223',cd:'vafqb223'},
+    {nm:'Bitget',ico:'🔷',mt:'跟单交易',link:'https://partner.hdmune.cn/bg/7n43xlxz',cd:'7n43xlxz'},
+    {nm:'BitMart',ico:'🟣',mt:'小币种多',link:'https://www.bm-link.com/zh-CN/invite/baofu2026',cd:'baofu2026'},
+    {nm:'WEEX',ico:'🔶',mt:'新交易所',link:'https://weabaxx.site/zh-CN/register?vipCode=baofu2026',cd:'baofu2026'}
 ];
-
 function renderEX(){
-    document.getElementById('el').innerHTML=EXS.map((e,i)=>`
-        <div class="ec tp" onclick="this.classList.toggle('op')">
-            <div class="top">
-                <div class="inf">
-                    <div class="ico">${e.ico}</div>
-                    <div><div class="nm">${e.nm}</div><div class="mt">${e.mt}</div></div>
-                </div>
-                <button class="btn" style="background:var(--gd);color:#000" onclick="event.stopPropagation();navigator.clipboard.writeText('${e.cd}');alert('已复制：${e.cd}')">复制邀请码</button>
-            </div>
-            <div class="det">
-                <ul class="ft">${e.ft.map(f=>'<li>'+f+'</li>').join('')}</ul>
-                <div class="cd">邀请码：<b>${e.cd}</b></div>
-                <a href="${e.link}" target="_blank" style="display:block;margin-top:8px;padding:6px;background:var(--gd);border-radius:6px;text-align:center;font-weight:700;color:#000">立即注册 →</a>
-            </div>
-        </div>
-    `).join('');
+    document.getElementById('el').innerHTML=EXS.map(function(e){
+        return '<div class="ec tp" onclick="this.classList.toggle(\'op\')"><div class="top"><div class="inf"><div class="ico">'+e.ico+'</div><div><div class="nm">'+e.nm+'</div><div class="mt">'+e.mt+'</div></div></div><button class="btn" style="background:var(--gd);color:#000" onclick="event.stopPropagation();navigator.clipboard.writeText(\''+e.cd+'\');alert(\'已复制：'+e.cd+'\')">复制邀请码</button></div><div class="det"><a href="'+e.link+'" target="_blank" style="display:block;margin-top:8px;padding:6px;background:var(--gd);border-radius:6px;text-align:center;font-weight:700;color:#000">立即注册 →</a></div></div>';
+    }).join('');
 }
 
-// INIT
+// 初始化
 renderEX();
 loadNews();
 loadP();

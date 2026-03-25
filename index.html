@@ -46,7 +46,8 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 .nl{list-style:none}
 .ni{background:#fff;border:1px solid var(--bd);border-radius:10px;margin-bottom:6px;padding:11px}
 .ni:first-child{border-color:var(--gd)50;box-shadow:0 0 6px var(--gd)15}
-.ni-t{font-size:.68em;color:var(--g);margin-bottom:3px}
+.ni-t{font-size:.68em;color:var(--g);margin-bottom:3px;display:flex;gap:6px;align-items:center}
+.ni-src{background:#eef;color:#36c;padding:0 5px;border-radius:3px;font-size:.9em;font-weight:500}
 .ni-h{font-size:.88em;font-weight:600;line-height:1.45;margin-bottom:3px}
 .ni-d{font-size:.8em;color:var(--g);line-height:1.65}
 .ni-tags{display:flex;gap:2px;flex-wrap:wrap;margin-top:4px}
@@ -183,7 +184,8 @@ function renderN(items){
         if(/SOL|Solana/i.test(td))tags.push('SOL');if(/BNB/i.test(td))tags.push('BNB');
         if(/币安|Binance/i.test(td))tags.push('币安');if(/ETF/i.test(td))tags.push('ETF');
         if(/空投|airdrop/i.test(td))tags.push('空投');
-        return`<li class="ni"><div class="ni-t">${ts}</div><div class="ni-h">${t}</div>${d&&d!==t?'<div class="ni-d">'+d+'</div>':''}${tags.length?'<div class="ni-tags">'+tags.map(g=>'<span>'+g+'</span>').join('')+'</div>':''}</li>`;
+        const srcTag=x.source?'<span class="ni-src">'+x.source+'</span>':'';
+        return`<li class="ni"><div class="ni-t">${srcTag}${ts}</div><div class="ni-h">${t}</div>${d&&d!==t?'<div class="ni-d">'+d+'</div>':''}${tags.length?'<div class="ni-tags">'+tags.map(g=>'<span>'+g+'</span>').join('')+'</div>':''}</li>`;
     }).join('');
 }
 

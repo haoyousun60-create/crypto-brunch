@@ -575,8 +575,8 @@ async function fetchNews() {
     // Try local API proxy first, then CORS proxies
     const sources = [
         { url: '/api/news', type: 'json' },
-        { url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://rss.odaily.news/rss/newsflash'), type: 'xml' },
-        { url: 'https://corsproxy.io/?' + encodeURIComponent('https://rss.odaily.news/rss/newsflash'), type: 'xml' }
+        { url: 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Frss.odaily.news%2Frss%2Fnewsflash', type: 'rss2json' },
+        { url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://rss.odaily.news/rss/newsflash'), type: 'xml' }
     ];
     
     for (const src of sources) {
@@ -588,6 +588,19 @@ async function fetchNews() {
                 const data = await resp.json();
                 if (data.items && data.items.length > 0) {
                     renderNewsJSON(data.items, list);
+                    return;
+                }
+            } else if (src.type === 'rss2json') {
+                const data = await resp.json();
+                if (data.status === 'ok' && data.items && data.items.length > 0) {
+                    const strip = /Odaily星球日报讯[，,：:\s]*/g;
+                    const items = data.items.map(item => ({
+                        title: (item.title || '').replace(strip, '').trim(),
+                        description: (item.description || '').replace(/<[^>]*>/g, '').replace(strip, '').trim(),
+                        pubDate: item.pubDate || '',
+                        link: item.link || '#'
+                    }));
+                    renderNewsJSON(items, list);
                     return;
                 }
             } else {

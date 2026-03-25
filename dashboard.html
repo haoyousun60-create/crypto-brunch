@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>加密早餐 推广控制台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,sans-serif;background:#0a0a14;color:#e0e0f0;padding:20px;line-height:1.7}
+h1{text-align:center;margin-bottom:30px;background:linear-gradient(135deg,#f0b90b,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:2em}
+.section{background:#12121f;border:1px solid #252540;border-radius:12px;padding:24px;margin-bottom:20px}
+.section h2{color:#f0b90b;margin-bottom:16px;font-size:1.3em}
+.platform{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#1a1a2e;border-radius:8px;margin-bottom:8px}
+.platform .name{font-weight:700}
+.platform .status{font-size:.85em;padding:4px 12px;border-radius:6px}
+.status.done{background:#00d68f20;color:#00d68f}
+.status.auto{background:#3b82f620;color:#3b82f6}
+.status.ready{background:#f0b90b20;color:#f0b90b}
+.status.need{background:#f6465d20;color:#f6465d}
+.copy-section{margin-top:12px}
+.copy-section h3{color:#888;font-size:.9em;margin-bottom:6px}
+.copy-box{background:#0a0a14;border:1px solid #252540;border-radius:8px;padding:16px;margin-bottom:12px;position:relative;max-height:300px;overflow-y:auto;white-space:pre-wrap;font-size:.88em}
+.copy-btn{position:absolute;top:8px;right:8px;background:#f0b90b;color:#000;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:700;font-size:.82em}
+.copy-btn:hover{background:#ffd000}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.links a{background:#252540;color:#f0b90b;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:.88em;transition:all .2s}
+.links a:hover{background:#f0b90b;color:#000}
+.stat{display:inline-block;background:#252540;padding:4px 12px;border-radius:6px;margin:4px;font-size:.85em}
+.info{color:#888;font-size:.85em;margin-top:8px}
+</style>
+</head>
+<body>
+<h1>🤑 加密早餐 推广控制台</h1>
+
+<div class="section">
+<h2>📊 推广状态总览</h2>
+<div class="platform"><span class="name">🌐 网站 (GitHub Pages)</span><span class="status done">✅ 在线</span></div>
+<div class="platform"><span class="name">🤖 Telegram 机器人</span><span class="status done">✅ 运行中</span></div>
+<div class="platform"><span class="name">📢 币安广场 (6条/天)</span><span class="status auto">🔄 自动化</span></div>
+<div class="platform"><span class="name">🐦 Twitter/X</span><span class="status ready">📋 内容就绪</span></div>
+<div class="platform"><span class="name">📝 Reddit</span><span class="status ready">📋 内容就绪</span></div>
+<div class="platform"><span class="name">📖 Medium</span><span class="status ready">📋 内容就绪</span></div>
+<div class="platform"><span class="name">❓ Quora</span><span class="status ready">📋 内容就绪</span></div>
+<div class="platform"><span class="name">💬 Bitcointalk</span><span class="status ready">📋 内容就绪</span></div>
+</div>
+
+<div class="section">
+<h2>🔗 关键链接</h2>
+<div class="links">
+<a href="https://haoyousun60-create.github.io/crypto-brunch/" target="_blank">🌐 推广网站</a>
+<a href="https://t.me/jiqiren17891bot" target="_blank">🤖 Telegram Bot</a>
+<a href="https://github.com/haoyousun60-create/crypto-brunch" target="_blank">📦 GitHub 仓库</a>
+</div>
+<div class="links" style="margin-top:12px">
+<a href="https://twitter.com/compose/tweet" target="_blank">发推文 →</a>
+<a href="https://www.reddit.com/submit" target="_blank">发Reddit →</a>
+<a href="https://medium.com/new-story" target="_blank">发Medium →</a>
+<a href="https://www.quora.com" target="_blank">答Quora →</a>
+<a href="https://bitcointalk.org/index.php?action=post" target="_blank">发Bitcointalk →</a>
+</div>
+</div>
+
+<div class="section">
+<h2>🐦 Twitter/X 推文 (复制即发)</h2>
+<div class="copy-section">
+<h3>推文1：七大交易所对比 (中文)</h3>
+<div class="copy-box" id="tw1">2026七大加密交易所实测👇
+
+🏆 币安 — 全球#1，500+币种
+⭐ 欧易 — 合约+Web3最强
+🔥 Gate — 1700+币种，新币最快
+🚀 Bitget — 跟单全球#1
+📊 火币 — 老牌稳定
+💎 BitMart — Meme币天堂
+⚡ WEEX — 费率最低0.05%
+
+用邀请码注册永久减手续费
+注册后补不了⚠️
+
+🔗 详细对比+注册链接：
+https://haoyousun60-create.github.io/crypto-brunch/
+
+#BTC #加密货币 #交易所</div>
+<button class="copy-btn" onclick="copyText('tw1')">复制</button>
+</div>
+
+<div class="copy-section">
+<h3>推文2：Exchange Comparison (English)</h3>
+<div class="copy-box" id="tw2">Top 7 Crypto Exchanges in 2026 👇
+
+🏆 Binance — #1 globally, 500+ coins
+⭐ OKX — Best derivatives & Web3 wallet
+🔥 Gate.io — 1700+ coins, fastest listings
+🚀 Bitget — #1 copy trading
+📊 HTX — Since 2013
+💎 BitMart — Meme coin paradise
+⚡ WEEX — Lowest fees 0.05%
+
+Use referral codes for permanent fee discounts ⚠️ Can't add after signup!
+
+Compare all 7 + register:
+https://haoyousun60-create.github.io/crypto-brunch/
+
+#Bitcoin #Crypto #Exchange</div>
+<button class="copy-btn" onclick="copyText('tw2')">复制</button>
+</div>
+
+<div class="copy-section">
+<h3>推文3：省钱贴</h3>
+<div class="copy-box" id="tw3">💰 每月省$10的小技巧：
+
+注册交易所时填邀请码
+永久减手续费20%
+月交5万U一年省$120
+
+大部分人不知道：注册后不能补填⚠️
+
+七大交易所对比+邀请码：
+https://haoyousun60-create.github.io/crypto-brunch/
+
+#加密货币 #BTC #手续费</div>
+<button class="copy-btn" onclick="copyText('tw3')">复制</button>
+</div>
+</div>
+
+<div class="section">
+<h2>📝 Reddit 帖子</h2>
+<div class="copy-section">
+<h3>r/CryptoCurrency — 交易所对比 (高SEO)</h3>
+<div class="copy-box" id="rd1">Title: I compared 7 major crypto exchanges — fees, features, coin selection. Here's what I found.
+
+Body:
+
+After using multiple exchanges for 2 years, here's my honest comparison:
+
+| Exchange | Best For | Spot Fee | Coins |
+|----------|----------|----------|-------|
+| Binance | Overall #1, deepest liquidity | 0.1% | 500+ |
+| OKX | Derivatives & Web3 wallet | 0.08-0.1% | 350+ |
+| Gate.io | Altcoins & new listings | 0.2% | 1700+ |
+| HTX (Huobi) | Established, reliable | 0.2% | 600+ |
+| Bitget | Copy trading (#1 globally) | 0.1% | 800+ |
+| BitMart | Meme coins & small caps | 0.25% | 1000+ |
+| WEEX | Lowest fees | 0.05% | 300+ |
+
+Pro tip: Use referral codes when signing up — most exchanges offer permanent fee discounts that you can't add after registration.
+
+Full comparison with links: https://haoyousun60-create.github.io/crypto-brunch/
+
+Happy to answer questions in the comments.</div>
+<button class="copy-btn" onclick="copyText('rd1')">复制</button>
+</div>
+</div>
+
+<div class="section">
+<h2>📖 Medium 文章</h2>
+<div class="copy-section">
+<h3>文章标题 + 开头 (完整版在 medium-articles.md)</h3>
+<div class="copy-box" id="md1">Title: The Ultimate Crypto Exchange Comparison 2026: 7 Platforms Tested and Ranked
+
+Subtitle: Binance, OKX, Gate.io, HTX, Bitget, BitMart, WEEX — which one is right for you?
+
+I've been actively trading on multiple crypto exchanges for the past two years. Instead of recommending just one, I want to give you an honest comparison of the seven major platforms I've personally used.
+
+[完整文章请查看 promotion/medium-articles.md]</div>
+<button class="copy-btn" onclick="copyText('md1')">复制</button>
+</div>
+</div>
+
+<div class="section">
+<h2>❓ Quora 回答</h2>
+<div class="copy-section">
+<h3>Q: What is the best cryptocurrency exchange in 2026?</h3>
+<div class="copy-box" id="qa1">There's no single "best" — it depends on what you need. Here's my take after using 7 exchanges:
+
+• For most people: Binance (Global #1, deepest liquidity, 500+ coins)
+• For derivatives/futures: OKX (Best interface and execution)
+• For altcoin hunters: Gate.io (1700+ coins, fastest new listings)
+• For lazy traders: Bitget (Copy trading #1 globally)
+• For fee-conscious: WEEX (0.05% — 2-5x cheaper than most)
+• For meme coins: BitMart (Small-cap tokens list early)
+• For reliability: HTX (Since 2013, proven stable)
+
+Critical tip: Always use a referral code when registering. Most exchanges offer permanent fee discounts (10-20% off) that you literally cannot add after account creation.
+
+My setup: I use 3 exchanges — Binance as main, OKX for futures, Gate for new listings. Register at least 2-3 for redundancy.
+
+Full comparison: https://haoyousun60-create.github.io/crypto-brunch/</div>
+<button class="copy-btn" onclick="copyText('qa1')">复制</button>
+</div>
+</div>
+
+<div class="section">
+<h2>🤖 Telegram 推广信息</h2>
+<div class="copy-section">
+<h3>分享到群/频道的推广文</h3>
+<div class="copy-box" id="tg1">🤑 加密早餐 — 免费行情播报机器人
+
+📊 实时BTC/ETH/SOL等行情
+📰 Odaily快讯自动推送
+🏦 七大交易所注册指南（专属邀请码）
+⏰ 每4小时自动播报
+
+👉 @jiqiren17891bot
+🔗 https://haoyousun60-create.github.io/crypto-brunch/</div>
+<button class="copy-btn" onclick="copyText('tg1')">复制</button>
+</div>
+</div>
+
+<script>
+function copyText(id) {
+    const text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector(`#${id} + .copy-btn`);
+        btn.textContent = '✅ 已复制';
+        setTimeout(() => btn.textContent = '复制', 2000);
+    });
+}
+</script>
+</body>
+</html>

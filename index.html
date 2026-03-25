@@ -205,7 +205,7 @@ document.getElementById('tabs').onclick=e=>{const t=e.target.closest('[data-p]')
 document.getElementById('bnav').onclick=e=>{const t=e.target.closest('[data-p]');if(t)go(t.dataset.p)};
 
 // NEWS
-async function loadNews(){
+async function loadNews(){console.log('loadNews called');
     const el=document.getElementById('nlist');
     for(const src of['news.json','/api/news']){
         try{

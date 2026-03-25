@@ -47,12 +47,16 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 .ni{background:#fff;border:1px solid var(--bd);border-radius:10px;margin-bottom:6px;padding:11px}
 .ni:first-child{border-color:var(--gd)50;box-shadow:0 0 6px var(--gd)15}
 .ni-t{font-size:.68em;color:var(--g);margin-bottom:3px;display:flex;gap:6px;align-items:center}
-.ni-src{background:#eef;color:#36c;padding:0 5px;border-radius:3px;font-size:.9em;font-weight:500}
+
 .ni-h{font-size:.88em;font-weight:600;line-height:1.45;margin-bottom:3px}
 .ni-d{font-size:.8em;color:var(--g);line-height:1.65}
 .ni-tags{display:flex;gap:2px;flex-wrap:wrap;margin-top:4px}
 .ni-tags span{font-size:.6em;padding:1px 5px;background:#f0f3ff;border-radius:3px;color:#3b5bdb}
 .ne{text-align:center;padding:35px;color:var(--g);font-size:.85em}
+.ns{margin-bottom:16px}
+.ns-head{display:flex;align-items:center;gap:6px;padding:10px 0 8px;border-bottom:2px solid var(--gd);margin-bottom:8px}
+.ns-icon{font-size:1.1em}
+.ns-title{font-weight:800;font-size:.95em;flex:1}
 
 /* === PRICES (仿币安) === */
 .ptabs{display:flex;gap:3px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px}
@@ -121,9 +125,22 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 
 <!-- ========== 快讯 ========== -->
 <div class="pg on" id="p-news"><div class="w">
-    <div class="sh"><h2>📰 <em>实时快讯</em></h2><div class="lv"><i></i>LIVE</div></div>
     <div class="ut" id="ut"></div>
-    <ul class="nl" id="nl"><li class="ne">⏳ 加载中...</li></ul>
+
+    <div class="ns">
+        <div class="ns-head"><span class="ns-icon">🪙</span><span class="ns-title">加密快讯</span><div class="lv"><i></i>LIVE</div></div>
+        <ul class="nl" id="nl-crypto"><li class="ne">⏳ 加载中...</li></ul>
+    </div>
+
+    <div class="ns">
+        <div class="ns-head"><span class="ns-icon">💹</span><span class="ns-title">新浪财经 7×24</span><div class="lv"><i></i>LIVE</div></div>
+        <ul class="nl" id="nl-sina"><li class="ne">⏳ 加载中...</li></ul>
+    </div>
+
+    <div class="ns">
+        <div class="ns-head"><span class="ns-icon">📰</span><span class="ns-title">人民网财经</span></div>
+        <ul class="nl" id="nl-people"><li class="ne">⏳ 加载中...</li></ul>
+    </div>
 </div></div>
 
 <!-- ========== 行情 ========== -->
@@ -175,18 +192,27 @@ async function loadNews(){
 }
 function renderN(items){
     const now=Date.now();
-    document.getElementById('nl').innerHTML=items.map(x=>{
-        let ts='';
-        if(x.pubDate){const m=Math.floor((now-new Date(x.pubDate).getTime())/60000);ts=m<1?'刚刚':m<60?m+'分钟前':m<1440?Math.floor(m/60)+'小时前':Math.floor(m/1440)+'天前'}
-        const t=x.title||'',d=x.description||'';
-        const tags=[];const td=t+d;
-        if(/BTC|比特币/i.test(td))tags.push('BTC');if(/ETH|以太坊/i.test(td))tags.push('ETH');
-        if(/SOL|Solana/i.test(td))tags.push('SOL');if(/BNB/i.test(td))tags.push('BNB');
-        if(/币安|Binance/i.test(td))tags.push('币安');if(/ETF/i.test(td))tags.push('ETF');
-        if(/空投|airdrop/i.test(td))tags.push('空投');
-        const srcTag=x.source?'<span class="ni-src">'+x.source+'</span>':'';
-        return`<li class="ni"><div class="ni-t">${srcTag}${ts}</div><div class="ni-h">${t}</div>${d&&d!==t?'<div class="ni-d">'+d+'</div>':''}${tags.length?'<div class="ni-tags">'+tags.map(g=>'<span>'+g+'</span>').join('')+'</div>':''}</li>`;
-    }).join('');
+    const crypto=items.filter(x=>x.source==='Odaily');
+    const sina=items.filter(x=>x.source==='新浪7x24');
+    const people=items.filter(x=>x.source==='人民网财经');
+
+    function renderList(list){
+        return list.map(x=>{
+            let ts='';
+            if(x.pubDate){const m=Math.floor((now-new Date(x.pubDate).getTime())/60000);ts=m<1?'刚刚':m<60?m+'分钟前':m<1440?Math.floor(m/60)+'小时前':Math.floor(m/1440)+'天前'}
+            const t=x.title||'',d=x.description||'';
+            const tags=[];const td=t+d;
+            if(/BTC|比特币/i.test(td))tags.push('BTC');if(/ETH|以太坊/i.test(td))tags.push('ETH');
+            if(/SOL|Solana/i.test(td))tags.push('SOL');if(/BNB/i.test(td))tags.push('BNB');
+            if(/币安|Binance/i.test(td))tags.push('币安');if(/ETF/i.test(td))tags.push('ETF');
+            if(/空投|airdrop/i.test(td))tags.push('空投');
+            return`<li class="ni"><div class="ni-t">${ts}</div><div class="ni-h">${t}</div>${d&&d!==t?'<div class="ni-d">'+d+'</div>':''}${tags.length?'<div class="ni-tags">'+tags.map(g=>'<span>'+g+'</span>').join('')+'</div>':''}</li>`;
+        }).join('')||'<li class="ne">暂无快讯</li>';
+    }
+
+    document.getElementById('nl-crypto').innerHTML=renderList(crypto);
+    document.getElementById('nl-sina').innerHTML=renderList(sina);
+    document.getElementById('nl-people').innerHTML=renderList(people);
 }
 
 // ==================== PRICES ====================

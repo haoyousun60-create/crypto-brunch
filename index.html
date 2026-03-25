@@ -64,7 +64,8 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 .pr{display:flex;align-items:center;padding:12px;background:#fff;border-bottom:1px solid var(--bd);transition:.15s}
 .pr:hover{background:var(--c2)}
 .pr .l{display:flex;align-items:center;gap:8px;flex:2;min-width:0}
-.pr .ic{width:28px;height:28px;border-radius:50%;background:#f5f6fa;display:flex;align-items:center;justify-content:center;font-size:.9em;flex-shrink:0}
+
+.pr .rk{font-size:.72em;color:var(--g);min-width:22px;text-align:center;flex-shrink:0}
 .pr .nm{font-weight:700;font-size:.88em;white-space:nowrap}
 .pr .sy{font-size:.68em;color:var(--g);margin-left:4px}
 .pr .tag{font-size:.65em;padding:1px 6px;background:#f0f3ff;border-radius:3px;color:#3b5bdb;margin-left:6px}
@@ -130,9 +131,10 @@ header .w{display:flex;justify-content:space-between;align-items:center}
     <div class="ptabs" id="ptabs">
         <div class="pt on" data-r="up">🔥 涨幅榜</div>
         <div class="pt" data-r="down">💧 跌幅榜</div>
-        <div class="pt" data-r="hot">⚡ 热门榜</div>
-        <div class="pt" data-r="cap">💎 市值榜</div>
+        <div class="pt" data-r="hot">⚡ 成交额榜</div>
+        <div class="pt" data-r="vol">📊 全部币种</div>
     </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span id="pcnt" style="font-size:.72em;color:var(--g)"></span></div>
     <div class="phead"><span>名称 / 24H成交额</span><span>最新价</span><span>24H涨幅</span></div>
     <div class="pl" id="pl"></div>
 </div></div>
@@ -186,47 +188,34 @@ function renderN(items){
 }
 
 // ==================== PRICES ====================
-const COINS=[
-    {s:'BTCUSDT',n:'Bitcoin',sym:'BTC',i:'₿',cap:1,hot:1},
-    {s:'ETHUSDT',n:'Ethereum',sym:'ETH',i:'Ξ',cap:2,hot:1},
-    {s:'BNBUSDT',n:'BNB',sym:'BNB',i:'◆',cap:4,hot:1},
-    {s:'SOLUSDT',n:'Solana',sym:'SOL',i:'◎',cap:5,hot:1},
-    {s:'XRPUSDT',n:'XRP',sym:'XRP',i:'✕',cap:3,hot:1},
-    {s:'DOGEUSDT',n:'Dogecoin',sym:'DOGE',i:'Ð',cap:8,hot:1},
-    {s:'ADAUSDT',n:'Cardano',sym:'ADA',i:'₳',cap:9},
-    {s:'AVAXUSDT',n:'Avalanche',sym:'AVAX',i:'▲',cap:12},
-    {s:'DOTUSDT',n:'Polkadot',sym:'DOT',i:'●',cap:14},
-    {s:'PEPEUSDT',n:'PEPE',sym:'PEPE',i:'🐸',cap:25,hot:1},
-    {s:'SUIUSDT',n:'Sui',sym:'SUI',i:'💧',cap:15,hot:1},
-    {s:'LINKUSDT',n:'Chainlink',sym:'LINK',i:'⬡',cap:13},
-    {s:'TRXUSDT',n:'TRON',sym:'TRX',i:'⟐',cap:6},
-    {s:'SHIBUSDT',n:'Shiba Inu',sym:'SHIB',i:'🐕',cap:16,hot:1},
-    {s:'LTCUSDT',n:'Litecoin',sym:'LTC',i:'Ł',cap:18},
-    {s:'TONUSDT',n:'Toncoin',sym:'TON',i:'💎',cap:10,hot:1},
-    {s:'NEARUSDT',n:'NEAR',sym:'NEAR',i:'Ⓝ',cap:20},
-    {s:'APTUSDT',n:'Aptos',sym:'APT',i:'🔷',cap:22},
-    {s:'ARBUSDT',n:'Arbitrum',sym:'ARB',i:'🔵',cap:30},
-    {s:'OPUSDT',n:'Optimism',sym:'OP',i:'🔴',cap:35}
-];
+// 稳定币过滤
+const STABLES=new Set(['USDC','USDT','BUSD','DAI','TUSD','FDUSD','USD1','RLUSD','USDP','PYUSD','EURC','PAXG','AEUR']);
 
 let allPriceData=[];
 let currentRank='up';
 
 async function loadP(){
     try{
-        const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols='+encodeURIComponent(JSON.stringify(COINS.map(c=>c.s))));
-        const d=await r.json();const m={};d.forEach(t=>m[t.symbol]=t);
-        allPriceData=COINS.map(c=>({...c,price:+(m[c.s]?.lastPrice||0),chg:+(m[c.s]?.priceChangePercent||0),vol:+(m[c.s]?.quoteVolume||0)}));
+        const r=await fetch('https://api.binance.com/api/v3/ticker/24hr');
+        const d=await r.json();
+        // 过滤 USDT 交易对，排除稳定币，排除低成交量
+        allPriceData=d.filter(t=>t.symbol.endsWith('USDT')&&+t.quoteVolume>50000)
+            .map(t=>{
+                const sym=t.symbol.replace('USDT','');
+                if(STABLES.has(sym))return null;
+                return{sym,price:+t.lastPrice,chg:+t.priceChangePercent,vol:+t.quoteVolume};
+            }).filter(Boolean);
 
-        // Ticker
-        let th=allPriceData.slice(0,10).map(c=>{
+        // Ticker: top 10 by volume
+        const top10=[...allPriceData].sort((a,b)=>b.vol-a.vol).slice(0,10);
+        let th=top10.map(c=>{
             const u=c.chg>=0,ps=c.price>=1?'$'+c.price.toLocaleString('en',{maximumFractionDigits:2}):'$'+c.price.toFixed(6);
             return`<span class="tk"><b>${c.sym}</b> ${ps} <span class="${u?'u':'d'}">${u?'▲':'▼'}${Math.abs(c.chg).toFixed(2)}%</span></span>`;
         }).join('');
         document.getElementById('tkr').innerHTML=th+th;
 
         renderPrices();
-    }catch(e){}
+    }catch(e){console.error(e)}
 }
 
 function fmtVol(v){
@@ -245,14 +234,18 @@ function renderPrices(){
     switch(currentRank){
         case 'up': items.sort((a,b)=>b.chg-a.chg); break;
         case 'down': items.sort((a,b)=>a.chg-b.chg); break;
-        case 'hot': items=items.filter(c=>c.hot).sort((a,b)=>b.vol-a.vol); break;
-        case 'cap': items.sort((a,b)=>a.cap-b.cap); break;
+        case 'hot': items.sort((a,b)=>b.vol-a.vol); break;
+        case 'vol': items.sort((a,b)=>b.vol-a.vol); break;
     }
-    document.getElementById('pl').innerHTML=items.map(c=>{
+    // 涨幅/跌幅榜显示 top 100，其他显示全部（最多200）
+    const limit=(currentRank==='up'||currentRank==='down')?100:200;
+    items=items.slice(0,limit);
+    document.getElementById('pl').innerHTML=items.map((c,idx)=>{
         const u=c.chg>=0;
         const ps=c.price>=1?c.price.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}):c.price.toFixed(8);
-        return`<div class="pr"><div class="l"><div class="ic">${c.i}</div><div><div class="nm">${c.sym}<span class="sy">/USDT</span>${c.hot?'<span class="tag">热门</span>':''}</div><div class="vol">${fmtVol(c.vol)}</div></div></div><div class="r"><div class="prc">${ps}</div><div class="cny">${fmtCny(c.price)}</div></div><div class="r"><span class="chg ${u?'u':'d'}">${u?'+':''}${c.chg.toFixed(2)}%</span></div></div>`;
+        return`<div class="pr"><div class="l"><span class="rk">${idx+1}</span><div><div class="nm">${c.sym}<span class="sy">/USDT</span></div><div class="vol">${fmtVol(c.vol)}</div></div></div><div class="r"><div class="prc">${ps}</div><div class="cny">${fmtCny(c.price)}</div></div><div class="r"><span class="chg ${u?'u':'d'}">${u?'+':''}${c.chg.toFixed(2)}%</span></div></div>`;
     }).join('');
+    document.getElementById('pcnt').textContent=allPriceData.length+'个币种';
 }
 
 document.getElementById('ptabs').onclick=e=>{

@@ -11,6 +11,12 @@
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤑</text></svg>">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="加密早餐">
+    <meta name="theme-color" content="#f0b90b">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         :root{
@@ -146,8 +152,33 @@
         .footer-bottom{text-align:center;padding-top:24px;border-top:1px solid var(--border);color:var(--gray);font-size:.82em}
 
         /* === FLOAT CTA === */
-        .float-cta{position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;padding:14px 22px;border-radius:50px;font-weight:800;box-shadow:0 4px 20px rgba(240,185,11,.35);z-index:1000;transition:transform .2s}
+        .float-cta{position:fixed;bottom:80px;right:20px;background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;padding:14px 22px;border-radius:50px;font-weight:800;box-shadow:0 4px 20px rgba(240,185,11,.35);z-index:1000;transition:transform .2s}
         .float-cta:hover{transform:scale(1.08)}
+
+        /* === BOTTOM NAV (Mobile App) === */
+        .bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);padding:6px 0 env(safe-area-inset-bottom,8px);z-index:200;backdrop-filter:blur(12px)}
+        .bottom-nav-inner{display:flex;justify-content:space-around;max-width:500px;margin:0 auto}
+        .bnav-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--gray);font-size:.68em;padding:4px 8px;text-decoration:none;transition:color .2s}
+        .bnav-item.active,.bnav-item:hover{color:var(--gold)}
+        .bnav-icon{font-size:1.5em}
+        @media(max-width:768px){
+            .bottom-nav{display:block}
+            .float-cta{bottom:90px}
+            body{padding-bottom:70px}
+            .nav-links{gap:12px}
+        }
+
+        /* === INSTALL BANNER === */
+        .install-banner{display:none;position:fixed;bottom:70px;left:10px;right:10px;background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;padding:14px 20px;border-radius:14px;z-index:300;box-shadow:0 6px 24px rgba(0,0,0,.5);align-items:center;justify-content:space-between;gap:12px}
+        .install-banner.show{display:flex}
+        .install-banner .ib-text{font-weight:700;font-size:.92em}
+        .install-banner .ib-sub{font-size:.78em;opacity:.8}
+        .install-btn{background:#000;color:var(--gold);border:none;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;white-space:nowrap}
+        .install-close{background:none;border:none;color:#000;font-size:1.3em;cursor:pointer;padding:4px}
+
+        /* === PULL TO REFRESH === */
+        .ptr-indicator{position:fixed;top:0;left:50%;transform:translateX(-50%);background:var(--gold);color:#000;padding:8px 20px;border-radius:0 0 12px 12px;font-size:.82em;font-weight:700;z-index:500;opacity:0;transition:opacity .3s}
+        .ptr-indicator.show{opacity:1}
 
         /* === UTILS === */
         .text-gold{color:var(--gold)}.text-green{color:var(--green)}.text-gray{color:var(--gray)}
@@ -325,6 +356,30 @@
 
 <!-- Float CTA -->
 <a href="#exchanges" class="float-cta">💰 注册省手续费</a>
+
+<!-- Bottom Nav (Mobile) -->
+<nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+        <a href="#exchanges" class="bnav-item active" onclick="setActiveNav(this)"><span class="bnav-icon">🏦</span>交易所</a>
+        <a href="#prices" class="bnav-item" onclick="setActiveNav(this)"><span class="bnav-icon">📊</span>行情</a>
+        <a href="#news" class="bnav-item" onclick="setActiveNav(this)"><span class="bnav-icon">📰</span>快讯</a>
+        <a href="#tutorial" class="bnav-item" onclick="setActiveNav(this)"><span class="bnav-icon">📖</span>教程</a>
+        <a href="#faq" class="bnav-item" onclick="setActiveNav(this)"><span class="bnav-icon">❓</span>FAQ</a>
+    </div>
+</nav>
+
+<!-- Install Banner -->
+<div class="install-banner" id="installBanner">
+    <div>
+        <div class="ib-text">🤑 安装加密早餐 App</div>
+        <div class="ib-sub">添加到主屏幕，随时查行情</div>
+    </div>
+    <button class="install-btn" id="installBtn">安装</button>
+    <button class="install-close" id="installClose">✕</button>
+</div>
+
+<!-- Pull to Refresh Indicator -->
+<div class="ptr-indicator" id="ptrIndicator">⟳ 释放刷新行情</div>
 
 <script>
 // ============================================================
@@ -645,6 +700,117 @@ fetchPrices();
 fetchNews();
 setInterval(fetchPrices, 10000);
 setInterval(fetchNews, 300000); // 5min
+
+// ============================================================
+// BOTTOM NAV
+// ============================================================
+function setActiveNav(el) {
+    document.querySelectorAll('.bnav-item').forEach(a => a.classList.remove('active'));
+    el.classList.add('active');
+}
+
+// Auto-highlight on scroll
+const navSections = ['exchanges','prices','news','tutorial','faq'];
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY + 200;
+    for (let i = navSections.length - 1; i >= 0; i--) {
+        const sec = document.getElementById(navSections[i]);
+        if (sec && sec.offsetTop <= scrollY) {
+            document.querySelectorAll('.bnav-item').forEach((a, j) => {
+                a.classList.toggle('active', j === i);
+            });
+            break;
+        }
+    }
+}, {passive: true});
+
+// ============================================================
+// PWA INSTALL
+// ============================================================
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Show install banner after 5 seconds
+    setTimeout(() => {
+        if (!localStorage.getItem('cb_installed')) {
+            document.getElementById('installBanner').classList.add('show');
+        }
+    }, 5000);
+});
+
+document.getElementById('installBtn')?.addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const result = await deferredPrompt.userChoice;
+        if (result.outcome === 'accepted') {
+            localStorage.setItem('cb_installed', '1');
+        }
+        deferredPrompt = null;
+    } else {
+        // iOS - show instructions
+        alert('iOS 安装方法：\n1. 点击底部分享按钮 ⬆️\n2. 选择「添加到主屏幕」\n3. 点击「添加」');
+    }
+    document.getElementById('installBanner').classList.remove('show');
+});
+
+document.getElementById('installClose')?.addEventListener('click', () => {
+    document.getElementById('installBanner').classList.remove('show');
+    localStorage.setItem('cb_installed', '1');
+});
+
+// Show iOS install hint
+if (/iPhone|iPad/.test(navigator.userAgent) && !navigator.standalone) {
+    setTimeout(() => {
+        if (!localStorage.getItem('cb_installed')) {
+            document.getElementById('installBanner').classList.add('show');
+        }
+    }, 8000);
+}
+
+// ============================================================
+// PULL TO REFRESH
+// ============================================================
+let ptrStartY = 0;
+const ptrEl = document.getElementById('ptrIndicator');
+
+document.addEventListener('touchstart', (e) => {
+    if (window.scrollY === 0) ptrStartY = e.touches[0].clientY;
+}, {passive: true});
+
+document.addEventListener('touchmove', (e) => {
+    if (ptrStartY > 0 && window.scrollY === 0) {
+        const diff = e.touches[0].clientY - ptrStartY;
+        if (diff > 60) ptrEl.classList.add('show');
+        else ptrEl.classList.remove('show');
+    }
+}, {passive: true});
+
+document.addEventListener('touchend', () => {
+    if (ptrEl.classList.contains('show')) {
+        ptrEl.textContent = '⟳ 刷新中...';
+        fetchPrices();
+        fetchNews();
+        setTimeout(() => {
+            ptrEl.textContent = '✓ 已刷新';
+            setTimeout(() => {
+                ptrEl.classList.remove('show');
+                ptrEl.textContent = '⟳ 释放刷新行情';
+            }, 800);
+        }, 1000);
+    }
+    ptrStartY = 0;
+}, {passive: true});
+
+// ============================================================
+// SERVICE WORKER
+// ============================================================
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+        console.log('SW registered:', reg.scope);
+    }).catch(err => console.log('SW failed:', err));
+}
 </script>
 </body>
 </html>

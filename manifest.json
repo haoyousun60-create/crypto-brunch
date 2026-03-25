@@ -1,0 +1,22 @@
+{
+  "name": "加密早餐 CryptoBrunch",
+  "short_name": "加密早餐",
+  "description": "七大交易所对比 · 实时行情 · Odaily快讯 · 专属邀请码",
+  "start_url": "/crypto-brunch/",
+  "display": "standalone",
+  "background_color": "#08080f",
+  "theme_color": "#f0b90b",
+  "orientation": "portrait-primary",
+  "categories": ["finance", "news"],
+  "lang": "zh-CN",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {"name": "实时行情", "url": "/crypto-brunch/#prices", "description": "查看BTC/ETH等实时价格"},
+    {"name": "快讯", "url": "/crypto-brunch/#news", "description": "Odaily加密快讯"},
+    {"name": "交易所注册", "url": "/crypto-brunch/#exchanges", "description": "七大交易所邀请码注册"}
+  ]
+}

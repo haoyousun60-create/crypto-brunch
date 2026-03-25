@@ -5,31 +5,30 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>马上发财快讯</title>
 <meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤑</text></svg>">
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#f0b90b">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0a12;--c1:#13132a;--c2:#1c1c3a;--bd:#2a2a50;--tx:#eef;--g:#889;--gd:#f0b90b;--gn:#00d68f;--rd:#f6465d}
-body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans SC',sans-serif;background:var(--bg);color:var(--tx);line-height:1.65;padding-bottom:60px;overflow-x:hidden}
+:root{--bg:#f5f6fa;--c1:#fff;--c2:#f8f9fc;--bd:#e8eaef;--tx:#1a1a1a;--g:#667;--gd:#f0b90b;--gn:#0ecb81;--rd:#f6465d}
+body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans SC',sans-serif;background:var(--bg);color:var(--tx);line-height:1.5;padding-bottom:60px}
 a{color:inherit;text-decoration:none}
 .w{max-width:920px;margin:0 auto;padding:0 12px}
 
-/* NAV */
-header{position:sticky;top:0;z-index:99;background:rgba(10,10,18,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd);padding:8px 0}
+/* HEADER */
+header{background:#fff;border-bottom:1px solid var(--bd);padding:10px 0;position:sticky;top:0;z-index:99}
 header .w{display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:1.1em;font-weight:900}
+.logo{font-size:1.05em;font-weight:900}
 .logo em{font-style:normal;background:linear-gradient(135deg,var(--gd),#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .tabs{display:flex;gap:2px}
-.tab{font-size:.78em;padding:5px 11px;border-radius:7px;cursor:pointer;color:var(--g);transition:.2s}
+.tab{font-size:.75em;padding:4px 10px;border-radius:6px;cursor:pointer;color:var(--g);transition:.2s}
 .tab.on{background:var(--gd);color:#000;font-weight:700}
 
 /* TICKER */
-.tkr{overflow:hidden;background:var(--c1);border-bottom:1px solid var(--bd)}
-.tkr-in{display:flex;animation:tkr 12s linear infinite;white-space:nowrap}
-.tk{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-right:1px solid var(--bd);font-size:.82em}
+.tkr{overflow:hidden;background:#fff;border-bottom:1px solid var(--bd)}
+.tkr-in{display:flex;animation:tkr 15s linear infinite;white-space:nowrap}
+.tk{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;border-right:1px solid var(--bd);font-size:.78em}
 .tk b{font-weight:700}.tk .u{color:var(--gn)}.tk .d{color:var(--rd)}
 @keyframes tkr{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
@@ -37,67 +36,71 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 .pg{display:none}.pg.on{display:block}
 
 /* === NEWS === */
-.sh{padding:14px 0 8px;display:flex;justify-content:space-between;align-items:center}
-.sh h2{font-size:1.15em;font-weight:800}
+.sh{padding:12px 0 8px;display:flex;justify-content:space-between;align-items:center}
+.sh h2{font-size:1.1em;font-weight:800}
 .sh h2 em{font-style:normal;color:var(--gd)}
-.lv{font-size:.72em;color:var(--gn);display:flex;align-items:center;gap:4px}
-.lv i{width:6px;height:6px;background:var(--gn);border-radius:50%;animation:bl 1.5s infinite}
+.lv{font-size:.7em;color:var(--gn);display:flex;align-items:center;gap:3px}
+.lv i{width:5px;height:5px;background:var(--gn);border-radius:50%;animation:bl 1.5s infinite}
 @keyframes bl{50%{opacity:.2}}
-.ut{font-size:.7em;color:var(--g);margin-bottom:10px}
+.ut{font-size:.68em;color:var(--g);margin-bottom:8px}
 .nl{list-style:none}
-.ni{background:var(--c1);border:1px solid var(--bd);border-radius:11px;margin-bottom:7px;padding:13px;transition:.15s}
-.ni:first-child{border-color:var(--gd)40;box-shadow:0 0 8px var(--gd)10}
-.ni-t{font-size:.7em;color:var(--g);margin-bottom:4px}
-.ni-h{font-size:.9em;font-weight:600;line-height:1.5;margin-bottom:4px}
-.ni-d{font-size:.83em;color:var(--g);line-height:1.7}
-.ni-tags{display:flex;gap:3px;flex-wrap:wrap;margin-top:5px}
-.ni-tags span{font-size:.62em;padding:1px 6px;background:var(--c2);border-radius:3px;color:var(--gd)}
-.ne{text-align:center;padding:40px;color:var(--g)}
+.ni{background:#fff;border:1px solid var(--bd);border-radius:10px;margin-bottom:6px;padding:11px}
+.ni:first-child{border-color:var(--gd)50;box-shadow:0 0 6px var(--gd)15}
+.ni-t{font-size:.68em;color:var(--g);margin-bottom:3px}
+.ni-h{font-size:.88em;font-weight:600;line-height:1.45;margin-bottom:3px}
+.ni-d{font-size:.8em;color:var(--g);line-height:1.65}
+.ni-tags{display:flex;gap:2px;flex-wrap:wrap;margin-top:4px}
+.ni-tags span{font-size:.6em;padding:1px 5px;background:#f0f3ff;border-radius:3px;color:#3b5bdb}
+.ne{text-align:center;padding:35px;color:var(--g);font-size:.85em}
 
-/* === PRICES === */
-.rank-tabs{display:flex;gap:4px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px}
-.rank-tabs::-webkit-scrollbar{display:none}
-.rt{font-size:.76em;padding:5px 12px;border-radius:6px;background:var(--c1);border:1px solid var(--bd);cursor:pointer;white-space:nowrap;color:var(--g);transition:.2s}
-.rt.on{background:var(--gd);color:#000;border-color:var(--gd);font-weight:700}
-.pl{display:flex;flex-direction:column;gap:5px}
-.pr{display:flex;justify-content:space-between;align-items:center;background:var(--c1);border:1px solid var(--bd);border-radius:10px;padding:11px 13px}
-.pr:hover{border-color:var(--gd)30}
-.pr .l{display:flex;align-items:center;gap:9px}
-.pr .rk{font-size:.72em;color:var(--g);min-width:18px}
-.pr .ic{width:30px;height:30px;border-radius:50%;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:.95em}
-.pr .nm{font-weight:700;font-size:.9em}
-.pr .sy{font-size:.7em;color:var(--g)}
-.pr .r{text-align:right}
-.pr .prc{font-weight:600;font-size:.9em}
-.pr .chg{font-size:.78em;margin-top:1px;padding:1px 5px;border-radius:3px;display:inline-block}
-.pr .chg.u{background:var(--gn)15;color:var(--gn)}
-.pr .chg.d{background:var(--rd)15;color:var(--rd)}
+/* === PRICES (仿币安) === */
+.ptabs{display:flex;gap:3px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px}
+.ptabs::-webkit-scrollbar{display:none}
+.pt{font-size:.78em;padding:6px 14px;border-radius:6px;background:#fff;border:1px solid var(--bd);cursor:pointer;white-space:nowrap;color:var(--g);transition:.2s;font-weight:500}
+.pt.on{background:var(--gd);color:#000;border-color:var(--gd);font-weight:700}
+.phead{display:flex;padding:8px 12px;background:#fff;border-bottom:1px solid var(--bd);font-size:.7em;color:var(--g)}
+.phead span{flex:1;text-align:right}.phead span:first-child{text-align:left}
+.pl{display:flex;flex-direction:column}
+.pr{display:flex;align-items:center;padding:12px;background:#fff;border-bottom:1px solid var(--bd);transition:.15s}
+.pr:hover{background:var(--c2)}
+.pr .l{display:flex;align-items:center;gap:8px;flex:2;min-width:0}
+.pr .ic{width:28px;height:28px;border-radius:50%;background:#f5f6fa;display:flex;align-items:center;justify-content:center;font-size:.9em;flex-shrink:0}
+.pr .nm{font-weight:700;font-size:.88em;white-space:nowrap}
+.pr .sy{font-size:.68em;color:var(--g);margin-left:4px}
+.pr .tag{font-size:.65em;padding:1px 6px;background:#f0f3ff;border-radius:3px;color:#3b5bdb;margin-left:6px}
+.pr .vol{font-size:.68em;color:var(--g);margin-top:2px}
+.pr .r{flex:1;text-align:right;min-width:70px}
+.pr .prc{font-weight:700;font-size:.88em}
+.pr .cny{font-size:.65em;color:var(--g);margin-top:1px}
+.pr .chg{display:inline-block;padding:4px 10px;border-radius:4px;font-size:.78em;font-weight:600;margin-top:2px;min-width:72px;text-align:center}
+.pr .chg.u{background:rgba(14,203,129,.1);color:var(--gn)}
+.pr .chg.d{background:rgba(246,70,93,.1);color:var(--rd)}
 
 /* === EXCHANGES === */
-.el{display:flex;flex-direction:column;gap:7px;padding-bottom:16px}
-.ec{background:var(--c1);border:1px solid var(--bd);border-radius:11px;padding:14px;cursor:pointer;transition:.15s}
+.el{display:flex;flex-direction:column;gap:6px;padding-bottom:14px}
+.ec{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:12px;cursor:pointer}
 .ec:hover{border-color:var(--gd)40}
 .ec.tp{border-left:3px solid var(--gd)}
 .ec .top{display:flex;justify-content:space-between;align-items:center}
-.ec .inf{display:flex;align-items:center;gap:9px}
-.ec .ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.15em;font-weight:800}
-.ec .nm{font-weight:700;font-size:.9em}
-.ec .mt{font-size:.7em;color:var(--g);margin-top:1px}
-.ec .btn{padding:6px 14px;border-radius:7px;font-weight:700;font-size:.75em}
-.ec .det{margin-top:10px;padding-top:9px;border-top:1px solid var(--bd);display:none}
+.ec .inf{display:flex;align-items:center;gap:8px}
+.ec .ico{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.1em}
+.ec .nm{font-weight:700;font-size:.88em}
+.ec .mt{font-size:.68em;color:var(--g);margin-top:1px}
+.ec .btn{padding:5px 12px;border-radius:6px;font-weight:700;font-size:.72em}
+.ec .det{margin-top:8px;padding-top:8px;border-top:1px solid var(--bd);display:none}
 .ec.op .det{display:block}
 .ec .ft{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:2px}
-.ec .ft li{font-size:.76em;color:var(--g)}
+.ec .ft li{font-size:.72em;color:var(--g)}
 .ec .ft li::before{content:'✓ ';color:var(--gn)}
-.ec .cd{margin-top:7px;background:var(--c2);padding:7px 10px;border-radius:6px;font-size:.78em}
+.ec .cd{margin-top:6px;background:#f8f9fc;padding:6px 9px;border-radius:5px;font-size:.75em}
 .ec .cd b{color:var(--gn)}
 
 /* BOTTOM NAV */
-.bn{position:fixed;bottom:0;left:0;right:0;background:rgba(13,13,26,.97);backdrop-filter:blur(12px);border-top:1px solid var(--bd);padding:4px 0 env(safe-area-inset-bottom,4px);z-index:99}
+.bn{position:fixed;bottom:0;left:0;right:0;background:#fff;backdrop-filter:blur(12px);border-top:1px solid var(--bd);padding:4px 0;z-index:99}
 .bn>div{display:flex;justify-content:space-around;max-width:400px;margin:0 auto}
-.bt{display:flex;flex-direction:column;align-items:center;gap:1px;color:var(--g);font-size:.62em;padding:4px 12px;cursor:pointer;border:none;background:none}
+.bt{display:flex;flex-direction:column;align-items:center;gap:1px;color:var(--g);font-size:.6em;padding:3px 10px;cursor:pointer;border:none;background:none}
 .bt.on{color:var(--gd)}
-.bt .i{font-size:1.3em}
+.bt .i{font-size:1.25em}
 @media(min-width:768px){.bn{display:none}body{padding-bottom:0}}
 </style>
 </head>
@@ -123,21 +126,21 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 
 <!-- ========== 行情 ========== -->
 <div class="pg" id="p-prices"><div class="w">
-    <div class="sh"><h2>📊 <em>实时行情</em></h2><span style="font-size:.72em;color:var(--g)">10s刷新</span></div>
-    <div class="rank-tabs" id="rtabs">
-        <div class="rt on" data-r="all">全部</div>
-        <div class="rt" data-r="up">🔥 涨幅榜</div>
-        <div class="rt" data-r="down">💧 跌幅榜</div>
-        <div class="rt" data-r="hot">⚡ 热门</div>
-        <div class="rt" data-r="cap">💎 市值榜</div>
+    <div class="sh"><h2>📊 <em>行情榜单</em></h2></div>
+    <div class="ptabs" id="ptabs">
+        <div class="pt on" data-r="up">🔥 涨幅榜</div>
+        <div class="pt" data-r="down">💧 跌幅榜</div>
+        <div class="pt" data-r="hot">⚡ 热门榜</div>
+        <div class="pt" data-r="cap">💎 市值榜</div>
     </div>
+    <div class="phead"><span>名称 / 24H成交额</span><span>最新价</span><span>24H涨幅</span></div>
     <div class="pl" id="pl"></div>
 </div></div>
 
 <!-- ========== 交易所 ========== -->
 <div class="pg" id="p-ex"><div class="w">
     <div class="sh"><h2>🏦 <em>七大交易所</em></h2></div>
-    <p style="color:var(--g);font-size:.78em;margin-bottom:12px">邀请码注册永久减手续费 · 注册后无法补填</p>
+    <p style="color:var(--g);font-size:.75em;margin-bottom:10px">邀请码注册永久减手续费 · 注册后无法补填</p>
     <div class="el" id="el"></div>
 </div></div>
 
@@ -153,7 +156,6 @@ function go(p){
     document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
     document.getElementById('p-'+p)?.classList.add('on');
     document.querySelectorAll('[data-p]').forEach(x=>x.classList.toggle('on',x.dataset.p===p));
-    window.scrollTo(0,0);
 }
 document.getElementById('T').onclick=e=>{const t=e.target.closest('[data-p]');if(t)go(t.dataset.p)};
 document.getElementById('BN').onclick=e=>{const t=e.target.closest('[data-p]');if(t)go(t.dataset.p)};
@@ -174,18 +176,16 @@ function renderN(items){
         let ts='';
         if(x.pubDate){const m=Math.floor((now-new Date(x.pubDate).getTime())/60000);ts=m<1?'刚刚':m<60?m+'分钟前':m<1440?Math.floor(m/60)+'小时前':Math.floor(m/1440)+'天前'}
         const t=x.title||'',d=x.description||'';
-        const tags=[];
-        const td=t+d;
+        const tags=[];const td=t+d;
         if(/BTC|比特币/i.test(td))tags.push('BTC');if(/ETH|以太坊/i.test(td))tags.push('ETH');
         if(/SOL|Solana/i.test(td))tags.push('SOL');if(/BNB/i.test(td))tags.push('BNB');
         if(/币安|Binance/i.test(td))tags.push('币安');if(/ETF/i.test(td))tags.push('ETF');
-        if(/SEC|监管/i.test(td))tags.push('监管');if(/空投|airdrop/i.test(td))tags.push('空投');
+        if(/空投|airdrop/i.test(td))tags.push('空投');
         return`<li class="ni"><div class="ni-t">${ts}</div><div class="ni-h">${t}</div>${d&&d!==t?'<div class="ni-d">'+d+'</div>':''}${tags.length?'<div class="ni-tags">'+tags.map(g=>'<span>'+g+'</span>').join('')+'</div>':''}</li>`;
     }).join('');
 }
 
 // ==================== PRICES ====================
-// 扩展币种列表（含市值排名信息）
 const COINS=[
     {s:'BTCUSDT',n:'Bitcoin',sym:'BTC',i:'₿',cap:1,hot:1},
     {s:'ETHUSDT',n:'Ethereum',sym:'ETH',i:'Ξ',cap:2,hot:1},
@@ -210,7 +210,7 @@ const COINS=[
 ];
 
 let allPriceData=[];
-let currentRank='all';
+let currentRank='up';
 
 async function loadP(){
     try{
@@ -229,6 +229,17 @@ async function loadP(){
     }catch(e){}
 }
 
+function fmtVol(v){
+    if(v>=1e9)return'¥'+(v/1e8).toFixed(2)+'亿';
+    if(v>=1e7)return'¥'+(v/1e4).toFixed(0)+'万';
+    if(v>=1e4)return'¥'+(v/1e4).toFixed(1)+'万';
+    return'¥'+v.toFixed(0);
+}
+
+function fmtCny(p){
+    return'¥'+(p*7.2).toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
 function renderPrices(){
     let items=[...allPriceData];
     switch(currentRank){
@@ -236,38 +247,36 @@ function renderPrices(){
         case 'down': items.sort((a,b)=>a.chg-b.chg); break;
         case 'hot': items=items.filter(c=>c.hot).sort((a,b)=>b.vol-a.vol); break;
         case 'cap': items.sort((a,b)=>a.cap-b.cap); break;
-        default: break;
     }
-    document.getElementById('pl').innerHTML=items.map((c,idx)=>{
+    document.getElementById('pl').innerHTML=items.map(c=>{
         const u=c.chg>=0;
-        const ps=c.price>=1?'$'+c.price.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}):'$'+c.price.toFixed(8);
-        const rankLabel=currentRank==='cap'?'#'+c.cap:(idx+1);
-        return`<div class="pr"><div class="l"><span class="rk">${rankLabel}</span><div class="ic">${c.i}</div><div><div class="nm">${c.sym}</div><div class="sy">${c.n}</div></div></div><div class="r"><div class="prc">${ps}</div><span class="chg ${u?'u':'d'}">${u?'▲+':'▼'}${Math.abs(c.chg).toFixed(2)}%</span></div></div>`;
+        const ps=c.price>=1?c.price.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}):c.price.toFixed(8);
+        return`<div class="pr"><div class="l"><div class="ic">${c.i}</div><div><div class="nm">${c.sym}<span class="sy">/USDT</span>${c.hot?'<span class="tag">热门</span>':''}</div><div class="vol">${fmtVol(c.vol)}</div></div></div><div class="r"><div class="prc">${ps}</div><div class="cny">${fmtCny(c.price)}</div></div><div class="r"><span class="chg ${u?'u':'d'}">${u?'+':''}${c.chg.toFixed(2)}%</span></div></div>`;
     }).join('');
 }
 
-document.getElementById('rtabs').onclick=e=>{
+document.getElementById('ptabs').onclick=e=>{
     const t=e.target.closest('[data-r]');
     if(!t)return;
     currentRank=t.dataset.r;
-    document.querySelectorAll('.rt').forEach(x=>x.classList.toggle('on',x.dataset.r===currentRank));
+    document.querySelectorAll('.pt').forEach(x=>x.classList.toggle('on',x.dataset.r===currentRank));
     renderPrices();
 };
 
 // ==================== EXCHANGES ====================
 const EX=[
-{id:'binance',nm:'币安 Binance',ic:'₿',cl:'#F0B90B',url:'https://accounts.bmwweb.academy/register?ref=GFPDGUGI',cd:'GFPDGUGI',tp:1,ds:'全球#1 流动性最强',fe:'0.1%',dc:'20%减免',rk:'#1',cn:'500+',ft:['日交易量$200亿+','C2C支付宝/微信','SAFU基金保障','Launchpad打新','Alpha积分空投','币安学院']},
-{id:'okx',nm:'欧易 OKX',ic:'⬡',cl:'#FFFFFF',url:'https://www.firgrouxywebb.com/join/789789',cd:'789789',tp:1,ds:'合约最强 Web3钱包',fe:'0.1%',dc:'手续费减免',rk:'#2-3',cn:'350+',ft:['衍生品全球领先','OKX Web3钱包','交易机器人/跟单','P2P多种支付']},
-{id:'gate',nm:'Gate.io',ic:'G',cl:'#2354E6',url:'https://www.gateport.business/share/XCCOBGVJ',cd:'XCCOBGVJ',ds:'1700+币种 新币最快',fe:'0.2%',dc:'手续费减免',rk:'#5-8',cn:'1700+',ft:['全网最多币种','新币上线最快','Startup打新','量化工具']},
-{id:'htx',nm:'火币 HTX',ic:'H',cl:'#1C63F2',url:'https://www.htx.com.gt/invite/zh-cn/1h?invite_code=vafqb223',cd:'vafqb223',ds:'老牌稳定 2013创立',fe:'0.2%',dc:'手续费减免',rk:'#5-10',cn:'600+',ft:['2013年创立','中文社区深厚','Primelist首发','全球合规']},
-{id:'bitget',nm:'Bitget',ic:'B',cl:'#00D4AA',url:'https://partner.hdmune.cn/bg/7n43xlxz',cd:'7n43xlxz',ds:'跟单交易全球#1',fe:'0.1%',dc:'手续费减免',rk:'#4-6',cn:'800+',ft:['跟单系统#1','合约体验丝滑','增长最快','BGB生态']},
-{id:'bitmart',nm:'BitMart',ic:'M',cl:'#00B897',url:'https://www.bm-link.com/zh-CN/invite/baofu2026',cd:'baofu2026',ds:'Meme币首发 小币天堂',fe:'0.25%',dc:'手续费减免',rk:'#10-15',cn:'1000+',ft:['小币种上线快','Meme币首发多','界面简洁','多种理财']},
-{id:'weex',nm:'WEEX',ic:'W',cl:'#6366F1',url:'https://weabaxx.site/zh-CN/register?vipCode=baofu2026',cd:'baofu2026',ds:'费率最低0.05%',fe:'0.05%',dc:'手续费减免',rk:'新锐',cn:'300+',ft:['费率行业最低','新人福利丰厚','合约深度好','跟单+量化']}
+{nm:'币安 Binance',ic:'₿',cl:'#F0B90B',url:'https://accounts.bmwweb.academy/register?ref=GFPDGUGI',cd:'GFPDGUGI',tp:1,ds:'全球#1 流动性最强',fe:'0.1%',dc:'20%减免',rk:'#1',cn:'500+',ft:['日交易量$200亿+','C2C支付宝/微信','SAFU基金保障','Launchpad打新','Alpha积分空投']},
+{nm:'欧易 OKX',ic:'⬡',cl:'#333',url:'https://www.firgrouxywebb.com/join/789789',cd:'789789',tp:1,ds:'合约最强 Web3钱包',fe:'0.1%',dc:'手续费减免',rk:'#2-3',cn:'350+',ft:['衍生品全球领先','OKX Web3钱包','交易机器人/跟单','P2P多种支付']},
+{nm:'Gate.io',ic:'G',cl:'#2354E6',url:'https://www.gateport.business/share/XCCOBGVJ',cd:'XCCOBGVJ',ds:'1700+币种 新币最快',fe:'0.2%',dc:'手续费减免',rk:'#5-8',cn:'1700+',ft:['全网最多币种','新币上线最快','Startup打新','量化工具']},
+{nm:'火币 HTX',ic:'H',cl:'#1C63F2',url:'https://www.htx.com.gt/invite/zh-cn/1h?invite_code=vafqb223',cd:'vafqb223',ds:'老牌稳定 2013创立',fe:'0.2%',dc:'手续费减免',rk:'#5-10',cn:'600+',ft:['2013年创立','中文社区深厚','Primelist首发','全球合规']},
+{nm:'Bitget',ic:'B',cl:'#00D4AA',url:'https://partner.hdmune.cn/bg/7n43xlxz',cd:'7n43xlxz',ds:'跟单交易全球#1',fe:'0.1%',dc:'手续费减免',rk:'#4-6',cn:'800+',ft:['跟单系统#1','合约体验丝滑','增长最快','BGB生态']},
+{nm:'BitMart',ic:'M',cl:'#00B897',url:'https://www.bm-link.com/zh-CN/invite/baofu2026',cd:'baofu2026',ds:'Meme币首发 小币天堂',fe:'0.25%',dc:'手续费减免',rk:'#10-15',cn:'1000+',ft:['小币种上线快','Meme币首发多','界面简洁','多种理财']},
+{nm:'WEEX',ic:'W',cl:'#6366F1',url:'https://weabaxx.site/zh-CN/register?vipCode=baofu2026',cd:'baofu2026',ds:'费率最低0.05%',fe:'0.05%',dc:'手续费减免',rk:'新锐',cn:'300+',ft:['费率行业最低','新人福利丰厚','合约深度好','跟单+量化']}
 ];
 
 document.getElementById('el').innerHTML=EX.map(x=>`
 <div class="ec${x.tp?' tp':''}" onclick="this.classList.toggle('op')">
-<div class="top"><div class="inf"><div class="ico" style="background:${x.cl}20;color:${x.cl}">${x.ic}</div><div><div class="nm">${x.nm}</div><div class="mt">${x.rk} · ${x.cn}币种 · ${x.fe} · ${x.ds}</div></div></div>
+<div class="top"><div class="inf"><div class="ico" style="background:${x.cl}15;color:${x.cl}">${x.ic}</div><div><div class="nm">${x.nm}</div><div class="mt">${x.rk} · ${x.cn}币种 · ${x.fe} · ${x.ds}</div></div></div>
 <a href="${x.url}" target="_blank" class="btn" style="background:${x.cl};color:${x.cl==='#FFFFFF'||x.cl==='#F0B90B'?'#000':'#fff'}" onclick="event.stopPropagation()">注册</a></div>
 <div class="det"><ul class="ft">${x.ft.map(f=>'<li>'+f+'</li>').join('')}</ul>
 <div class="cd">邀请码 <b>${x.cd}</b> · ${x.dc}</div></div>

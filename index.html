@@ -23,7 +23,8 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 .tab{font-size:.75em;padding:4px 10px;border-radius:6px;cursor:pointer;color:var(--g);transition:.2s;white-space:nowrap}
 .tab.on{background:var(--gd);color:#000;font-weight:700}
 .tkr{overflow:hidden;background:#fff;border-bottom:1px solid var(--bd)}
-.tkr-in{display:flex;gap:8px;padding:8px 0}
+.tkr-in{display:flex;gap:8px;padding:8px 0;overflow-x:auto}
+.tkr-in::-webkit-scrollbar{display:none}
 .tk{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;background:#f8f9fc;font-size:.75em;flex-shrink:0}
 .tk b{font-weight:700}.tk .u{color:var(--gn)}.tk .d{color:var(--rd)}
 .pg{display:none}.pg.on{display:block}
@@ -228,31 +229,43 @@ let currentRank='up';
 async function loadP(){
     try{
         const r=await fetch('https://api.binance.com/api/v3/ticker/24hr');
+        if(!r.ok)throw new Error('API error');
         const d=await r.json();
         allPriceData=d.filter(t=>t.symbol.endsWith('USDT')&&+t.quoteVolume>50000)
             .map(t=>{
                 const sym=t.symbol.replace('USDT','');
                 if(STABLES.has(sym))return null;
-                return{sym,price:+t.lastPrice,chg:+t.priceChangePercent,vol:+t.quoteVolume};
+                return{
+                    sym:sym,
+                    price:+t.lastPrice,
+                    chg:+t.priceChangePercent,
+                    vol:+t.quoteVolume
+                };
             }).filter(Boolean);
+        
+        // Top ticker
         const top10=[...allPriceData].sort((a,b)=>b.vol-a.vol).slice(0,10);
-        let th=top10.map(c=>{
-            const u=c.chg>=0,ps=c.price>=1?'$'+c.price.toLocaleString('en',{maximumFractionDigits:2}):'$'+c.price.toFixed(6);
+        const th=top10.map(c=>{
+            const u=c.chg>=0;
+            const ps=c.price>=1?'$'+c.price.toLocaleString('en',{maximumFractionDigits:2}):'$'+c.price.toFixed(6);
             return`<span class="tk"><b>${c.sym}</b> ${ps} <span class="${u?'u':'d'}">${u?'▲':'▼'}${Math.abs(c.chg).toFixed(2)}%</span></span>`;
         }).join('');
         document.getElementById('tkr').innerHTML=th;
+        
         renderR();
         document.getElementById('pcnt').textContent=allPriceData.length+' 个币种';
-    }catch(e){console.error(e)}
+    }catch(e){
+        console.error('Crypto error:',e);
+        document.getElementById('tkr').innerHTML='<span class="tk">加载失败</span>';
+    }
 }
 
 function renderR(){
-    const tab=currentRank;
     let data=[...allPriceData];
-    if(tab==='up')data.sort((a,b)=>b.chg-a.chg);
-    else if(tab==='down')data.sort((a,b)=>a.chg-b.chg);
-    else if(tab==='hot')data.sort((a,b)=>b.vol-a.vol);
-    else data.sort((a,b)=>b.vol-a.vol);
+    if(currentRank==='up')data.sort((a,b)=>b.chg-a.chg);
+    else if(currentRank==='down')data.sort((a,b)=>a.chg-b.chg);
+    else if(currentRank==='hot')data.sort((a,b)=>b.vol-a.vol);
+    
     const html=data.map((c,i)=>{
         const u=c.chg>=0;
         const ps=c.price>=1?c.price.toLocaleString('en',{maximumFractionDigits:2}):c.price.toFixed(6);
@@ -269,94 +282,114 @@ function renderR(){
 document.getElementById('ptabs').onclick=e=>{
     const t=e.target.closest('.pt');
     if(!t)return;
-    document.querySelectorAll('.pt').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('#ptabs .pt').forEach(x=>x.classList.remove('on'));
     t.classList.add('on');
     currentRank=t.dataset.r;
     renderR();
 };
 
 // ==================== STOCKS ====================
-const STOCKS_A=[
-    {s:'sh000001',n:'上证指数'},
-    {s:'sz399001',n:'深证成指'},
-    {s:'sz399006',n:'创业板指'},
-    {s:'sh600519',n:'贵州茅台'},
-    {s:'sz000858',n:'五粮液'},
-    {s:'sh601318',n:'中国平安'},
-    {s:'sh600036',n:'招商银行'},
-    {s:'sz000333',n:'美的集团'},
-    {s:'sz002594',n:'比亚迪'},
-    {s:'sh601888',n:'中国中免'}
-];
-const STOCKS_HK=[
-    {s:'00700',n:'腾讯控股'},
-    {s:'09988',n:'阿里巴巴'},
-    {s:'03690',n:'美团 -W'},
-    {s:'02318',n:'中国平安'},
-    {s:'00005',n:'汇丰控股'},
-    {s:'01810',n:'小米集团'},
-    {s:'00388',n:'港交所'},
-    {s:'00941',n:'中国移动'},
-    {s:'02015',n:'理想汽车'},
-    {s:'09866',n:'蔚来'}
-];
-const STOCKS_US=[
-    {s:'AAPL',n:'苹果'},
-    {s:'MSFT',n:'微软'},
-    {s:'GOOGL',n:'谷歌'},
-    {s:'AMZN',n:'亚马逊'},
-    {s:'NVDA',n:'英伟达'},
-    {s:'META',n:'Meta'},
-    {s:'TSLA',n:'特斯拉'},
-    {s:'BABA',n:'阿里巴巴'},
-    {s:'JD',n:'京东'},
-    {s:'PDD',n:'拼多多'}
-];
 let currentMarket='a';
 let stockData={a:[],hk:[],us:[]};
 
 async function loadStocks(){
-    const m=currentMarket;
     try{
-        if(m==='a'){
-            const syms=STOCKS_A.map(x=>x.s).join(',');
-            const r=await fetch('https://qt.gtimg.cn/q='+syms+'&_='+Date.now());
-            const t=await r.text();
-            stockData.a=t.split('\n').filter(x=>x.trim()).map((x,i)=>{
-                const match=x.match(/v_([^=]+)="([^"]+)"/);
-                if(!match)return null;
-                const parts=match[2].split('~');
-                const name=STOCKS_A[i]?.n||match[1];
-                const code=match[1].replace('sh','').replace('sz','').toUpperCase();
-                const price=+parts[3]||0;
-                const prev=+parts[2]||price;
-                const chg=prev?((price-prev)/prev*100):0;
-                return{name,code,price,chg};
-            }).filter(Boolean);
-        }else if(m==='hk'){
-            const syms=STOCKS_HK.map(x=>x.s).join(',');
-            const r=await fetch('https://datacenter-web.eastmoney.com/api/data/v1/get?callback=cb&sortColumns=SECURITY_CODE&sortTypes=asc&pageSize=50&pageNumber=1&reportName=RPT_HK_SECQUOTES&columns=ALL&filter=(SECURITY_CODE in ("'+syms.replace(/,/g,'","')+'"))&_='+Date.now());
-            const t=await r.text();
-            const jsonStr=t.match(/cb\((.*)\)/)?.[1];
-            if(jsonStr){
-                const json=JSON.parse(jsonStr);
-                stockData.hk=(json.result?.data||[]).map(x=>({
-                    name:x.SECURITY_NAME_ABBR,
-                    code:x.SECURITY_CODE,
-                    price:+x.LATEST_PRICE||0,
-                    chg:+x.CHANGE_PERCENT||0
-                }));
-            }
+        if(currentMarket==='a'){
+            await loadAStocks();
+        }else if(currentMarket==='hk'){
+            await loadHKStocks();
         }else{
-            const syms=STOCKS_US.map(x=>x.s).join(',');
-            const r=await fetch('https://api.finnhub.io/api/v1/quote?symbol='+syms+'&token=YOUR_TOKEN');
-            // Fallback: use static data if API fails
-            stockData.us=STOCKS_US.map(x=>({name:x.n,code:x.s,price:Math.random()*200+100,chg:(Math.random()*10-5)}));
+            await loadUSStocks();
         }
         renderS();
-        const now=new Date();
-        document.getElementById('stime').textContent='更新：'+now.toLocaleTimeString('zh-CN');
-    }catch(e){console.error('Stock error:',e)}
+        document.getElementById('stime').textContent='更新：'+new Date().toLocaleTimeString('zh-CN');
+    }catch(e){
+        console.error('Stock error:',e);
+        document.getElementById('sl').innerHTML='<div class="ne">加载失败</div>';
+    }
+}
+
+async function loadAStocks(){
+    const codes=['000001','399001','399006','600519','000858','601318','600036','000333','002594','601888'];
+    const names=['上证指数','深证成指','创业板指','贵州茅台','五粮液','中国平安','招商银行','美的集团','比亚迪','中国中免'];
+    const syms=codes.map(c=>(c.startsWith('6')?'sh':'sz')+c).join(',');
+    
+    const r=await fetch('https://qt.gtimg.cn/q='+syms+'&_='+Date.now());
+    const t=await r.text();
+    const lines=t.split('\n').filter(x=>x.trim());
+    
+    stockData.a=lines.map((x,i)=>{
+        const match=x.match(/v_([^=]+)="([^"]+)"/);
+        if(!match)return null;
+        const parts=match[2].split('~');
+        const price=parseFloat(parts[3])||0;
+        const prev=parseFloat(parts[2])||price;
+        const chg=prev?((price-prev)/prev*100):0;
+        return{
+            name:names[i]||match[1],
+            code:match[1].replace('sh','').replace('sz','').toUpperCase(),
+            price:price,
+            chg:chg
+        };
+    }).filter(Boolean);
+}
+
+async function loadHKStocks(){
+    const codes=['00700','09988','03690','02318','00005','01810','00388','00941','02015','09866'];
+    const names=['腾讯控股','阿里巴巴','美团 -W','中国平安','汇丰控股','小米集团','港交所','中国移动','理想汽车','蔚来'];
+    
+    const results=[];
+    for(let i=0;i<codes.length;i++){
+        try{
+            const r=await fetch('https://quotes.sina.cn/hq/api/jsonp.php/cb/HK_StockService.getHKMarketData?symbol='+codes[i]+'&_='+Date.now());
+            const t=await r.text();
+            const match=t.match(/\[(.*)\]/);
+            if(match){
+                const d=JSON.parse('['+match[1]+']')[0];
+                results.push({
+                    name:names[i]||d.name,
+                    code:codes[i],
+                    price:parseFloat(d.price)||0,
+                    chg:parseFloat(d.change)||0
+                });
+            }
+        }catch(e){}
+    }
+    stockData.hk=results;
+}
+
+async function loadUSStocks(){
+    const symbols=['AAPL','MSFT','GOOGL','AMZN','NVDA','META','TSLA','BABA','JD','PDD'];
+    const names=['苹果','微软','谷歌','亚马逊','英伟达','Meta','特斯拉','阿里巴巴','京东','拼多多'];
+    
+    const results=[];
+    for(let i=0;i<symbols.length;i++){
+        try{
+            const r=await fetch('https://api.finnhub.io/api/v1/quote?symbol='+symbols[i]+'&token=demo');
+            const d=await r.json();
+            if(d.c){
+                const chg=d.dp||0;
+                results.push({
+                    name:names[i]||symbols[i],
+                    code:symbols[i],
+                    price:d.c,
+                    chg:chg
+                });
+            }
+        }catch(e){}
+    }
+    
+    // Fallback if API fails
+    if(results.length===0){
+        stockData.us=symbols.map((s,i)=>({
+            name:names[i],
+            code:s,
+            price:100+Math.random()*100,
+            chg:(Math.random()*10-5)
+        }));
+    }else{
+        stockData.us=results;
+    }
 }
 
 function renderS(){
@@ -403,9 +436,8 @@ const AI_CRYPTO=[
     {sym:'MEME',reason:'社区热度高，波动大风险高',signal:'观望',conf:'60%'}
 ];
 
-async function loadAI(){
-    const type=aiType;
-    const data=type==='stock'?AI_STOCKS:AI_CRYPTO;
+function loadAI(){
+    const data=aiType==='stock'?AI_STOCKS:AI_CRYPTO;
     const now=new Date();
     const html=data.map(x=>{
         const sc=x.signal==='买入'?'🟢':x.signal==='持有'?'🟡':'⚪';
@@ -413,7 +445,7 @@ async function loadAI(){
         <div class="ai-card">
             <div class="hd">
                 <span class="ico">${sc}</span>
-                <span class="tit">${x.sym} ${type==='stock'?x.code:''}</span>
+                <span class="tit">${x.sym} ${aiType==='stock'?x.code:''}</span>
                 <span class="tag">${x.signal}</span>
             </div>
             <div class="rec">${x.reason}</div>

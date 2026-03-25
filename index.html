@@ -2,13 +2,14 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>马上发财快讯 | 实时快讯 · 行情 · 交易所</title>
-    <meta name="description" content="加密货币实时快讯、BTC/ETH行情、七大交易所对比。实时快讯秒级推送，专属邀请码永久省手续费。">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>马上发财快讯 | 加密货币实时快讯 · 行情 · 交易所</title>
+    <meta name="description" content="马上发财快讯 - 加密货币实时快讯、BTC/ETH行情、币安生态、七大交易所对比。快讯秒级推送，邀请码注册永久省手续费。">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta property="og:title" content="马上发财快讯 | 加密货币实时快讯">
     <meta property="og:description" content="实时快讯+行情+七大交易所对比，邀请码注册永久省手续费。">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤑</text></svg>">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
@@ -16,424 +17,317 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="马上发财快讯">
     <meta name="theme-color" content="#f0b90b">
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        :root{--bg:#08080f;--card:#12121f;--card2:#1a1a2e;--border:#252540;--text:#e8e8f0;--gray:#8888a0;--gold:#f0b90b;--orange:#ff8c00;--green:#00d68f;--red:#f6465d;--blue:#3b82f6}
-        html{scroll-behavior:smooth}
-        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding-bottom:70px}
-        a{color:inherit;text-decoration:none}
-        .container{max-width:900px;margin:0 auto;padding:0 16px}
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#08080f;--card:#12121f;--card2:#1a1a2e;--border:#252540;--text:#e8e8f0;--gray:#8888a0;--gold:#f0b90b;--orange:#ff8c00;--green:#00d68f;--red:#f6465d;--blue:#3b82f6}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding-bottom:68px}
+a{color:inherit;text-decoration:none}
+.container{max-width:900px;margin:0 auto;padding:0 14px}
 
-        /* === TICKER === */
-        .ticker-wrap{background:var(--card);padding:6px 0;overflow:hidden;border-bottom:1px solid var(--border)}
-        .ticker{display:flex;animation:tickScroll 35s linear infinite;white-space:nowrap}
-        .ticker-item{padding:0 24px;font-size:.82em;font-weight:500}
-        @keyframes tickScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(8,8,15,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:10px 0}
+.nav .container{display:flex;justify-content:space-between;align-items:center}
+.nav-brand{font-size:1.15em;font-weight:800}
+.nav-brand span{background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-tabs{display:flex;gap:2px}
+.nav-tab{color:var(--gray);font-size:.8em;padding:5px 12px;border-radius:8px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.nav-tab.active{color:#000;background:var(--gold);font-weight:700}
 
-        /* === NAV === */
-        .nav{position:sticky;top:0;z-index:100;background:rgba(8,8,15,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 0}
-        .nav .container{display:flex;justify-content:space-between;align-items:center}
-        .nav-brand{font-size:1.2em;font-weight:800}
-        .nav-brand span{background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .nav-tabs{display:flex;gap:4px}
-        .nav-tab{color:var(--gray);font-size:.85em;padding:6px 14px;border-radius:8px;transition:all .2s;cursor:pointer}
-        .nav-tab.active{color:var(--text);background:var(--card2)}
-        .nav-tab:hover{color:var(--text)}
+/* LIVE BAR */
+.live-bar{background:var(--card);border-bottom:1px solid var(--border);padding:10px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.live-bar::-webkit-scrollbar{display:none}
+.live-inner{display:flex;gap:14px;padding:0 14px;min-width:max-content}
+.lc{text-align:center;min-width:72px}
+.lc .s{font-weight:700;font-size:.82em}
+.lc .p{font-size:.78em;margin-top:1px}
+.lc .c{font-size:.72em;margin-top:1px}
+.up{color:var(--green)}.dn{color:var(--red)}
 
-        /* === LIVE BAR === */
-        .live-bar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
-        .live-bar::-webkit-scrollbar{display:none}
-        .live-bar-inner{display:flex;gap:16px;min-width:max-content;padding:0 16px}
-        .live-coin{text-align:center;min-width:80px}
-        .live-coin .sym{font-weight:700;font-size:.88em}
-        .live-coin .price{font-size:.82em;margin-top:2px}
-        .live-coin .chg{font-size:.75em;margin-top:1px}
-        .up{color:var(--green)}.down{color:var(--red)}
+/* PAGES */
+.page{display:none}.page.active{display:block}
 
-        /* === PAGE SECTIONS === */
-        .page{display:none}
-        .page.active{display:block}
+/* ===== NEWS (主页) ===== */
+.sec-head{padding:16px 0 10px;display:flex;justify-content:space-between;align-items:center}
+.sec-head h2{font-size:1.2em;font-weight:800}
+.sec-head h2 em{font-style:normal;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.live-dot{display:flex;align-items:center;gap:5px;font-size:.75em;color:var(--green)}
+.live-dot i{width:7px;height:7px;background:var(--green);border-radius:50%;display:inline-block;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.updated{font-size:.72em;color:var(--gray);margin-bottom:12px}
+.nlist{list-style:none}
+.ni{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden;transition:border-color .2s}
+.ni:active{transform:scale(.998)}
+.ni.open{border-color:var(--gold)40}
+.nh{padding:14px;display:flex;gap:10px;cursor:pointer}
+.nt-badge{min-width:48px;padding-top:1px}
+.nt-badge span{font-size:.7em;color:var(--gray);white-space:nowrap}
+.nb{flex:1}
+.ntitle{font-size:.92em;font-weight:600;line-height:1.55}
+.ntags{margin-top:5px;display:flex;gap:4px;flex-wrap:wrap}
+.ntag{font-size:.65em;padding:1px 7px;background:var(--card2);border-radius:4px;color:var(--gold)}
+.narrow{color:var(--gray);font-size:.7em;transition:transform .3s;padding-top:1px}
+.ni.open .narrow{transform:rotate(180deg)}
+.nexp{max-height:0;overflow:hidden;transition:max-height .3s}
+.ni.open .nexp{max-height:800px}
+.ndesc{padding:0 14px 14px;font-size:.86em;color:var(--gray);line-height:1.75;border-top:1px solid var(--border);margin:0 14px;padding-top:10px}
+.ndesc a{color:var(--gold);font-weight:600}
+.ni:first-child{animation:flash .5s}
+@keyframes flash{0%{border-color:var(--gold);box-shadow:0 0 12px var(--gold)20}100%{border-color:var(--border);box-shadow:none}}
+.nempty{text-align:center;padding:50px 20px;color:var(--gray)}
 
-        /* === NEWS PAGE (MAIN) === */
-        .news-header{padding:20px 0 12px;display:flex;justify-content:space-between;align-items:center}
-        .news-header h2{font-size:1.3em;font-weight:800}
-        .news-header h2 span{background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .news-live{display:flex;align-items:center;gap:6px;font-size:.78em;color:var(--green)}
-        .news-live .dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 1.5s infinite}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-        .news-updated{font-size:.75em;color:var(--gray);margin-bottom:16px}
+/* ===== BINANCE ZONE ===== */
+.bzone{background:linear-gradient(135deg,#f0b90b10,#ff8c0008);border:1px solid var(--gold)30;border-radius:14px;padding:18px;margin-bottom:16px}
+.bzone h3{font-size:1em;font-weight:800;color:var(--gold);margin-bottom:12px}
+.bzone-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bzone-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;transition:all .2s}
+.bzone-item:hover{border-color:var(--gold);transform:translateY(-2px)}
+.bzone-item .bi{font-size:1.3em;margin-bottom:4px}
+.bzone-item .bn{font-size:.82em;font-weight:600}
+.bzone-item .bd{font-size:.7em;color:var(--gray);margin-top:2px}
+@media(min-width:500px){.bzone-grid{grid-template-columns:repeat(4,1fr)}}
 
-        .news-list{list-style:none}
-        .news-item{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:all .2s}
-        .news-item:hover{border-color:var(--gold)30}
-        .news-item:active{transform:scale(.995)}
-        .news-head{padding:16px;cursor:pointer;display:flex;gap:12px}
-        .news-time-badge{min-width:52px;text-align:center;padding-top:2px}
-        .news-time-badge .t{font-size:.72em;color:var(--gray);white-space:nowrap}
-        .news-body{flex:1}
-        .news-title{font-size:.95em;font-weight:600;line-height:1.6}
-        .news-tags{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
-        .news-tag{font-size:.7em;padding:2px 8px;background:var(--card2);border-radius:4px;color:var(--gray)}
-        .news-expand{max-height:0;overflow:hidden;transition:max-height .3s ease}
-        .news-item.open .news-expand{max-height:600px}
-        .news-desc{padding:0 16px 16px;font-size:.9em;color:var(--gray);line-height:1.8;border-top:1px solid var(--border);margin:0 16px;padding-top:12px}
-        .news-desc a{color:var(--gold);font-weight:600}
-        .news-arrow{color:var(--gray);font-size:.75em;transition:transform .3s;min-width:20px;text-align:center;padding-top:2px}
-        .news-item.open .news-arrow{transform:rotate(180deg)}
+/* ===== PRICES ===== */
+.plist{display:flex;flex-direction:column;gap:6px}
+.pr{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;transition:border-color .2s}
+.pr:hover{border-color:var(--gold)30}
+.pl{display:flex;align-items:center;gap:10px}
+.pi{width:34px;height:34px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:1em}
+.pn{font-weight:700;font-size:.95em}
+.ps{font-size:.72em;color:var(--gray)}
+.pv{font-weight:600;font-size:.95em}
+.pc{font-size:.78em;margin-top:1px}
 
-        .news-loading{text-align:center;padding:60px 20px;color:var(--gray)}
-        .news-empty{text-align:center;padding:40px;color:var(--gray);font-size:.9em}
+/* ===== EXCHANGES ===== */
+.elist{display:flex;flex-direction:column;gap:8px;padding-bottom:20px}
+.ec{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all .2s;cursor:pointer}
+.ec:hover,.ec.open{border-color:var(--gold)40}
+.ec.top{border-left:3px solid var(--gold)}
+.erow{display:flex;justify-content:space-between;align-items:center}
+.einfo{display:flex;align-items:center;gap:10px}
+.eico{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2em;font-weight:800}
+.en{font-weight:700;font-size:.95em}
+.em{font-size:.72em;color:var(--gray);margin-top:1px}
+.ebtn{padding:7px 16px;border-radius:8px;font-weight:700;font-size:.78em;color:#fff;display:inline-block}
+.edet{margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:none}
+.ec.open .edet{display:block}
+.ef{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.ef li{font-size:.78em;color:var(--gray);padding:1px 0}
+.ef li::before{content:'✓ ';color:var(--green)}
+.ecode{margin-top:8px;background:var(--card2);padding:8px 12px;border-radius:8px;font-size:.82em;display:flex;justify-content:space-between;align-items:center}
+.ecode strong{color:var(--green)}
 
-        /* Flash highlight for new items */
-        .news-item.flash{animation:newsFlash .6s ease}
-        @keyframes newsFlash{0%{background:var(--gold)10;border-color:var(--gold)}100%{background:transparent}}
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(18,18,31,.97);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:5px 0 env(safe-area-inset-bottom,5px);z-index:200}
+.bnav-in{display:flex;justify-content:space-around;max-width:450px;margin:0 auto}
+.bi-tab{display:flex;flex-direction:column;align-items:center;gap:1px;color:var(--gray);font-size:.65em;padding:5px 14px;cursor:pointer;border:none;background:none;transition:color .2s}
+.bi-tab.active{color:var(--gold)}
+.bi-tab .ico{font-size:1.35em}
 
-        /* === PRICES PAGE === */
-        .prices-header{padding:20px 0 16px}
-        .prices-header h2{font-size:1.3em;font-weight:800}
-        .prices-header h2 span{background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .price-list{display:flex;flex-direction:column;gap:8px}
-        .price-row{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;transition:all .2s}
-        .price-row:hover{border-color:var(--gold)30}
-        .price-left{display:flex;align-items:center;gap:12px}
-        .price-icon{width:36px;height:36px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:1.1em}
-        .price-name{font-weight:700;font-size:1em}
-        .price-sym{font-size:.78em;color:var(--gray)}
-        .price-right{text-align:right}
-        .price-val{font-weight:600;font-size:1em}
-        .price-chg{font-size:.82em;margin-top:2px}
+/* INSTALL */
+.ibanner{display:none;position:fixed;bottom:58px;left:8px;right:8px;background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;padding:10px 14px;border-radius:10px;z-index:300;box-shadow:0 4px 20px rgba(0,0,0,.5);align-items:center;justify-content:space-between;gap:8px}
+.ibanner.show{display:flex}
+.ibanner .it{font-weight:700;font-size:.85em}
+.ibanner .is{font-size:.7em;opacity:.8}
+.ibtn{background:#000;color:var(--gold);border:none;padding:7px 14px;border-radius:7px;font-weight:700;cursor:pointer;font-size:.78em}
+.iclose{background:none;border:none;color:#000;font-size:1.1em;cursor:pointer}
 
-        /* === EXCHANGES PAGE === */
-        .ex-header-sec{padding:20px 0 16px}
-        .ex-header-sec h2{font-size:1.3em;font-weight:800}
-        .ex-header-sec h2 span{background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .ex-header-sec p{color:var(--gray);font-size:.88em;margin-top:4px}
-        .ex-list{display:flex;flex-direction:column;gap:10px}
-        .ex-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;transition:all .2s}
-        .ex-card:hover{border-color:var(--gold)30}
-        .ex-card.top{border-color:var(--gold)50}
-        .ex-top-row{display:flex;justify-content:space-between;align-items:center}
-        .ex-info{display:flex;align-items:center;gap:12px}
-        .ex-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3em;font-weight:800}
-        .ex-name{font-weight:700;font-size:1em}
-        .ex-meta{font-size:.75em;color:var(--gray);margin-top:2px}
-        .ex-btn{padding:8px 18px;border-radius:8px;font-weight:700;font-size:.82em;color:#fff;display:inline-block;transition:all .2s}
-        .ex-btn:hover{filter:brightness(1.2);transform:scale(1.03)}
-        .ex-details{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:none}
-        .ex-card.open .ex-details{display:block}
-        .ex-features{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:4px}
-        .ex-features li{font-size:.82em;color:var(--gray);padding:2px 0}
-        .ex-features li::before{content:'✓ ';color:var(--green)}
-        .ex-code{margin-top:10px;background:var(--card2);padding:10px 14px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;font-size:.85em}
-        .ex-code strong{color:var(--green)}
-
-        /* === BOTTOM NAV === */
-        .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(18,18,31,.97);backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:6px 0 env(safe-area-inset-bottom,6px);z-index:200}
-        .bottom-nav-inner{display:flex;justify-content:space-around;max-width:500px;margin:0 auto}
-        .bnav-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--gray);font-size:.68em;padding:6px 12px;text-decoration:none;transition:color .2s;cursor:pointer;border:none;background:none}
-        .bnav-item.active{color:var(--gold)}
-        .bnav-icon{font-size:1.4em}
-
-        /* === INSTALL BANNER === */
-        .install-banner{display:none;position:fixed;bottom:60px;left:10px;right:10px;background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;padding:12px 16px;border-radius:12px;z-index:300;box-shadow:0 6px 24px rgba(0,0,0,.5);align-items:center;justify-content:space-between;gap:10px}
-        .install-banner.show{display:flex}
-        .install-banner .ib-text{font-weight:700;font-size:.88em}
-        .install-banner .ib-sub{font-size:.72em;opacity:.8}
-        .install-btn{background:#000;color:var(--gold);border:none;padding:8px 16px;border-radius:8px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:.82em}
-        .install-close{background:none;border:none;color:#000;font-size:1.2em;cursor:pointer;padding:4px}
-
-        @media(min-width:768px){
-            .ex-features{grid-template-columns:1fr 1fr 1fr}
-            .bottom-nav{display:none}
-            body{padding-bottom:0}
-        }
-    </style>
+@media(min-width:768px){.bnav{display:none}body{padding-bottom:0}.ef{grid-template-columns:1fr 1fr 1fr}}
+</style>
 </head>
 <body>
 
-<!-- Ticker -->
-<div class="ticker-wrap">
-    <div class="ticker" id="ticker"><span class="ticker-item">加载行情中...</span></div>
-</div>
-
-<!-- Nav -->
 <nav class="nav">
-    <div class="container">
-        <div class="nav-brand">🤑 <span>马上发财快讯</span></div>
-        <div class="nav-tabs" id="navTabs">
-            <div class="nav-tab active" data-page="news">📰 快讯</div>
-            <div class="nav-tab" data-page="prices">📊 行情</div>
-            <div class="nav-tab" data-page="exchanges">🏦 交易所</div>
-        </div>
+<div class="container">
+    <div class="nav-brand">🤑 <span>马上发财快讯</span></div>
+    <div class="nav-tabs" id="tabs">
+        <div class="nav-tab active" data-p="news">快讯</div>
+        <div class="nav-tab" data-p="prices">行情</div>
+        <div class="nav-tab" data-p="exchanges">交易所</div>
     </div>
+</div>
 </nav>
 
-<!-- Live Price Bar -->
-<div class="live-bar">
-    <div class="live-bar-inner" id="liveBar">加载中...</div>
-</div>
+<div class="live-bar"><div class="live-inner" id="liveBar">加载中...</div></div>
 
-<!-- ==================== NEWS PAGE ==================== -->
-<div class="page active" id="page-news">
-    <div class="container">
-        <div class="news-header">
-            <h2>📰 <span>实时快讯</span></h2>
-            <div class="news-live"><span class="dot"></span> LIVE</div>
+<!-- ============ 快讯 (首页) ============ -->
+<div class="page active" id="p-news">
+<div class="container">
+    <div class="sec-head">
+        <h2>📰 <em>实时快讯</em></h2>
+        <div class="live-dot"><i></i> LIVE</div>
+    </div>
+    <div class="updated" id="upd"></div>
+
+    <!-- 币安专区 -->
+    <div class="bzone">
+        <h3>🔥 币安生态</h3>
+        <div class="bzone-grid">
+            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
+                <div class="bi">📊</div><div class="bn">币安交易</div><div class="bd">全球#1交易所</div>
+            </a>
+            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
+                <div class="bi">🚀</div><div class="bn">Launchpad</div><div class="bd">新币首发打新</div>
+            </a>
+            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
+                <div class="bi">💰</div><div class="bn">币安理财</div><div class="bd">稳定收益</div>
+            </a>
+            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
+                <div class="bi">🌐</div><div class="bn">Web3钱包</div><div class="bd">链上一站式</div>
+            </a>
+            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
+                <div class="bi">🔮</div><div class="bn">Alpha积分</div><div class="bd">空投/TGE</div>
+            </a>
+            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
+                <div class="bi">📈</div><div class="bn">合约交易</div><div class="bd">125x杠杆</div>
+            </a>
+            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
+                <div class="bi">🤖</div><div class="bn">交易机器人</div><div class="bd">自动化策略</div>
+            </a>
+            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
+                <div class="bi">🎓</div><div class="bn">币安学院</div><div class="bd">新手教程</div>
+            </a>
         </div>
-        <div class="news-updated" id="newsUpdated"></div>
-        <ul class="news-list" id="newsList">
-            <li class="news-loading">⏳ 正在加载快讯...</li>
-        </ul>
+        <p style="text-align:center;margin-top:10px;font-size:.75em;color:var(--gray)">邀请码 <b style="color:var(--gold)">GFPDGUGI</b> · 注册永久减20%手续费 · <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" style="color:var(--gold)">立即注册 →</a></p>
     </div>
+
+    <ul class="nlist" id="nlist">
+        <li class="nempty">⏳ 正在加载快讯...</li>
+    </ul>
+</div>
 </div>
 
-<!-- ==================== PRICES PAGE ==================== -->
-<div class="page" id="page-prices">
-    <div class="container">
-        <div class="prices-header">
-            <h2>📊 <span>实时行情</span></h2>
-            <p style="color:var(--gray);font-size:.85em;margin-top:4px">数据来自币安 · 10秒刷新</p>
-        </div>
-        <div class="price-list" id="priceList"><div class="news-loading">加载中...</div></div>
-    </div>
+<!-- ============ 行情 ============ -->
+<div class="page" id="p-prices">
+<div class="container">
+    <div class="sec-head"><h2>📊 <em>实时行情</em></h2><span style="font-size:.75em;color:var(--gray)">币安API · 10s刷新</span></div>
+    <div class="plist" id="plist"><div class="nempty">加载中...</div></div>
+</div>
 </div>
 
-<!-- ==================== EXCHANGES PAGE ==================== -->
-<div class="page" id="page-exchanges">
-    <div class="container">
-        <div class="ex-header-sec">
-            <h2>🏦 <span>七大交易所</span></h2>
-            <p>专属邀请码注册，永久减免手续费</p>
-        </div>
-        <div class="ex-list" id="exList"></div>
-    </div>
+<!-- ============ 交易所 ============ -->
+<div class="page" id="p-exchanges">
+<div class="container">
+    <div class="sec-head"><h2>🏦 <em>七大交易所</em></h2></div>
+    <p style="color:var(--gray);font-size:.82em;margin-bottom:14px">邀请码注册永久减手续费 · 注册后无法补填</p>
+    <div class="elist" id="elist"></div>
+</div>
 </div>
 
-<!-- Bottom Nav -->
-<nav class="bottom-nav">
-    <div class="bottom-nav-inner" id="bottomNav">
-        <button class="bnav-item active" data-page="news"><span class="bnav-icon">📰</span>快讯</button>
-        <button class="bnav-item" data-page="prices"><span class="bnav-icon">📊</span>行情</button>
-        <button class="bnav-item" data-page="exchanges"><span class="bnav-icon">🏦</span>交易所</button>
-    </div>
-</nav>
+<nav class="bnav"><div class="bnav-in" id="bnav">
+    <button class="bi-tab active" data-p="news"><span class="ico">📰</span>快讯</button>
+    <button class="bi-tab" data-p="prices"><span class="ico">📊</span>行情</button>
+    <button class="bi-tab" data-p="exchanges"><span class="ico">🏦</span>交易所</button>
+</div></nav>
 
-<!-- Install Banner -->
-<div class="install-banner" id="installBanner">
-    <div><div class="ib-text">🤑 安装马上发财快讯App</div><div class="ib-sub">主屏快捷查行情</div></div>
-    <button class="install-btn" id="installBtn">安装</button>
-    <button class="install-close" id="installClose">✕</button>
+<div class="ibanner" id="ib">
+    <div><div class="it">🤑 安装马上发财快讯</div><div class="is">主屏快捷查行情</div></div>
+    <button class="ibtn" id="ibtn">安装</button>
+    <button class="iclose" id="ic">✕</button>
 </div>
 
 <script>
-// ============================================================
-// DATA
-// ============================================================
-const exchanges = [
-    {id:'binance',name:'币安 Binance',icon:'₿',color:'#F0B90B',url:'https://accounts.bmwweb.academy/register?ref=GFPDGUGI',code:'GFPDGUGI',top:true,desc:'全球第一，流动性最强',fee:'0.1%',discount:'20%减免',rank:'#1',coins:'500+',features:['日交易量$200亿+','C2C支持支付宝/微信','SAFU基金保障','币安学院新手引导']},
-    {id:'okx',name:'欧易 OKX',icon:'⬡',color:'#FFFFFF',url:'https://www.firgrouxywebb.com/join/789789',code:'789789',top:true,desc:'合约最强，Web3钱包一流',fee:'0.1%',discount:'手续费减免',rank:'#2-3',coins:'350+',features:['衍生品全球领先','OKX Web3钱包','交易机器人/跟单','P2P多种支付']},
-    {id:'gate',name:'Gate.io',icon:'G',color:'#2354E6',url:'https://www.gateport.business/share/XCCOBGVJ',code:'XCCOBGVJ',desc:'币种最多，新币最快',fee:'0.2%',discount:'手续费减免',rank:'#5-8',coins:'1700+',features:['全网最多币种','新币上线最快','Startup打新','量化工具丰富']},
-    {id:'htx',name:'火币 HTX',icon:'H',color:'#1C63F2',url:'https://www.htx.com.gt/invite/zh-cn/1h?invite_code=vafqb223',code:'vafqb223',desc:'老牌交易所，稳定可靠',fee:'0.2%',discount:'手续费减免',rank:'#5-10',coins:'600+',features:['2013年创立','中文社区深厚','Primelist首发','全球合规运营']},
-    {id:'bitget',name:'Bitget',icon:'B',color:'#00D4AA',url:'https://partner.hdmune.cn/bg/7n43xlxz',code:'7n43xlxz',desc:'跟单交易全球第一',fee:'0.1%',discount:'手续费减免',rank:'#4-6',coins:'800+',features:['跟单系统#1','合约体验丝滑','增长最快','BGB生态发力']},
-    {id:'bitmart',name:'BitMart',icon:'M',color:'#00B897',url:'https://www.bm-link.com/zh-CN/invite/baofu2026',code:'baofu2026',desc:'Meme币首发，小币种天堂',fee:'0.25%',discount:'手续费减免',rank:'#10-15',coins:'1000+',features:['小币种上线快','Meme币首发多','界面简洁','多种理财']},
-    {id:'weex',name:'WEEX',icon:'W',color:'#6366F1',url:'https://weabaxx.site/zh-CN/register?vipCode=baofu2026',code:'baofu2026',desc:'手续费最低，新人福利多',fee:'0.05%',discount:'手续费减免',rank:'新锐',coins:'300+',features:['费率行业最低','新人福利丰厚','合约深度好','跟单+量化']}
+const EX=[
+{id:'binance',name:'币安 Binance',icon:'₿',color:'#F0B90B',url:'https://accounts.bmwweb.academy/register?ref=GFPDGUGI',code:'GFPDGUGI',top:1,desc:'全球#1，流动性最强',fee:'0.1%',disc:'20%减免',rank:'#1',coins:'500+',ft:['日交易量$200亿+','C2C支付宝/微信','SAFU基金保障','币安学院新手引导','Launchpad打新','Alpha积分空投']},
+{id:'okx',name:'欧易 OKX',icon:'⬡',color:'#FFFFFF',url:'https://www.firgrouxywebb.com/join/789789',code:'789789',top:1,desc:'合约最强+Web3钱包',fee:'0.1%',disc:'手续费减免',rank:'#2-3',coins:'350+',ft:['衍生品全球领先','OKX Web3钱包','交易机器人/跟单','P2P多种支付']},
+{id:'gate',name:'Gate.io',icon:'G',color:'#2354E6',url:'https://www.gateport.business/share/XCCOBGVJ',code:'XCCOBGVJ',desc:'1700+币种，新币最快',fee:'0.2%',disc:'手续费减免',rank:'#5-8',coins:'1700+',ft:['全网最多币种','新币上线最快','Startup打新','量化工具丰富']},
+{id:'htx',name:'火币 HTX',icon:'H',color:'#1C63F2',url:'https://www.htx.com.gt/invite/zh-cn/1h?invite_code=vafqb223',code:'vafqb223',desc:'老牌稳定，2013年创立',fee:'0.2%',disc:'手续费减免',rank:'#5-10',coins:'600+',ft:['2013年创立','中文社区深厚','Primelist首发','全球合规']},
+{id:'bitget',name:'Bitget',icon:'B',color:'#00D4AA',url:'https://partner.hdmune.cn/bg/7n43xlxz',code:'7n43xlxz',desc:'跟单交易全球第一',fee:'0.1%',disc:'手续费减免',rank:'#4-6',coins:'800+',ft:['跟单系统#1','合约体验丝滑','增长最快','BGB生态发力']},
+{id:'bitmart',name:'BitMart',icon:'M',color:'#00B897',url:'https://www.bm-link.com/zh-CN/invite/baofu2026',code:'baofu2026',desc:'Meme币首发，小币天堂',fee:'0.25%',disc:'手续费减免',rank:'#10-15',coins:'1000+',ft:['小币种上线快','Meme币首发多','界面简洁','多种理财']},
+{id:'weex',name:'WEEX',icon:'W',color:'#6366F1',url:'https://weabaxx.site/zh-CN/register?vipCode=baofu2026',code:'baofu2026',desc:'费率最低0.05%',fee:'0.05%',disc:'手续费减免',rank:'新锐',coins:'300+',ft:['费率行业最低','新人福利丰厚','合约深度好','跟单+量化']}
+];
+const COINS=[
+{s:'BTCUSDT',n:'Bitcoin',sym:'BTC',i:'₿'},{s:'ETHUSDT',n:'Ethereum',sym:'ETH',i:'Ξ'},{s:'BNBUSDT',n:'BNB',sym:'BNB',i:'◆'},
+{s:'SOLUSDT',n:'Solana',sym:'SOL',i:'◎'},{s:'XRPUSDT',n:'XRP',sym:'XRP',i:'✕'},{s:'DOGEUSDT',n:'Dogecoin',sym:'DOGE',i:'Ð'},
+{s:'ADAUSDT',n:'Cardano',sym:'ADA',i:'₳'},{s:'AVAXUSDT',n:'Avalanche',sym:'AVAX',i:'▲'},{s:'PEPEUSDT',n:'PEPE',sym:'PEPE',i:'🐸'},
+{s:'SUIUSDT',n:'Sui',sym:'SUI',i:'💧'},{s:'LINKUSDT',n:'Chainlink',sym:'LINK',i:'⬡'},{s:'DOTUSDT',n:'Polkadot',sym:'DOT',i:'●'}
 ];
 
-const coins = [
-    {s:'BTCUSDT',n:'Bitcoin',sym:'BTC',icon:'₿'},
-    {s:'ETHUSDT',n:'Ethereum',sym:'ETH',icon:'Ξ'},
-    {s:'BNBUSDT',n:'BNB',sym:'BNB',icon:'◆'},
-    {s:'SOLUSDT',n:'Solana',sym:'SOL',icon:'◎'},
-    {s:'XRPUSDT',n:'XRP',sym:'XRP',icon:'✕'},
-    {s:'DOGEUSDT',n:'Dogecoin',sym:'DOGE',icon:'Ð'},
-    {s:'ADAUSDT',n:'Cardano',sym:'ADA',icon:'₳'},
-    {s:'AVAXUSDT',n:'Avalanche',sym:'AVAX',icon:'▲'},
-    {s:'PEPEUSDT',n:'PEPE',sym:'PEPE',icon:'🐸'},
-    {s:'SUIUSDT',n:'Sui',sym:'SUI',icon:'💧'},
-    {s:'LINKUSDT',n:'Chainlink',sym:'LINK',icon:'⬡'},
-    {s:'DOTUSDT',n:'Polkadot',sym:'DOT',icon:'●'}
-];
-
-// ============================================================
-// PAGE NAVIGATION
-// ============================================================
-function switchPage(page) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + page)?.classList.add('active');
-    document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.page === page));
-    document.querySelectorAll('.bnav-item').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+// NAV
+function go(p){
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+    document.getElementById('p-'+p)?.classList.add('active');
+    document.querySelectorAll('[data-p]').forEach(x=>x.classList.toggle('active',x.dataset.p===p));
+    window.scrollTo(0,0);
 }
+document.getElementById('tabs').onclick=e=>{const t=e.target.closest('[data-p]');if(t)go(t.dataset.p)};
+document.getElementById('bnav').onclick=e=>{const t=e.target.closest('[data-p]');if(t)go(t.dataset.p)};
 
-document.getElementById('navTabs').addEventListener('click', e => {
-    const tab = e.target.closest('[data-page]');
-    if (tab) switchPage(tab.dataset.page);
-});
-document.getElementById('bottomNav').addEventListener('click', e => {
-    const tab = e.target.closest('[data-page]');
-    if (tab) switchPage(tab.dataset.page);
-});
-
-// ============================================================
 // NEWS
-// ============================================================
-async function fetchNews() {
-    const list = document.getElementById('newsList');
-    const sources = [
-        { url: 'news.json', type: 'json' },
-        { url: '/api/news', type: 'json' }
-    ];
-    for (const src of sources) {
-        try {
-            const resp = await fetch(src.url + '?t=' + Date.now(), {signal: AbortSignal.timeout(8000)});
-            if (!resp.ok) continue;
-            const data = await resp.json();
-            if (data.items && data.items.length > 0) {
-                renderNews(data.items);
-                if (data.updated) {
-                    const d = new Date(data.updated);
-                    document.getElementById('newsUpdated').textContent = '最后更新：' + d.toLocaleString('zh-CN', {timeZone:'Asia/Shanghai'});
-                }
-                return;
-            }
-        } catch(e) { continue; }
+async function loadNews(){
+    const el=document.getElementById('nlist');
+    for(const src of['news.json','/api/news']){
+        try{
+            const r=await fetch(src+'?_='+Date.now(),{signal:AbortSignal.timeout(8000)});
+            if(!r.ok)continue;
+            const d=await r.json();
+            if(d.items?.length){renderN(d.items);if(d.updated)document.getElementById('upd').textContent='更新：'+new Date(d.updated).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'});return;}
+        }catch(e){continue}
     }
-    list.innerHTML = '<li class="news-empty">暂时无法加载快讯，请稍后刷新</li>';
+    el.innerHTML='<li class="nempty">暂无快讯，请稍后刷新</li>';
 }
-
-function renderNews(items) {
-    const list = document.getElementById('newsList');
-    const now = Date.now();
-    list.innerHTML = items.map((item, i) => {
-        let timeStr = '';
-        if (item.pubDate) {
-            const diff = now - new Date(item.pubDate).getTime();
-            const mins = Math.floor(diff / 60000);
-            if (mins < 1) timeStr = '刚刚';
-            else if (mins < 60) timeStr = mins + '分钟前';
-            else if (mins < 1440) timeStr = Math.floor(mins/60) + '小时前';
-            else timeStr = Math.floor(mins/1440) + '天前';
-        }
-        const title = item.title || '';
-        const desc = item.description || '';
-        const link = item.link || '#';
-        // Extract tags from title
-        const tags = [];
-        if (/BTC|比特币|Bitcoin/i.test(title+desc)) tags.push('BTC');
-        if (/ETH|以太坊|Ethereum/i.test(title+desc)) tags.push('ETH');
-        if (/SOL|Solana/i.test(title+desc)) tags.push('SOL');
-        if (/币安|Binance/i.test(title+desc)) tags.push('币安');
-        if (/SEC|监管|合规/i.test(title+desc)) tags.push('监管');
-        if (/ETF/i.test(title+desc)) tags.push('ETF');
-        if (/NFT/i.test(title+desc)) tags.push('NFT');
-        if (/DeFi/i.test(title+desc)) tags.push('DeFi');
-
-        const hasDesc = desc && desc !== title && desc.length > 10;
-
-        return `<li class="news-item${i === 0 ? ' flash' : ''}" onclick="this.classList.toggle('open')">
-            <div class="news-head">
-                <div class="news-time-badge"><div class="t">${timeStr}</div></div>
-                <div class="news-body">
-                    <div class="news-title">${title}</div>
-                    ${tags.length ? '<div class="news-tags">' + tags.map(t => '<span class="news-tag">' + t + '</span>').join('') + '</div>' : ''}
-                </div>
-                ${hasDesc ? '<div class="news-arrow">▼</div>' : ''}
-            </div>
-            ${hasDesc ? `<div class="news-expand"><div class="news-desc">${desc}<br><a href="${link}" target="_blank" rel="noopener">查看原文 →</a></div></div>` : ''}
-        </li>`;
+function renderN(items){
+    const el=document.getElementById('nlist'),now=Date.now();
+    el.innerHTML=items.map((x,i)=>{
+        let ts='';
+        if(x.pubDate){const m=Math.floor((now-new Date(x.pubDate).getTime())/60000);ts=m<1?'刚刚':m<60?m+'分钟前':m<1440?Math.floor(m/60)+'小时前':Math.floor(m/1440)+'天前'}
+        const t=x.title||'',d=x.description||'',l=x.link||'#';
+        const tags=[];
+        if(/BTC|比特币/i.test(t+d))tags.push('BTC');if(/ETH|以太坊/i.test(t+d))tags.push('ETH');
+        if(/SOL|Solana/i.test(t+d))tags.push('SOL');if(/BNB/i.test(t+d))tags.push('BNB');
+        if(/币安|Binance/i.test(t+d))tags.push('币安');if(/ETF/i.test(t+d))tags.push('ETF');
+        if(/SEC|监管/i.test(t+d))tags.push('监管');if(/DeFi/i.test(t+d))tags.push('DeFi');
+        if(/NFT/i.test(t+d))tags.push('NFT');if(/空投|airdrop/i.test(t+d))tags.push('空投');
+        const hasD=d&&d!==t&&d.length>10;
+        return`<li class="ni" onclick="this.classList.toggle('open')">
+<div class="nh"><div class="nt-badge"><span>${ts}</span></div><div class="nb"><div class="ntitle">${t}</div>${tags.length?'<div class="ntags">'+tags.map(g=>'<span class="ntag">'+g+'</span>').join('')+'</div>':''}</div>${hasD?'<div class="narrow">▼</div>':''}</div>
+${hasD?'<div class="nexp"><div class="ndesc">'+d+'<br><a href="'+l+'" target="_blank">查看原文 →</a></div></div>':''}
+</li>`;
     }).join('');
 }
 
-// ============================================================
 // PRICES
-// ============================================================
-async function fetchPrices() {
-    try {
-        const syms = coins.map(c => c.s);
-        const resp = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=' + encodeURIComponent(JSON.stringify(syms)));
-        const data = await resp.json();
-        const map = {}; data.forEach(t => map[t.symbol] = t);
-        const items = coins.map(c => ({...c, price: parseFloat(map[c.s]?.lastPrice||0), change: parseFloat(map[c.s]?.priceChangePercent||0)}));
-
+async function loadP(){
+    try{
+        const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols='+encodeURIComponent(JSON.stringify(COINS.map(c=>c.s))));
+        const d=await r.json();const m={};d.forEach(t=>m[t.symbol]=t);
+        const items=COINS.map(c=>({...c,price:+(m[c.s]?.lastPrice||0),chg:+(m[c.s]?.priceChangePercent||0)}));
         // Live bar
-        const bar = document.getElementById('liveBar');
-        bar.innerHTML = items.slice(0, 8).map(c => {
-            const isUp = c.change >= 0;
-            const ps = c.price >= 1 ? '$' + c.price.toLocaleString('en',{maximumFractionDigits:2}) : '$' + c.price.toFixed(6);
-            return `<div class="live-coin"><div class="sym">${c.sym}</div><div class="price">${ps}</div><div class="chg ${isUp?'up':'down'}">${isUp?'+':''}${c.change.toFixed(2)}%</div></div>`;
+        document.getElementById('liveBar').innerHTML=items.slice(0,8).map(c=>{
+            const u=c.chg>=0,ps=c.price>=1?'$'+c.price.toLocaleString('en',{maximumFractionDigits:2}):'$'+c.price.toFixed(6);
+            return`<div class="lc"><div class="s">${c.sym}</div><div class="p">${ps}</div><div class="c ${u?'up':'dn'}">${u?'+':''}${c.chg.toFixed(2)}%</div></div>`;
         }).join('');
-
-        // Ticker
-        const ticker = document.getElementById('ticker');
-        let html = items.map(c => {
-            const isUp = c.change >= 0;
-            const ps = c.price >= 1 ? '$'+c.price.toLocaleString('en',{maximumFractionDigits:2}) : '$'+c.price.toFixed(6);
-            return `<span class="ticker-item" style="color:${isUp?'var(--green)':'var(--red)'}">${c.sym} ${ps} ${isUp?'▲':'▼'}${Math.abs(c.change).toFixed(2)}%</span>`;
+        // Price list
+        document.getElementById('plist').innerHTML=items.map(c=>{
+            const u=c.chg>=0,ps=c.price>=1?'$'+c.price.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}):'$'+c.price.toFixed(8);
+            return`<div class="pr"><div class="pl"><div class="pi">${c.i}</div><div><div class="pn">${c.sym}</div><div class="ps">${c.n}</div></div></div><div style="text-align:right"><div class="pv">${ps}</div><div class="pc ${u?'up':'dn'}">${u?'▲ +':'▼ '}${Math.abs(c.chg).toFixed(2)}%</div></div></div>`;
         }).join('');
-        ticker.innerHTML = html + html;
-
-        // Price list page
-        const pl = document.getElementById('priceList');
-        pl.innerHTML = items.map(c => {
-            const isUp = c.change >= 0;
-            const ps = c.price >= 1 ? '$' + c.price.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}) : '$' + c.price.toFixed(8);
-            return `<div class="price-row"><div class="price-left"><div class="price-icon">${c.icon}</div><div><div class="price-name">${c.sym}</div><div class="price-sym">${c.n}</div></div></div><div class="price-right"><div class="price-val">${ps}</div><div class="price-chg ${isUp?'up':'down'}">${isUp?'▲ +':'▼ '}${Math.abs(c.change).toFixed(2)}%</div></div></div>`;
-        }).join('');
-    } catch(e) { console.error(e); }
+    }catch(e){}
 }
 
-// ============================================================
 // EXCHANGES
-// ============================================================
-function renderExchanges() {
-    document.getElementById('exList').innerHTML = exchanges.map(ex => `
-        <div class="ex-card${ex.top?' top':''}" onclick="this.classList.toggle('open')">
-            <div class="ex-top-row">
-                <div class="ex-info">
-                    <div class="ex-icon" style="background:${ex.color}20;color:${ex.color}">${ex.icon}</div>
-                    <div>
-                        <div class="ex-name">${ex.name}</div>
-                        <div class="ex-meta">${ex.rank} · ${ex.coins}币种 · 费率${ex.fee} · ${ex.desc}</div>
-                    </div>
-                </div>
-                <a href="${ex.url}" target="_blank" rel="noopener" class="ex-btn" style="background:${ex.color};color:${ex.color==='#FFFFFF'||ex.color==='#F0B90B'?'#000':'#fff'}" onclick="event.stopPropagation()">注册</a>
-            </div>
-            <div class="ex-details">
-                <ul class="ex-features">${ex.features.map(f=>'<li>'+f+'</li>').join('')}</ul>
-                <div class="ex-code">邀请码 <strong>${ex.code}</strong> · ${ex.discount} <span style="color:var(--gray);font-size:.8em">注册后无法补填</span></div>
-            </div>
-        </div>
-    `).join('');
+function renderE(){
+    document.getElementById('elist').innerHTML=EX.map(x=>`
+<div class="ec${x.top?' top':''}" onclick="this.classList.toggle('open')">
+<div class="erow"><div class="einfo"><div class="eico" style="background:${x.color}20;color:${x.color}">${x.icon}</div><div><div class="en">${x.name}</div><div class="em">${x.rank} · ${x.coins}币种 · ${x.fee} · ${x.desc}</div></div></div>
+<a href="${x.url}" target="_blank" class="ebtn" style="background:${x.color};color:${x.color==='#FFFFFF'||x.color==='#F0B90B'?'#000':'#fff'}" onclick="event.stopPropagation()">注册</a></div>
+<div class="edet"><ul class="ef">${x.ft.map(f=>'<li>'+f+'</li>').join('')}</ul>
+<div class="ecode">邀请码 <strong>${x.code}</strong> · ${x.disc} <span style="font-size:.78em;color:var(--gray)">注册后无法补填</span></div></div>
+</div>`).join('');
 }
 
-// ============================================================
-// PWA INSTALL
-// ============================================================
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault(); deferredPrompt = e;
-    setTimeout(() => { if (!localStorage.getItem('cb_i')) document.getElementById('installBanner').classList.add('show'); }, 6000);
-});
-document.getElementById('installBtn')?.addEventListener('click', async () => {
-    if (deferredPrompt) { deferredPrompt.prompt(); const r = await deferredPrompt.userChoice; if (r.outcome==='accepted') localStorage.setItem('cb_i','1'); deferredPrompt=null; }
-    else alert('iOS：点分享 ⬆️ → 添加到主屏幕');
-    document.getElementById('installBanner').classList.remove('show');
-});
-document.getElementById('installClose')?.addEventListener('click', () => { document.getElementById('installBanner').classList.remove('show'); localStorage.setItem('cb_i','1'); });
-if (/iPhone|iPad/.test(navigator.userAgent) && !navigator.standalone) setTimeout(() => { if (!localStorage.getItem('cb_i')) document.getElementById('installBanner').classList.add('show'); }, 8000);
+// PWA
+let dp=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;setTimeout(()=>{if(!localStorage.getItem('_i'))document.getElementById('ib').classList.add('show')},5000)});
+document.getElementById('ibtn')?.addEventListener('click',async()=>{if(dp){dp.prompt();const r=await dp.userChoice;if(r.outcome==='accepted')localStorage.setItem('_i','1');dp=null}else alert('iOS：点分享⬆️→添加到主屏幕');document.getElementById('ib').classList.remove('show')});
+document.getElementById('ic')?.addEventListener('click',()=>{document.getElementById('ib').classList.remove('show');localStorage.setItem('_i','1')});
+if(/iPhone|iPad/.test(navigator.userAgent)&&!navigator.standalone)setTimeout(()=>{if(!localStorage.getItem('_i'))document.getElementById('ib').classList.add('show')},8000);
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 
-// ============================================================
-// SERVICE WORKER
-// ============================================================
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
-
-// ============================================================
 // INIT
-// ============================================================
-renderExchanges();
-fetchPrices();
-fetchNews();
-setInterval(fetchPrices, 10000);
-setInterval(fetchNews, 300000);
+renderE();loadP();loadNews();
+setInterval(loadP,10000);
+setInterval(loadNews,180000);
 </script>
 </body>
 </html>

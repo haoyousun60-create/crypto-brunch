@@ -112,6 +112,9 @@
         .news-item:hover{background:var(--card2)}
         .news-time{font-size:.78em;color:var(--gray);margin-bottom:4px}
         .news-title{font-size:.95em;line-height:1.6}
+        .news-desc{display:none;margin-top:8px;font-size:.88em;color:var(--gray);line-height:1.7;border-top:1px solid var(--border);padding-top:8px}
+        .news-desc.show{display:block}
+        .news-item{cursor:pointer}
         .news-loading{text-align:center;padding:40px;color:var(--gray)}
 
         /* === TUTORIAL === */
@@ -567,35 +570,76 @@ async function fetchPrices() {
 // ODAILY NEWS
 // ============================================================
 async function fetchNews() {
-    const rssUrl = 'https://rss.odaily.news/rss/newsflash';
-    const proxies = [
-        'https://api.allorigins.win/raw?url=' + encodeURIComponent(rssUrl),
-        'https://corsproxy.io/?' + encodeURIComponent(rssUrl)
+    const list = document.getElementById('newsList');
+    
+    // Try local API proxy first, then CORS proxies
+    const sources = [
+        { url: '/api/news', type: 'json' },
+        { url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://rss.odaily.news/rss/newsflash'), type: 'xml' },
+        { url: 'https://corsproxy.io/?' + encodeURIComponent('https://rss.odaily.news/rss/newsflash'), type: 'xml' }
     ];
-    let xml = null;
-    for (const proxy of proxies) {
+    
+    for (const src of sources) {
         try {
-            const resp = await fetch(proxy, {signal: AbortSignal.timeout(8000)});
+            const resp = await fetch(src.url, {signal: AbortSignal.timeout(8000)});
             if (!resp.ok) continue;
-            const text = await resp.text();
-            xml = new DOMParser().parseFromString(text, 'text/xml');
-            if (xml.querySelector('item')) break;
-            xml = null;
+            
+            if (src.type === 'json') {
+                const data = await resp.json();
+                if (data.items && data.items.length > 0) {
+                    renderNewsJSON(data.items, list);
+                    return;
+                }
+            } else {
+                const text = await resp.text();
+                const xml = new DOMParser().parseFromString(text, 'text/xml');
+                if (xml.querySelector('item')) {
+                    renderNewsXML(xml, list);
+                    return;
+                }
+            }
         } catch(e) { continue; }
     }
-    const list = document.getElementById('newsList');
-    if (!xml || !xml.querySelector('item')) {
-        list.innerHTML = '<li class="news-loading">暂时无法加载快讯，请稍后刷新</li>';
-        return;
-    }
-    const items = xml.querySelectorAll('item');
+    list.innerHTML = '<li class="news-loading">暂时无法加载快讯，请稍后刷新</li>';
+}
+
+function renderNewsJSON(items, list) {
+    const now = Date.now();
     let html = '';
+    items.forEach((item, i) => {
+        if (i >= 20) return;
+        let timeStr = '';
+        if (item.pubDate) {
+            const diff = now - new Date(item.pubDate).getTime();
+            const mins = Math.floor(diff/60000);
+            if (mins < 1) timeStr = '刚刚';
+            else if (mins < 60) timeStr = mins + '分钟前';
+            else if (mins < 1440) timeStr = Math.floor(mins/60) + '小时前';
+            else timeStr = Math.floor(mins/1440) + '天前';
+        }
+        const title = item.title || '';
+        const desc = item.description || '';
+        const link = item.link || '#';
+        html += `<li class="news-item" onclick="this.querySelector('.news-desc')?.classList.toggle('show')">
+            <div class="news-time">${timeStr}</div>
+            <div class="news-title">${title}</div>
+            ${desc && desc !== title ? `<div class="news-desc">${desc.substring(0, 300)}${desc.length > 300 ? '...' : ''} <a href="${link}" target="_blank" style="color:var(--gold)">详情→</a></div>` : ''}
+        </li>`;
+    });
+    list.innerHTML = html || '<li class="news-loading">暂无快讯</li>';
+}
+
+function renderNewsXML(xml, list) {
+    const items = xml.querySelectorAll('item');
     const now = Date.now();
     const strip = /Odaily星球日报讯[，,：:\s]*/g;
+    let html = '';
     items.forEach((item, i) => {
         if (i >= 20) return;
         let title = (item.querySelector('title')?.textContent || '').replace(strip, '').trim();
-        let desc = (item.querySelector('description')?.textContent || '').replace(strip, '').replace(/<[^>]*>/g, '').trim();
+        let desc = (item.querySelector('description')?.textContent || '')
+            .replace(strip, '').replace(/<[^>]*>/g, '').replace(/&lt;|&gt;|&amp;/g, '').trim();
+        const link = item.querySelector('link')?.textContent || '#';
         const pubDate = item.querySelector('pubDate')?.textContent;
         let timeStr = '';
         if (pubDate) {
@@ -606,9 +650,12 @@ async function fetchNews() {
             else if (mins < 1440) timeStr = Math.floor(mins/60) + '小时前';
             else timeStr = Math.floor(mins/1440) + '天前';
         }
-        const displayText = title || desc;
-        if (!displayText) return;
-        html += `<li class="news-item"><div><div class="news-time">${timeStr}</div><div class="news-title">${displayText}</div></div></li>`;
+        if (!title && !desc) return;
+        html += `<li class="news-item" onclick="this.querySelector('.news-desc')?.classList.toggle('show')">
+            <div class="news-time">${timeStr}</div>
+            <div class="news-title">${title || desc.substring(0, 60)}</div>
+            ${desc && desc !== title ? `<div class="news-desc">${desc.substring(0, 300)}${desc.length > 300 ? '...' : ''} <a href="${link}" target="_blank" style="color:var(--gold)">详情→</a></div>` : ''}
+        </li>`;
     });
     list.innerHTML = html || '<li class="news-loading">暂无快讯</li>';
 }

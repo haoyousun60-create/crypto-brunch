@@ -1,7 +1,7 @@
 {
-  "name": "加密早餐 CryptoBrunch",
-  "short_name": "加密早餐",
-  "description": "七大交易所对比 · 实时行情 · Odaily快讯 · 专属邀请码",
+  "name": "马上发财快讯",
+  "short_name": "马上发财快讯",
+  "description": "七大交易所对比 · 实时行情 · 实时快讯 · 专属邀请码",
   "start_url": "/crypto-brunch/",
   "display": "standalone",
   "background_color": "#08080f",

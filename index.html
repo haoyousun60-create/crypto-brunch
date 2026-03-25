@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>马上发财快讯 | 加密货币实时快讯 · 行情 · 交易所</title>
-    <meta name="description" content="马上发财快讯 - 加密货币实时快讯、BTC/ETH行情、币安生态、七大交易所对比。快讯秒级推送，邀请码注册永久省手续费。">
+    <meta name="description" content="马上发财快讯 - 加密货币实时快讯、BTC/ETH行情、七大交易所对比。快讯秒级推送，邀请码注册永久省手续费。">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -35,14 +35,17 @@ a{color:inherit;text-decoration:none}
 .nav-tab.active{color:#000;background:var(--gold);font-weight:700}
 
 /* LIVE BAR */
-.live-bar{background:var(--card);border-bottom:1px solid var(--border);padding:10px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.live-bar::-webkit-scrollbar{display:none}
-.live-inner{display:flex;gap:14px;padding:0 14px;min-width:max-content}
-.lc{text-align:center;min-width:72px}
-.lc .s{font-weight:700;font-size:.82em}
-.lc .p{font-size:.78em;margin-top:1px}
-.lc .c{font-size:.72em;margin-top:1px}
+.live-bar{background:var(--card);border-bottom:1px solid var(--border);overflow:hidden;padding:0}
+.live-track{display:flex;animation:liveScroll 30s linear infinite;white-space:nowrap}
+.live-track:hover{animation-play-state:paused}
+.lc{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-right:1px solid var(--border);white-space:nowrap;min-width:max-content}
+.lc .s{font-weight:800;font-size:.9em}
+.lc .p{font-weight:600;font-size:.88em}
+.lc .c{font-size:.82em;font-weight:600;padding:2px 6px;border-radius:4px}
+.lc .c.up{background:var(--green)15;color:var(--green)}
+.lc .c.dn{background:var(--red)15;color:var(--red)}
 .up{color:var(--green)}.dn{color:var(--red)}
+@keyframes liveScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* PAGES */
 .page{display:none}.page.active{display:block}
@@ -76,16 +79,7 @@ a{color:inherit;text-decoration:none}
 @keyframes flash{0%{border-color:var(--gold);box-shadow:0 0 12px var(--gold)20}100%{border-color:var(--border);box-shadow:none}}
 .nempty{text-align:center;padding:50px 20px;color:var(--gray)}
 
-/* ===== BINANCE ZONE ===== */
-.bzone{background:linear-gradient(135deg,#f0b90b10,#ff8c0008);border:1px solid var(--gold)30;border-radius:14px;padding:18px;margin-bottom:16px}
-.bzone h3{font-size:1em;font-weight:800;color:var(--gold);margin-bottom:12px}
-.bzone-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.bzone-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;transition:all .2s}
-.bzone-item:hover{border-color:var(--gold);transform:translateY(-2px)}
-.bzone-item .bi{font-size:1.3em;margin-bottom:4px}
-.bzone-item .bn{font-size:.82em;font-weight:600}
-.bzone-item .bd{font-size:.7em;color:var(--gray);margin-top:2px}
-@media(min-width:500px){.bzone-grid{grid-template-columns:repeat(4,1fr)}}
+
 
 /* ===== PRICES ===== */
 .plist{display:flex;flex-direction:column;gap:6px}
@@ -148,7 +142,7 @@ a{color:inherit;text-decoration:none}
 </div>
 </nav>
 
-<div class="live-bar"><div class="live-inner" id="liveBar">加载中...</div></div>
+<div class="live-bar"><div class="live-track" id="liveBar">加载中...</div></div>
 
 <!-- ============ 快讯 (首页) ============ -->
 <div class="page active" id="p-news">
@@ -159,50 +153,7 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="updated" id="upd"></div>
 
-    <!-- 币安专区 -->
-    <div class="bzone">
-        <h3>🔥 币安生态</h3>
-        <div class="bzone-grid">
-            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
-                <div class="bi">📊</div><div class="bn">币安交易</div><div class="bd">全球#1交易所</div>
-            </a>
-            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
-                <div class="bi">🚀</div><div class="bn">Launchpad</div><div class="bd">新币首发打新</div>
-            </a>
-            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
-                <div class="bi">💰</div><div class="bn">币安理财</div><div class="bd">稳定收益</div>
-            </a>
-            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
-                <div class="bi">🌐</div><div class="bn">Web3钱包</div><div class="bd">链上一站式</div>
-            </a>
-            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
-                <div class="bi">🔮</div><div class="bn">Alpha积分</div><div class="bd">空投/TGE</div>
-            </a>
-            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
-                <div class="bi">📈</div><div class="bn">合约交易</div><div class="bd">125x杠杆</div>
-            </a>
-            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
-                <div class="bi">🤖</div><div class="bn">交易机器人</div><div class="bd">自动化策略</div>
-            </a>
-            <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" class="bzone-item">
-                <div class="bi">🎓</div><div class="bn">币安学院</div><div class="bd">新手教程</div>
-            </a>
-        </div>
-        <p style="text-align:center;margin-top:10px;font-size:.75em;color:var(--gray)">邀请码 <b style="color:var(--gold)">GFPDGUGI</b> · 注册永久减20%手续费 · <a href="https://accounts.bmwweb.academy/register?ref=GFPDGUGI" target="_blank" style="color:var(--gold)">立即注册 →</a></p>
-    </div>
-
-    <ul class="nlist" id="nlist">
-        <li class="nempty">⏳ 正在加载快讯...</li>
-    </ul>
-</div>
-</div>
-
-<!-- ============ 行情 ============ -->
-<div class="page" id="p-prices">
-<div class="container">
-    <div class="sec-head"><h2>📊 <em>实时行情</em></h2><span style="font-size:.75em;color:var(--gray)">币安API · 10s刷新</span></div>
-    <div class="plist" id="plist"><div class="nempty">加载中...</div></div>
-</div>
+    
 </div>
 
 <!-- ============ 交易所 ============ -->
@@ -293,10 +244,11 @@ async function loadP(){
         const d=await r.json();const m={};d.forEach(t=>m[t.symbol]=t);
         const items=COINS.map(c=>({...c,price:+(m[c.s]?.lastPrice||0),chg:+(m[c.s]?.priceChangePercent||0)}));
         // Live bar
-        document.getElementById('liveBar').innerHTML=items.slice(0,8).map(c=>{
+        let lbHtml=items.map(c=>{
             const u=c.chg>=0,ps=c.price>=1?'$'+c.price.toLocaleString('en',{maximumFractionDigits:2}):'$'+c.price.toFixed(6);
-            return`<div class="lc"><div class="s">${c.sym}</div><div class="p">${ps}</div><div class="c ${u?'up':'dn'}">${u?'+':''}${c.chg.toFixed(2)}%</div></div>`;
+            return`<div class="lc"><span class="s">${c.sym}</span><span class="p">${ps}</span><span class="c ${u?'up':'dn'}">${u?'▲+':'▼'}${Math.abs(c.chg).toFixed(2)}%</span></div>`;
         }).join('');
+        document.getElementById('liveBar').innerHTML=lbHtml+lbHtml;
         // Price list
         document.getElementById('plist').innerHTML=items.map(c=>{
             const u=c.chg>=0,ps=c.price>=1?'$'+c.price.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}):'$'+c.price.toFixed(8);

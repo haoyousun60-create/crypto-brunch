@@ -116,7 +116,8 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 <div class="logo">🤑 <em>马上发财快讯</em></div>
 <div class="tabs" id="T">
     <div class="tab on" data-p="news">快讯</div>
-    <div class="tab" data-p="prices">行情</div>
+    <div class="tab" data-p="crypto">加密货币</div>
+    <div class="tab" data-p="stocks">股市</div>
     <div class="tab" data-p="ex">交易所</div>
 </div>
 </div></header>
@@ -133,9 +134,9 @@ header .w{display:flex;justify-content:space-between;align-items:center}
     </div>
 </div></div>
 
-<!-- ========== 行情 ========== -->
-<div class="pg" id="p-prices"><div class="w">
-    <div class="sh"><h2>📊 <em>行情榜单</em></h2></div>
+<!-- ========== 加密货币 ========== -->
+<div class="pg" id="p-crypto"><div class="w">
+    <div class="sh"><h2>📊 <em>加密货币行情</em></h2></div>
     <div class="ptabs" id="ptabs">
         <div class="pt on" data-r="up">🔥 涨幅榜</div>
         <div class="pt" data-r="down">💧 跌幅榜</div>
@@ -147,6 +148,19 @@ header .w{display:flex;justify-content:space-between;align-items:center}
     <div class="pl" id="pl"></div>
 </div></div>
 
+<!-- ========== 股市 ========== -->
+<div class="pg" id="p-stocks"><div class="w">
+    <div class="sh"><h2>📈 <em>全球股市</em></h2></div>
+    <div class="ptabs" id="stabs">
+        <div class="pt on" data-m="a">🇨🇳 A 股</div>
+        <div class="pt" data-m="hk">🇭🇰 港股</div>
+        <div class="pt" data-m="us">🇺🇸 美股</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span id="scnt" style="font-size:.72em;color:var(--g)"></span><span id="stime" style="font-size:.68em;color:var(--g)"></span></div>
+    <div class="phead"><span>名称 / 代码</span><span>最新价</span><span>涨跌幅</span></div>
+    <div class="pl" id="sl"></div>
+</div></div>
+
 <!-- ========== 交易所 ========== -->
 <div class="pg" id="p-ex"><div class="w">
     <div class="sh"><h2>🏦 <em>七大交易所</em></h2></div>
@@ -156,7 +170,8 @@ header .w{display:flex;justify-content:space-between;align-items:center}
 
 <nav class="bn"><div id="BN">
     <button class="bt on" data-p="news"><span class="i">📰</span>快讯</button>
-    <button class="bt" data-p="prices"><span class="i">📊</span>行情</button>
+    <button class="bt" data-p="crypto"><span class="i">🪙</span>加密货币</button>
+    <button class="bt" data-p="stocks"><span class="i">📈</span>股市</button>
     <button class="bt" data-p="ex"><span class="i">🏦</span>交易所</button>
 </div></nav>
 
@@ -291,12 +306,83 @@ function renderEX(){
     `).join('');
 }
 
+// ==================== STOCKS ====================
+// A 股/港股/美股 - 新浪财经免费 API
+const STOCKS={
+    a:[{s:'sh000001',n:'上证指数'},{s:'sz399001',n:'深证成指'},{s:'sz399006',n:'创业板指'},{s:'sh600519',n:'贵州茅台'},{s:'sz000858',n:'五粮液'},{s:'sh601318',n:'中国平安'},{s:'sh600036',n:'招商银行'},{s:'sz000333',n:'美的集团'},{s:'sz002594',n:'比亚迪'},{s:'sh601888',n:'中国中免'}],
+    hk:[{s:'hk00700',n:'腾讯控股'},{s:'hk09988',n:'阿里巴巴'},{s:'hk03690',n:'美团 -W'},{s:'hk02318',n:'中国平安'},{s:'hk00005',n:'汇丰控股'},{s:'hk01810',n:'小米集团'},{s:'hk00388',n:'港交所'},{s:'hk00941',n:'中国移动'},{s:'hk02015',n:'理想汽车'},{s:'hk09866',n:'蔚来'}],
+    us:[{s:'gb_aapl',n:'苹果 AAPL'},{s:'gb_msft',n:'微软 MSFT'},{s:'gb_goog',n:'谷歌 GOOG'},{s:'gb_amzn',n:'亚马逊 AMZN'},{s:'gb_nvda',n:'英伟达 NVDA'},{s:'gb_meta',n:'Meta META'},{s:'gb_tsla',n:'特斯拉 TSLA'},{s:'gb_baba',n:'阿里巴巴 BABA'},{s:'gb_jd',n:'京东 JD'},{s:'gb_pdd',n:'拼多多 PDD'}]
+};
+let currentMarket='a';
+let stockData={a:[],hk:[],us:[]};
+
+async function loadStocks(){
+    const m=currentMarket;
+    try{
+        if(m==='a'){
+            const syms=STOCKS.a.map(x=>x.s).join(',');
+            const r=await fetch('https://hq.sinajs.cn/list='+syms+'&_='+Date.now());
+            const t=await r.text();
+            stockData.a=t.split('\n').filter(x=>x).map((x,i)=>{
+                const d=x.match(/="([^"]+)"/);
+                if(!d)return null;
+                const p=d[1].split(',');
+                const name=STOCKS.a[i].n,code=STOCKS.a[i].s;
+                const price=+p[3],open=+p[1],prev=+p[2];
+                const chg=prev?((price-prev)/prev*100):0;
+                return{name,code,price,chg};
+            }).filter(Boolean);
+        }else if(m==='hk'){
+            const syms=STOCKS.hk.map(x=>x.s.replace('hk','')).join(',');
+            const r=await fetch('https://quotes.sina.cn/hq/api/jsonp.php=/var+/HK_StockService.getHKMarketData?symbol='+syms+'&_='+Date.now());
+            const t=await r.text();
+            const json=JSON.parse(t.match(/\[(.*)\]/s)?.[0]||'[]');
+            stockData.hk=json.map(x=>({name:x.name,code:'hk'+x.symbol,price:+x.price||0,chg:+x.change||0}));
+        }else{
+            const syms=STOCKS.us.map(x=>x.s.replace('gb','')).join(',');
+            const r=await fetch('https://quotes.sina.cn/hq/api/jsonp.php=/var+/US_StockService.getUSMarketData?symbol='+syms+'&_='+Date.now());
+            const t=await r.text();
+            const json=JSON.parse(t.match(/\[(.*)\]/s)?.[0]||'[]');
+            stockData.us=json.map(x=>({name:x.name,code:'gb'+x.symbol,price:+x.price||0,chg:+x.change||0}));
+        }
+        renderS();
+        const now=new Date();
+        document.getElementById('stime').textContent='更新：'+now.toLocaleTimeString('zh-CN');
+    }catch(e){console.error(e)}
+}
+
+function renderS(){
+    const data=stockData[currentMarket]||[];
+    const html=data.map((c,i)=>{
+        const u=c.chg>=0;
+        const ps=c.price>=1?c.price.toFixed(2):c.price.toFixed(4);
+        const chgClass=u?'u':'d';
+        const chgSign=u?'+':'';
+        const code=c.code.replace(/^(sh|sz|hk|gb)/,'').toUpperCase();
+        return`<div class="pr"><div class="l"><span class="rk">#${i+1}</span><span class="nm">${c.name}</span><span class="sy">${code}</span></div><div class="r"><div class="prc">${ps}</div><span class="chg ${chgClass}">${chgSign}${c.chg.toFixed(2)}%</span></div></div>`;
+    }).join('');
+    document.getElementById('sl').innerHTML=html||'<div class="ne">暂无数据</div>';
+    document.getElementById('scnt').textContent=data.length+' 只股票';
+}
+
+document.getElementById('stabs').onclick=e=>{
+    const t=e.target.closest('.pt');
+    if(!t)return;
+    document.querySelectorAll('#stabs .pt').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    currentMarket=t.dataset.m;
+    renderS();
+    loadStocks();
+};
+
 // INIT
 renderEX();
 loadNews();
 loadP();
+loadStocks();
 setInterval(loadNews,60000);
 setInterval(loadP,60000);
+setInterval(loadStocks,60000);
 </script>
 </body>
 </html>

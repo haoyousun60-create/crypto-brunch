@@ -1,26 +1,19 @@
 {
   "items": [
     {
-      "time": "09:00",
-      "title": "加密市场结构法案妥协方案引发行业分歧，Coinbase 对稳定币收益条款表达不满",
-      "link": "https://www.odaily.news/zh-CN/newsflash/473983",
-      "description": "Odaily 星球日报讯 美国参议员本周就 Clarity Act 中稳定币收益部分提出的妥协方案在加密行业内引发不同反应。Coinbase 已向参议员幕僚表达对最新妥协文本的不满。",
-      "pubDate": "2026-03-26T09:00:00.000Z"
-    },
-    {
-      "time": "08:37",
-      "title": "一巨鲸提取 11,999 枚 ETH，价值 2600 万美元",
+      "title": "一巨鲸提取11,999枚ETH，价值2600万美元",
+      "description": "Odaily星球日报讯 据 Onchain Lens 监测，沉寂一个月后，某巨鲸 (0xd55...bf25) 从 Coinbase 提取 11,999 枚 ETH 并进行质押，价值 2600 万美元。目前该巨鲸持有 22,618 枚 ETH，价值 4900 万美元，获利 120 万美元。",
+      "pubDate": "Thu, 26 Mar 2026 00:37:23 GMT",
       "link": "https://www.odaily.news/zh-CN/newsflash/473980",
-      "description": "Odaily 星球日报讯 据 Onchain Lens 监测，沉寂一个月后，某巨鲸 (0xd55...bf25) 从 Coinbase 提取 11,999 枚 ETH 并进行质押，价值 2600 万美元。",
-      "pubDate": "2026-03-26T08:37:00.000Z"
+      "source": "Odaily"
     },
     {
-      "time": "08:16",
-      "title": "疑似与 Bitmine 相关钱包从 FalconX 收到 5 万枚 ETH，价值 1.08 亿美元",
+      "title": "疑似与Bitmine相关钱包从FalconX收到5万枚ETH，价值1.08亿美元",
+      "description": "Odaily星球日报讯 据 Onchain Lens 监测，疑似与 Bitmine 相关的钱包 (0xA17...7dc9) 从 FalconX 收到 5 万枚 ETH，价值 1.0837 亿美元。",
+      "pubDate": "Thu, 26 Mar 2026 00:16:44 GMT",
       "link": "https://www.odaily.news/zh-CN/newsflash/473977",
-      "description": "Odaily 星球日报讯 据 Onchain Lens 监测，疑似与 Bitmine 相关的钱包从 FalconX 收到 5 万枚 ETH，价值 1.0837 亿美元。",
-      "pubDate": "2026-03-26T08:16:00.000Z"
+      "source": "Odaily"
     }
   ],
-  "updated": "2026-03-26T01:15:09.523Z"
+  "updated": "2026-03-26T01:16:03.742Z"
 }
